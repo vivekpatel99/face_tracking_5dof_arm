@@ -5,9 +5,7 @@ https://www.pyimagesearch.com/2015/05/25/basic-motion-detection-and-tracking-wit
 https://www.pyimagesearch.com/2016/02/01/opencv-center-of-contour/
 """
 
-import numpy as np
 import cv2
-# import sys
 from imutils.video import VideoStream
 import imutils
 import time

@@ -87,16 +87,12 @@ class Menu:
 
     def __init__(self, framebuffer="/dev/fb1"):
         """ """
-        # os.putenv("SDL_FBDEV", framebuffer)
-        # os.environ["SDL_FBDEV"] = fb3
-
         self.screen = None
 
         try:
             if not pygame.init():
                 pygame.init()
                 log.info("pygame initialisation done ")
-                # print("pygame initialisation done ")
 
         except Exception as error:
             log.info(error)

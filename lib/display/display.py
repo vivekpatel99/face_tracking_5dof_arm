@@ -8,10 +8,9 @@ import logging
 import numpy as np
 
 from tkinter import *
-import tkinter as tk
 
-import pygame
-from pygame.locals import *
+# import pygame
+# from pygame.locals import *
 
 sys.path.append("../../")
 import config
