@@ -29,8 +29,7 @@ from imutils.video import VideoStream
 """ Modules """
 import config
 from lib.vision.vision import Vision
-from lib.display import display
-from lib.display import display_gui
+
 from lib.udp import udp
 
 # -----------------------------------------------
@@ -72,6 +71,8 @@ def face_recog_pygm(screen, disply_obj, fbs):
     (for predicting trained faces), labels.pickle (to get label of faces ) and predict name of the face.
 
     """
+    from lib.display import display
+    from lib.display import display_gui
 
     log.info("face_recog_pygm start")
     # print("[INFO] face_recog_pygm start")
@@ -232,20 +233,20 @@ class FaceRecognition:
         :return:
         """
         # covert image into gray for processing
-        gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        # gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         front = cv2.FONT_HERSHEY_SIMPLEX
         color = (255, 0, 0)
         stroke = 1  # width of text
 
         # detect object of different size i nthe input image.
         # the detected objects are returned as a list of rectangles.
-        faces = self.face_cascade.detectMultiScale(gray_frame, scaleFactor=1.3, minNeighbors=5)
+        faces = self.face_cascade.detectMultiScale(frame, scaleFactor=1.3, minNeighbors=5)
 
         for (x, y, w, h) in faces:
 
             # create rectangle around face
             frame = cv2.rectangle(frame, (x, y), (x + w, y + w), (255, 0, 0), 2)  # RGB
-            roi_gray = gray_frame[y:y + h, x:x + w]
+            roi_gray = frame[y:y + h, x:x + w]
 
             id_, confidence = self.recognizer.predict(roi_gray)
 
@@ -259,12 +260,12 @@ class FaceRecognition:
             else:
                 cv2.putText(frame, 'Unknown', (x, y), front, 1.0, color, stroke, cv2.LINE_AA)
 
-            if frame_display_indx == 0:
-                out_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            elif frame_display_indx == 1:
-                out_frame = cv2.resize(roi_gray, (640, 480))
-            else:
-                out_frame = frame
+            # if frame_display_indx == 0:
+            #     out_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            # elif frame_display_indx == 1:
+            #     out_frame = cv2.resize(roi_gray, (640, 480))
+            # else:
+            out_frame = frame
             return (x, y), out_frame
 
 

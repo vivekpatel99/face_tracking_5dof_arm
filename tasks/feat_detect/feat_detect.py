@@ -29,8 +29,8 @@ class FeatureDetection:
     # """ run_feat_detect """
     # -------------------------------------------------------------------
     def run_feat_detect(self, query_img_bgr, frame_display_indx):
-        query_img = cv2.cvtColor(query_img_bgr, cv2.COLOR_BGR2GRAY)
-        query_kp, query_desc = self.detector.detectAndCompute(query_img, None)
+        # query_img = cv2.cvtColor(query_img_bgr, cv2.COLOR_BGR2GRAY)
+        query_kp, query_desc = self.detector.detectAndCompute(query_img_bgr, None)
         matches = self.flann.knnMatch(query_desc, self.trainDesc, k=2)
 
         good_match = []
@@ -58,12 +58,12 @@ class FeatureDetection:
             half_width_x = int((query_border[2] + query_border[4]) / 2)
 
             cv2.circle(query_img_bgr, (half_width_x, half_height_y), 2, (0, 0, 255), 8)
-            if frame_display_indx == 0:
-                out_frame = cv2.cvtColor(query_img_bgr, cv2.COLOR_BGR2RGB)
-            elif frame_display_indx == 1:
-                out_frame = query_img_bgr
-            else:
-                out_frame = query_img_bgr
+            # if frame_display_indx == 0:
+            #     out_frame = cv2.cvtColor(query_img_bgr, cv2.COLOR_BGR2RGB)
+            # elif frame_display_indx == 1:
+            #     out_frame = query_img_bgr
+            # else:
+            out_frame = query_img_bgr
             return (half_width_x, half_height_y), out_frame
 
 

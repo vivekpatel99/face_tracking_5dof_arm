@@ -5,6 +5,8 @@ import os
 import logging
 import numpy as np
 
+from lib.servo_calibration import servo_calib_data as servo_calib
+
 log = logging.getLogger("main." + __name__)
 
 # -----------------------------------------------
@@ -45,7 +47,14 @@ JB3 = 6
 JB4 = 7
 JB5 = 8
 JB6 = 9
-
+# -----------------------------------------------
+""" add or remove GPIO name and servo calibration information """
+UTILIZED_GPIO = {JB0: servo_calib.servo_1,
+                 JB1: servo_calib.servo_2,
+                 JB2: servo_calib.servo_3,
+                 JB4: servo_calib.servo_4,
+                 JB5: servo_calib.servo_5
+                 }
 # -----------------------------------------------
 """ paths of all GPIOs """
 # from zybo_zybo_rm-pdf (page 25)
@@ -77,7 +86,9 @@ L_3 = 98  # mm 9.8cm
 L_4 = 27  # mm 2.7cm
 L_5 = 65  # mm 6.5cm
 
-PT_5dof = [
+
+# Denavit Hartenberg  Parameter table
+DH_PT = [
     [math.radians(THETA_1), math.radians(90.0), 0, L_1],
     [math.radians(THETA_2), 0, L_2, 0],
     [math.radians(THETA_3), 0, L_3, 0],
@@ -85,16 +96,16 @@ PT_5dof = [
     [math.radians(THETA_5), 0, 0, L_4 + L_5]
 ]
 
-PT_3dof = [
-    [math.radians(THETA_1), math.radians(90.0), 0, L_1],
-    [math.radians(THETA_2), 0, L_2, 0],
-    [math.radians(THETA_3), 0, L_3, 0],
-]
-
-PT_2dof = [
-    [math.radians(THETA_1), math.radians(90.0), 0, L_1],
-    [math.radians(THETA_2), 0, L_2, 0],
-]
+# PT_3dof = [
+#     [math.radians(THETA_1), math.radians(90.0), 0, L_1],
+#     [math.radians(THETA_2), 0, L_2, 0],
+#     [math.radians(THETA_3), 0, L_3, 0],
+# ]
+#
+# PT_2dof = [
+#     [math.radians(THETA_1), math.radians(90.0), 0, L_1],
+#     [math.radians(THETA_2), 0, L_2, 0],
+# ]
 
 # -----------------------------------------------
 """ Video frame setting """
