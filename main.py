@@ -21,7 +21,6 @@ from tasks.face_recog import face_recog
 from tasks.motion_detection import motion_detect
 from tasks.cam_off import cam_off
 from tasks.object_recognition import object_recognition
-import config
 
 sys.path.append("/lib/display")
 from lib.display import display_gui
@@ -96,3 +95,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

@@ -40,11 +40,19 @@ class UdpPacket:
 
         self.udp_ip = udp_ip
         self.udp_port = udp_port
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        # self.sock = None
+    # ------------------------------------------------------------------------------
+    # """ FUNCTION: __enter__"""
+    # ------------------------------------------------------------------------------
 
+    def __enter__(self):
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.sock.bind((self.udp_ip, self.udp_port))
+        return self.sock
     # ------------------------------------------------------------------------------
     # """ FUNCTION: To send UDP packets """
     # ------------------------------------------------------------------------------
+
     def udp_packet_send(self, data=None, x=0, y=0, frame=None):
         """
         This function sent data via udp packets
@@ -58,6 +66,7 @@ class UdpPacket:
             if x != 0 or y != 0 or frame is not None:
                 # transform  coordinates
                 cm_to_pixel = config.frame_physical_area / frame.shape[0]
+
                 # displacement vector of camera
                 cam_point = np.mat([[x],
                                     [y],
@@ -82,16 +91,20 @@ class UdpPacket:
     # ------------------------------------------------------------------------------
     # """ FUNCTION: To receive UDP packets """
     # ------------------------------------------------------------------------------
-    def udp_packet_receive(self):
+    # def udp_packet_receive(self):
 
-        self.sock.bind((self.udp_ip, self.udp_port))
+    #     self.sock.bind((self.udp_ip, self.udp_port))
 
-        while True:
-            data, _ = self.sock.recvfrom(1024)
-            return pickle.loads(data)
+    #     while True:
+    #         data, _ = self.sock.recvfrom(1024)
 
-    def __exit__(self):
-        self.sock.close()
+    #         return pickle.loads(data)
+    # ------------------------------------------------------------------------------
+    # """ FUNCTION: __exit__"""
+    # ------------------------------------------------------------------------------
+    def __exit__(self, *exc_info):
+        if self.sock:
+            self.sock.close()
 
 
 if __name__ == '__main__':

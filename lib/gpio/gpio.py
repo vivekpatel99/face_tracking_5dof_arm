@@ -6,7 +6,7 @@ import logging
 
 sys.path.append(os.path.dirname(__file__))
 
-import miscellaneous as misc
+from lib import miscellaneous as misc
 
 log = logging.getLogger("__main__." + __name__)
 

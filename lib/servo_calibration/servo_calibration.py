@@ -4,7 +4,7 @@ import sys
 import time
 
 sys.path.append("../")
-from lib import pwm
+from lib.gpio import pwm
 from lib.servo_calibration import servo_calib_data as servo_calib
 import config as const
 

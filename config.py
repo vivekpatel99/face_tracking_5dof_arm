@@ -8,6 +8,45 @@ import numpy as np
 log = logging.getLogger("main." + __name__)
 
 # -----------------------------------------------
+""" Registers """
+
+# Frame buffers addresses
+FB0 = 0x1E000000
+FB1 = 0x1E280000
+FB2 = 0x1E500000
+FB3 = 0x1E780000
+
+FB0_size = 10240
+FB1_size = 2400
+
+# --related ip cores:  rtc_dma_bridge  sbus_zybo_core ---
+# dma rd to sbus_zybo_core
+# dma wr from video_core
+CORE_BASE = 0x43C00000
+CORE_REG = 0x43C10000
+
+# --related ip cores:  video_dma_bridge   video_core   servo_core
+# dma rd to video_core (fullscreen 1280x720 fb)
+VID_BASE = 0x83C40000
+VID_REG = 0x83C44000
+SERVO_REG = 0x83C48000
+
+# --related ip cores:  img_dma_bridge
+# dma rd to video_core (640x480 fb)
+IMG_BASE = 0x83C00000
+
+# -----------------------------------------------
+""" Address of JB port"""
+# address start from 3 on words
+JB0 = 3
+JB1 = 4
+JB2 = 5
+JB3 = 6
+JB4 = 7
+JB5 = 8
+JB6 = 9
+
+# -----------------------------------------------
 """ paths of all GPIOs """
 # from zybo_zybo_rm-pdf (page 25)
 
@@ -104,7 +143,7 @@ end_eff_direction_mat = np.matrix([
 
 # -----------------------------------------------
 """ UDP """
-IP = "192.168.1.103"
+IP = r"192.168.1.104"
 PORT = 47777
 
 # -----------------------------------------------

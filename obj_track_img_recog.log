@@ -1,3 +1,6 @@
-2019-03-23 15:13:37,791 - main - INFO - Close button pressed
-2019-03-23 15:13:37,793 - main - INFO - Cleaning up
-2019-03-23 15:13:37,795 - main - INFO - Closing Application safely
+2019-04-07 08:15:57,347 - main - INFO - Main script starts
+2019-04-07 08:15:57,348 - main - INFO - Calling  display_gui.Menu()
+2019-04-07 08:15:57,354 - main - INFO - Calling  disply.display_init()
+2019-04-07 08:15:57,355 - main.lib.display.display_gui - INFO - display initialisation done 
+2019-04-07 08:15:57,376 - main - INFO - Calling  disply.display_color()
+2019-04-07 08:15:57,378 - main - INFO - Calling display.display_menu_init()
