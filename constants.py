@@ -30,11 +30,11 @@ THETA_3 = 0.
 THETA_4 = 0.
 THETA_5 = 0.
 
-L_1 = 33.  # mm 3.3cm
-L_2 = 105.  # mm 10.5cm
-L_3 = 98.  # mm 9.8cm
-L_4 = 27.  # mm 2.7cm
-L_5 = 65.  # mm 6.5cm
+L_1 = 3.3  # mm 3.3cm
+L_2 = 10.5  # mm 10.5cm
+L_3 = 9.8  # mm 9.8cm
+L_4 = 2.7  # mm 2.7cm
+L_5 = 6.5  # mm 6.5cm
 
 
 PT_5dof = [
