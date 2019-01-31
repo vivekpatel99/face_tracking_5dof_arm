@@ -13,7 +13,7 @@ import constants as const
 from lib.servo_calibration import servo_calib_data as servo_calib
 from lib import miscellaneous as misc
 from lib.kinematics import ikine as ik
-from lib.udp import udp_receive
+from lib.udp import udp_send
 
 # ------------------------------------------------------------------------------
 # """ FUNCTION: To control Servos with IK algorithm """
