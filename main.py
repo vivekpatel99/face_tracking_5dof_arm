@@ -73,9 +73,11 @@ def main():
     ])
 
     while True:
-        coordinates = udp_receive.udp_receive()
-        print(coordinates)
-        thetas = ik.ik_5dof(end_eff_direction_mat, coordinates[0], coordinates[1], coordinates[3])
+        x = float(input("x: "))
+        y = float(input("y: "))
+        z = float(input("z: "))
+
+        thetas = ik.ik_5dof(end_eff_direction_mat, x, y, z)
 
         print("theta_1 {}".format(math.degrees(thetas.theta_1)))
         print("theta_2 {}".format(math.degrees(thetas.theta_2)))
@@ -83,6 +85,12 @@ def main():
         print("theta_4 {}".format(math.degrees(thetas.theta_4)))
         print("theta_5 {}".format(math.degrees(thetas.theta_5)))
 
+        l = pickle.dumps([math.degrees(thetas.theta_1),
+                         math.degrees(thetas.theta_2),
+                         math.degrees(thetas.theta_3),
+                         math.degrees(thetas.theta_4),
+                         math.degrees(thetas.theta_5)])
+        udp_send.udp_send(l)
         # pwm_jf1.pwm_generate(thetas.theta_1)
         # time.sleep(0.5)
         #
@@ -101,10 +109,10 @@ def main():
 
 if __name__ == '__main__':
     tstart = time.time()
+    from lib.udp import udp_receive
 
-    # udp_send.udp_send(b"Hello")
-    print()
+    # print(udp_receive.udp_receive())
     # robo_main()
-    # main()
+    main()
 
     print("Total time {}".format(time.time() - tstart))
