@@ -13,7 +13,7 @@ import constants as const
 from lib.servo_calibration import servo_calib_data as servo_calib
 from lib import miscellaneous as misc
 from lib.kinematics import ikine as ik
-from lib.udp import udp_send
+
 
 # ------------------------------------------------------------------------------
 # """ FUNCTION: To control Servos with IK algorithm """
@@ -87,10 +87,10 @@ def main():
         print("theta_5 {}".format(math.degrees(thetas.theta_5)))
 
         l = pickle.dumps([math.degrees(thetas.theta_1),
-                         math.degrees(thetas.theta_2),
-                         math.degrees(thetas.theta_3),
-                         math.degrees(thetas.theta_4),
-                         math.degrees(thetas.theta_5)])
+                          math.degrees(thetas.theta_2),
+                          math.degrees(thetas.theta_3),
+                          math.degrees(thetas.theta_4),
+                          math.degrees(thetas.theta_5)])
         udp_send.udp_send(l)
         # pwm_jf1.pwm_generate(thetas.theta_1)
         # time.sleep(0.5)
