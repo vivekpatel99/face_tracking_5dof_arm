@@ -2,7 +2,7 @@
 
 import socket
 
-UDP_IP = "255.255.255.255"
+UDP_IP = "192.168.1.103"
 UDP_PORT = 47777
 
 
