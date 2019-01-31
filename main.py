@@ -102,8 +102,11 @@ def main():
 
 if __name__ == '__main__':
     tstart = time.time()
-
+    from lib.udp import udp_receive
+    from lib.udp import udp_send
+    udp_send.udp_send(b"Hello")
+    print(udp_receive.udp_receive())
     # robo_main()
-    main()
+    # main()
 
     print("Total time {}".format(time.time() - tstart))
