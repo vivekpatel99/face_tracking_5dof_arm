@@ -23,22 +23,10 @@ def servo_test():
 
     for pin in pin_list:
         for angle in range(0, 200, 20):
-            print(angle)
-
+            # print(angle)
             pin.pwm_generate(angle, unit="deg")
             time.sleep(0.1)
-            #
-            # pwm_jf4.pwm_generate(angle, unit="deg")
-            # time.sleep(0.5)
-            #
-            # pwm_jf7.pwm_generate(angle, unit="deg")
-            # time.sleep(0.5)
-            #
-            # pwm_jf8.pwm_generate(angle, unit="deg")
-            # time.sleep(0.5)
-            #
-            # pwm_jf9.pwm_generate(angle, unit="deg")
-            # time.sleep(0.5)
+
         pin.pwm_generate(0, unit="deg")
 
 

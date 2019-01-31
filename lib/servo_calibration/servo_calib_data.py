@@ -28,7 +28,7 @@ servo_2 = Servo((0., 1.),  # 0.0.
                 (100., 9.5))  # 5 (5dof safety limit)  # 9.2 (3dof safety limit) # 9.5 (limit)
 
 servo_3 = Servo((0., 0.),
-                (80., 9.4))  # 6 (5dof safety limit ) # 7. (3dof safety limit)  # 9.4 (limit)
+                (90., 9.4))  # 6 (5dof safety limit ) # 7. (3dof safety limit)  # 9.4 (limit)
 
 servo_4 = Servo((0., 1.),
                 (180., 10.))  # 6 (5dof safety limit ) # 9. (3dof safety limit)  # 10  (limit)

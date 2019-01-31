@@ -24,8 +24,8 @@ def main():
     """
 
     """
-    servo_test()
-    sys.exit()
+    # servo_test()
+
     pwm_jf1 = pwm.PWM(gpio_path=const.JF1_MIO13_919, servo_cal_info=servo_calib.servo_1)
     pwm_jf4 = pwm.PWM(gpio_path=const.JF4_MIO12_918, servo_cal_info=servo_calib.servo_2)
     pwm_jf7 = pwm.PWM(gpio_path=const.JF7_MIO0_906, servo_cal_info=servo_calib.servo_3)
@@ -49,10 +49,10 @@ def main():
         print("theta_4 {}".format(math.degrees(thetas.theta_4)))
         print("theta_5 {}".format(math.degrees(thetas.theta_5)))
 
-        pwm_jf1.pwm_generate(thetas.theta_1)
+        pwm_jf1.pwm_generate(abs(thetas.theta_1))
         time.sleep(0.5)
 
-        pwm_jf4.pwm_generate(thetas.theta_2)
+        pwm_jf4.pwm_generate(abs(thetas.theta_2))
         time.sleep(0.5)
 
         pwm_jf7.pwm_generate(thetas.theta_3)
