@@ -87,10 +87,10 @@ def main():
         print("theta_5 {}".format(math.degrees(thetas.theta_5)))
 
         l = pickle.dumps([math.degrees(thetas.theta_1),
-                         math.degrees(thetas.theta_2),
-                         math.degrees(thetas.theta_3),
-                         math.degrees(thetas.theta_4),
-                         math.degrees(thetas.theta_5)])
+                          math.degrees(thetas.theta_2),
+                          math.degrees(thetas.theta_3),
+                          math.degrees(thetas.theta_4),
+                          math.degrees(thetas.theta_5)])
         udp_send.udp_send(l)
         # pwm_jf1.pwm_generate(thetas.theta_1)
         # time.sleep(0.5)
@@ -114,6 +114,6 @@ if __name__ == '__main__':
 
     # print(udp_receive.udp_receive())
     # robo_main()
-    main()
-
+    from lib.vision import simple_face_detection
+    simple_face_detection.coordinate_udpsend()
     print("Total time {}".format(time.time() - tstart))
