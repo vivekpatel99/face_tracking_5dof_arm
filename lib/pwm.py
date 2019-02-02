@@ -62,7 +62,7 @@ class PWM:
     # ------------------------------------------------------------------------------
     # """ FUNCTION: angle to duty cycle conversion """
     # ------------------------------------------------------------------------------
-    def angle_to_dcycle(self, angle, unit = 'rad'):
+    def angle_to_dcycle(self, angle, unit='rad'):
         """
         calculation
         (0,0)
@@ -81,14 +81,11 @@ class PWM:
         if unit == 'rad':
             angle = math.degrees(angle)
 
-        print(self.servo_cal_info)
-        # slop = (self.servo_cal_info.end_pnt[1] - self.servo_cal_info.start_pnt[1]) / (
-        #             self.servo_cal_info.end_pnt[0] - self.servo_cal_info.start_pnt[0])
         slop = (self.servo_cal_info.max_range[1] - self.servo_cal_info.min_range[1]) / (
                 self.max_angle - self.min_angle)
         # duty_cycle = (slop * (angle - self.servo_cal_info.start_pnt[0])) + self.servo_cal_info.start_pnt[1]
         duty_cycle = (slop * (angle - self.servo_cal_info.min_range[0])) + self.servo_cal_info.min_range[1]
-        print(duty_cycle)
+
         return duty_cycle
 
     # ------------------------------------------------------------------------------
@@ -100,13 +97,16 @@ class PWM:
         toff = ts - ton
         :return:
         """
+        angle = float(angle)
         if unit != 'deg' and unit != 'rad':
             print("[ERROR] Please enter proper unit 'deg' or 'rad' ")
             sys.exit(-1)
 
         if unit == 'rad':
             angle = math.degrees(angle)
-
+            # print("[INFO] unit of angle is taken into Radians")
+        # else:
+        #     print("[INFO] unit of angle is taken into Degree")
         if angle >= self.servo_cal_info.max_range[0]:
             angle = self.servo_cal_info.max_range[0]
 
@@ -117,12 +117,14 @@ class PWM:
         ton = float(total_time * (self.angle_to_dcycle(angle, unit='deg') / 100))
         toff = total_time - ton
 
-        # PWM.set_duty_cycle(1)
-        self.gpio_path.set_gpio_value(1)
-        time.sleep(ton)
+        i = 0
+        while i < 2:
+            # PWM.set_duty_cycle(1)
+            self.gpio_path.set_gpio_value(1)
+            time.sleep(ton)
 
-        # PWM.set_duty_cycle(0)
-        self.gpio_path.set_gpio_value(0)
-        time.sleep(toff)
-
+            # PWM.set_duty_cycle(0)
+            self.gpio_path.set_gpio_value(0)
+            time.sleep(toff)
+            i += 1
         # return ton, toff

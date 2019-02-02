@@ -116,6 +116,6 @@ if __name__ == '__main__':
 
     # print(udp_receive.udp_receive())
     # robo_main()
-    main()
-
+    from lib.vision import simple_face_detection
+    simple_face_detection.coordinate_udpsend()
     print("Total time {}".format(time.time() - tstart))
