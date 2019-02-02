@@ -13,8 +13,13 @@ UDP_PORT = 47777
 # ------------------------------------------------------------------------------
 class UdpPacket:
     def __init__(self, udp_ip, udp_port):
+
         if not isinstance(udp_ip, str):
             print("[ERROR] udp ip must be string ")
+            sys.exit(1)
+
+        if not isinstance(udp_port, int):
+            print("[ERROR] udp port must be string ")
             sys.exit(1)
 
         for num in udp_ip.split('.'):  # check for correct ip address
@@ -29,6 +34,7 @@ class UdpPacket:
 
         self.udp_ip = udp_ip
         self.udp_port = udp_port
+        self.sock = sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     # ------------------------------------------------------------------------------
     # """ FUNCTION: To send UDP packets """
@@ -39,22 +45,20 @@ class UdpPacket:
         :param data: send data
         :return:
         """
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.sendto(data, (self.udp_ip, self.udp_port))
+        self.sock.sendto(data, (self.udp_ip, self.udp_port))
 
     # ------------------------------------------------------------------------------
     # """ FUNCTION: To receive UDP packets """
     # ------------------------------------------------------------------------------
     def udp_packet_receive(self):
-        sock = socket.socket(socket.AF_INET,
-                             socket.SOCK_DGRAM)
-        sock.bind((self.udp_ip, self.udp_port))
+
+        self.sock.bind((self.udp_ip, self.udp_port))
 
         while True:
-            data, _ = sock.recvfrom(1024)
+            data, _ = self.sock.recvfrom(1024)
             return pickle.loads(data)
 
 
 if __name__ == '__main__':
     udp_pack = UdpPacket(udp_ip=UDP_IP, udp_port=UDP_PORT)
-    udp_pack.udp_packet_send("hello, world!")
+    udp_pack.udp_packet_send(b"hello, world!")

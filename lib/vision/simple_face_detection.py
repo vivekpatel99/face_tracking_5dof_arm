@@ -30,11 +30,10 @@ def face_detect_coords_udpsend():
 
     vid = Vision()
 
-    udp_ip = "192.168.1.103"
-    udp_port = 47777
-    udp_send = udp.UdpPacket(udp_ip=udp_ip, udp_port=udp_port)
+    ip = "192.168.1.103"
+    port = 47777
+    udp_send = udp.UdpPacket(udp_ip=ip, udp_port=port)
 
-    # the values here is assumed
     cm_to_pixel = const.frame_physical_area / vid.getFrameSize()[0]
 
     # transformation from robotic arm frame coordinate to camera coordinate
@@ -69,21 +68,20 @@ def face_detect_coords_udpsend():
             # displacement vector of camera
             cam_point = np.mat([[x],
                                 [y],
-                                [90.0],  # distance from camera to person in cm
+                                [100.0],  # distance from camera to person in cm
                                 [1.]],
                                dtype=float
                                )
             face_coordinates = np.dot(H0_C, cam_point)
 
             # origin of frame is at the left up side, setting in to right down side
-            nx = (frame.shape[1] - abs(face_coordinates[0])) * cm_to_pixel
-            ny = (frame.shape[0] - abs(face_coordinates[1])) * cm_to_pixel
-            nz = face_coordinates[2] * cm_to_pixel
+            new_x = (frame.shape[1] - face_coordinates[0]) * cm_to_pixel
+            new_y = (frame.shape[0] - face_coordinates[1]) * cm_to_pixel
+            new_z = face_coordinates[2] * cm_to_pixel
 
-            cord_data = pickle.dumps([nx, ny, nz])
+            udp_send.udp_packet_send(pickle.dumps([new_x, new_y, new_z]))
 
-            udp_send.udp_packet_send(cord_data)
-            print(x, y, nx, ny, nz)
+            print(x, y, new_x, new_y, new_z)
 
         vid.display('Video Frame', frame)
 
@@ -103,7 +101,6 @@ def main():
 
     face_cascade = cv2.CascadeClassifier(const.cascade_path)
     vid = Vision()
-
 
     # transformation from robotic arm frame coordinate to camera coordinate
     # assume that camera is on the exactly above the origin of arm
