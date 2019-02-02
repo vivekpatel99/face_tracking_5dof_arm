@@ -104,9 +104,9 @@ class PWM:
 
         if unit == 'rad':
             angle = math.degrees(angle)
-            print("[INFO] unit of angle is taken into Radians")
-        else:
-            print("[INFO] unit of angle is taken into Degree")
+            # print("[INFO] unit of angle is taken into Radians")
+        # else:
+        #     print("[INFO] unit of angle is taken into Degree")
         if angle >= self.servo_cal_info.max_range[0]:
             angle = self.servo_cal_info.max_range[0]
 
