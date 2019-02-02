@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 # sys.path.append("/media/sf_linux_shared/python_projects/face_detect/face_tracking_5dof_arm/lib/vision")
 from vision.vision import Vision
 from lib.udp import udp_send
+import constants as const
 
 
 def main():
@@ -72,7 +73,6 @@ def main():
 
 
 def coordinate_udpsend():
-  cm_to_pixel = 140. / 640.
 
   cascade_path = "/media/sf_linux_shared/python_projects/face_detect/face_tracking_5dof_arm/cascades/haarcascade_frontalface_default.xml"
 
@@ -81,9 +81,11 @@ def coordinate_udpsend():
     sys.exit(1)
 
   face_cascade = cv2.CascadeClassifier(cascade_path)
+
   vid = Vision()
-  vid.isCameraConnected()
-  print(vid.getFrameSize())
+
+  # the values here is assumed
+  cm_to_pixel = const.frame_physical_area / vid.getFrameSize()[0]
 
   # transformation from robotic arm frame coordinate to camera coordinate
   # assume that camera is on the exactly above the origin of arm
@@ -93,14 +95,7 @@ def coordinate_udpsend():
                       ],
                      dtype=float
                      )
-  # R_180z = np.mat([[np.cos(np.pi / 2), -np.sin(np.pi / 2), 0],
-  #                  [np.sin(np.pi / 2), np.cos(np.pi / 2), 0],
-  #                  [0, 0, 1]
-  #                  ],
-  #                 dtype=float
-  #                 )
 
-  # R0_C = R_min90_x.dot(R_180z)
   R0_C = R_min90_x
   d0_C = np.mat([[0.],
                  [8.],
@@ -115,7 +110,6 @@ def coordinate_udpsend():
     _, frame = vid.getVideo()
     # frame = cv2.flip(frame, 1)
 
-    # frame =  - 480
     gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     # the detected objects are returned as a list of rectangles.
@@ -136,10 +130,9 @@ def coordinate_udpsend():
       nz = p0[2] * cm_to_pixel
       cord_data = pickle.dumps([nx, ny, nz])
       udp_send.udp_send(cord_data)
-      print(x, y, nx, ny, p0)
+      print(x, y, nx, ny, nz)
 
     vid.display('img', frame)
-    # plt.imshow(frame), plt.title("matplotlib img"), plt.gca().invert_yaxis(), plt.show()
 
     if cv2.waitKey(30) & 0xFF == ord("q"):
       break

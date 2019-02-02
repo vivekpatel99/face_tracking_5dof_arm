@@ -56,3 +56,9 @@ PT_2dof = [
     [math.radians(THETA_1), math.radians(90.0), 0, L_1],
     [math.radians(THETA_2), 0, L_2, 0],
 ]
+
+# -----------------------------------------------
+""" video frame setting """
+
+# the physical area covered by video frame in centimeter
+frame_physical_area = float(140)
