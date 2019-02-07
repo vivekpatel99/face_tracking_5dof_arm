@@ -34,7 +34,7 @@ class UdpPacket:
 
         self.udp_ip = udp_ip
         self.udp_port = udp_port
-        self.sock = sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.sock =  socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     # ------------------------------------------------------------------------------
     # """ FUNCTION: To send UDP packets """
@@ -58,6 +58,8 @@ class UdpPacket:
             data, _ = self.sock.recvfrom(1024)
             return pickle.loads(data)
 
+    def __exit__(self):
+        self.sock.close()
 
 if __name__ == '__main__':
     udp_pack = UdpPacket(udp_ip=UDP_IP, udp_port=UDP_PORT)
