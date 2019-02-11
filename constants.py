@@ -1,7 +1,7 @@
 # Created by viv at 15.12.18
-from lib import miscellaneous as misc
-import math
 
+import math
+import os
 
 # -----------------------------------------------
 """ paths of all GPIOs """
@@ -59,6 +59,10 @@ PT_2dof = [
 
 # -----------------------------------------------
 """ video frame setting """
+# path to the haar cascade
+module_path = os.path.dirname(os.path.abspath(__file__))
+cascade_path = os.path.join(module_path, "cascades/haarcascade_frontalface_default.xml")
 
 # the physical area covered by video frame in centimeter
-frame_physical_area = float(140)
+# frame_physical_area = float(140)
+frame_physical_area = float(180)

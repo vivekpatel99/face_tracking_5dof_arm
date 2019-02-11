@@ -117,14 +117,10 @@ class PWM:
         ton = float(total_time * (self.angle_to_dcycle(angle, unit='deg') / 100))
         toff = total_time - ton
 
-        i = 0
-        while i < 2:
-            # PWM.set_duty_cycle(1)
-            self.gpio_path.set_gpio_value(1)
-            time.sleep(ton)
+        self.gpio_path.set_gpio_value(1)
+        time.sleep(ton)
 
-            # PWM.set_duty_cycle(0)
-            self.gpio_path.set_gpio_value(0)
-            time.sleep(toff)
-            i += 1
-        # return ton, toff
+        self.gpio_path.set_gpio_value(0)
+        time.sleep(toff)
+
+
