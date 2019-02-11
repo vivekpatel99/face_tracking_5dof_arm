@@ -64,4 +64,5 @@ module_path = os.path.dirname(os.path.abspath(__file__))
 cascade_path = os.path.join(module_path, "cascades/haarcascade_frontalface_default.xml")
 
 # the physical area covered by video frame in centimeter
-frame_physical_area = float(140)
+# frame_physical_area = float(140)
+frame_physical_area = float(180)

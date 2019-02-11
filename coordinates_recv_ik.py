@@ -24,7 +24,8 @@ def main():
     """
 
     """
-    # servo_test()
+    # test all the servos before starting the other progress
+    servo_test()
     end_eff_direction_mat = np.matrix([
         [-1., 0., 0.],
         [0., -1., 0.],
@@ -53,11 +54,9 @@ def main():
         print("theta_5 {}".format(math.degrees(thetas.theta_5)))
 
         pwm_jf1.pwm_generate(abs(thetas.theta_1))
-        # pwm_jf1.pwm_generate(thetas.theta_1)
         time.sleep(0.5)
 
         pwm_jf4.pwm_generate(abs(thetas.theta_2))
-        # pwm_jf4.pwm_generate(thetas.theta_2)
         time.sleep(0.5)
 
         pwm_jf7.pwm_generate(thetas.theta_3)

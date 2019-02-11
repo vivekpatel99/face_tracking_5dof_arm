@@ -45,7 +45,7 @@ class UdpPacket:
         :param data: send data
         :return:
         """
-        self.sock.sendto(data, (self.udp_ip, self.udp_port))
+        self.sock.sendto(pickle.dumps(data), (self.udp_ip, self.udp_port))
 
     # ------------------------------------------------------------------------------
     # """ FUNCTION: To receive UDP packets """
@@ -60,7 +60,8 @@ class UdpPacket:
 
     def __exit__(self):
         self.sock.close()
-
 if __name__ == '__main__':
     udp_pack = UdpPacket(udp_ip=UDP_IP, udp_port=UDP_PORT)
-    udp_pack.udp_packet_send(b"hello, world!")
+    for i in range(10):
+        udp_pack.udp_packet_send(pickle.dumps([0,0,0]))
+

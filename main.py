@@ -66,10 +66,7 @@ def main():
 
 if __name__ == '__main__':
     tstart = time.time()
-    from lib.udp import udp
 
-    # print(udp_receive.udp_receive())
-    # robo_main()
-    from lib.vision import simple_face_detection
-    simple_face_detection.coordinate_udpsend()
+    main()
+
     print("Total time {}".format(time.time() - tstart))
