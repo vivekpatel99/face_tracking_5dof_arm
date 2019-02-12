@@ -270,8 +270,8 @@ def display_render(screen, frame, dsply_obj, task_info):
 
     dsply_obj.title.Render(to=screen, pos=display_gui.TITLE_POSTION)
     # dsply_obj.image_title.Render(to=screen, pos=(define.VID_FRAME_CENTER, 100))
-    # pygame.display.flip()
-    pygame.display.update()
+    pygame.display.flip()
+    # pygame.display.update()
 
 # ------------------------------------------------------------------------------
 # """ test_loop """

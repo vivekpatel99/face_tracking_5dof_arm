@@ -23,7 +23,6 @@ LD04_MIO07_913 = "/sys/class/gpio/gpio913"  # LED
 # -----------------------------------------------
 """ DH parameters for robotic arm """
 
-
 THETA_1 = 0.
 THETA_2 = 0.
 THETA_3 = 0.
@@ -36,7 +35,6 @@ L_3 = 98  # mm 9.8cm
 L_4 = 27  # mm 2.7cm
 L_5 = 65  # mm 6.5cm
 
-
 PT_5dof = [
     [math.radians(THETA_1), math.radians(90.0), 0, L_1],
     [math.radians(THETA_2), 0, L_2, 0],
@@ -44,7 +42,6 @@ PT_5dof = [
     [math.radians(THETA_4) + math.radians(90.0), math.radians(90.0), 0, 0],
     [math.radians(THETA_5), 0, 0, L_4 + L_5]
 ]
-
 
 PT_3dof = [
     [math.radians(THETA_1), math.radians(90.0), 0, L_1],
@@ -58,7 +55,7 @@ PT_2dof = [
 ]
 
 # -----------------------------------------------
-""" video frame setting """
+""" Video frame setting """
 # path to the haar cascade
 module_path = os.path.dirname(os.path.abspath(__file__))
 cascade_path = os.path.join(module_path, "cascades/haarcascade_frontalface_default.xml")
@@ -66,3 +63,8 @@ cascade_path = os.path.join(module_path, "cascades/haarcascade_frontalface_defau
 # the physical area covered by video frame in centimeter
 # frame_physical_area = float(140)
 frame_physical_area = float(180)
+
+# -----------------------------------------------
+""" UDP """
+IP = "192.168.1.103"
+PORT = 47777
