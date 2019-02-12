@@ -8,13 +8,13 @@ import logging
 # from pygame.locals import *
 
 sys.path.append("../")
-from definition import define
+import config
 from lib.display import display_gui  # , colors
 from lib.display import display
-import globals
+import config
 
 TASK_TITLE = "Panda"
-TASK_TITLE_POS = (define.VID_FRAME_CENTER - (len(TASK_TITLE) * 4), 100)
+TASK_TITLE_POS = (config.VID_FRAME_CENTER - (len(TASK_TITLE) * 4), 100)
 TASK_INFO = ""
 
 log = logging.getLogger("__main__." + __name__)
@@ -33,7 +33,7 @@ def cam_off_loop(screen, disply_obj, FPS=0):
 
 
     img = cv2.imread(img_path, 1)
-    size = (define.HORIZ_PIXELS_SMALL, define.VERT_LINES_SMALL)
+    size = (config.HORIZ_PIXELS_SMALL, config.VERT_LINES_SMALL)
     resize_frame = cv2.resize(img, size)
     frame = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2RGB)
 

@@ -18,11 +18,11 @@ import sys
 # -----------------------------------------------
 """ Modules """
 
-from definition import define
+import config
 from lib.vision.vision import Vision
 from lib.display import display
 from lib.display import display_gui
-import globals
+import config
 
 log = logging.getLogger("__main__." + __name__)
 
@@ -34,7 +34,7 @@ TASK_INFO = " Objects Names : bottle, bus, car, cat, chair" \
 
 TASK_TITLE = "Object Recognition and Tracking"
 
-TASK_TITLE_POS = (define.VID_FRAME_CENTER - (len(TASK_TITLE) * 6), 100)
+TASK_TITLE_POS = (config.VID_FRAME_CENTER - (len(TASK_TITLE) * 6), 100)
 
 
 # ------------------------------------------------------------------------------
@@ -128,11 +128,11 @@ def object_recog_pygm(screen, disply_obj):
                 cv2.putText(frame, label, (startX, y),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
 
-        if globals.VID_FRAME_INDEX == 0:
+        if config.VID_FRAME_INDEX == 0:
 
             frame = frame
 
-        elif globals.VID_FRAME_INDEX == 1:
+        elif config.VID_FRAME_INDEX == 1:
 
             frame = frame
 
@@ -146,12 +146,12 @@ def object_recog_pygm(screen, disply_obj):
         image_title.Render(to=screen, pos=TASK_TITLE_POS)
 
         # check if TASK_INDEX is not 3 then it means another buttons has pressed
-        if not globals.TASK_INDEX == 3:
-            log.info("TASK_INDEX is not 1 but {}".format(globals.TASK_INDEX))
+        if not config.TASK_INDEX == 3:
+            log.info("TASK_INDEX is not 1 but {}".format(config.TASK_INDEX))
             break
 
-        if not globals.CAM_START or globals.EXIT:
-            # print(f"face_recog globals.CAM_START {globals.CAM_START}")
+        if not config.CAM_START or config.EXIT:
+            # print(f"face_recog config.CAM_START {config.CAM_START}")
             break
 
         # show the output frame

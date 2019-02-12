@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 import sys
 from imutils.video import VideoStream
-from definition import define
+import config
 import imutils
 import time
 
@@ -76,7 +76,7 @@ class Vision:
     # ------------------------------------------------------------------------------
     # """ FUNCTION: return size of the frame """
     # ------------------------------------------------------------------------------
-    def resize_frame(self, frame, size=(define.HORIZ_PIXELS_SMALL, define.VERT_LINES_SMALL)):
+    def resize_frame(self, frame, size=(config.HORIZ_PIXELS_SMALL, config.VERT_LINES_SMALL)):
 
         resize_frame = cv2.resize(frame, size)
 

@@ -17,7 +17,7 @@ sys.path.append(os.path.dirname(__file__))
 from colors import *
 
 sys.path.append("../../")
-from definition import define
+import config
 
 log = logging.getLogger("main." + __name__)
 
@@ -31,7 +31,7 @@ pygame.init()
 # if not os.path.exists(path):
 #     print("[ERROR] define module can not import, path does not exist")
 # sys.path.append(path)
-# import define
+# import config
 
 # -----------------------------------------------
 """ constants declaration  """
@@ -237,7 +237,7 @@ class Menu:
     class FrameText:
         """ FrameText class will initialise frame on display and text and render it"""
         rect_x = 50
-        rect_y = define.HORIZ_PIXELS_SMALL + 10  # 10 pixel down from frame
+        rect_y = config.HORIZ_PIXELS_SMALL + 10  # 10 pixel down from frame
         rect_width = SCREEN_WIDTH - 100  # reduce distance from edge of the screen width
         rect_height = 330
 

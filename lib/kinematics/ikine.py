@@ -7,7 +7,7 @@ import numpy as np
 
 # -----------------------------------------------
 from lib.kinematics import fkine
-import constants as const
+import config as const
 
 
 # ------------------------------------------------------------------------------

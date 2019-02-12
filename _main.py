@@ -9,7 +9,7 @@ import numpy as np
 import pickle
 # -----------------------------------------------
 from lib import pwm
-import constants as const
+import config as const
 from lib.servo_calibration import servo_calib_data as servo_calib
 from lib import miscellaneous as misc
 from lib.kinematics import ikine as ik

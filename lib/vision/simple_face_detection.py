@@ -4,12 +4,11 @@ import cv2
 import os
 import sys
 import numpy as np
-import pickle
 
 # sys.path.append("/media/sf_linux_shared/python_projects/face_detect/face_tracking_5dof_arm/lib/vision")
 from lib.vision.vision import Vision
 from lib.udp import udp
-import constants as const
+import config as const
 
 
 # ------------------------------------------------------------------------------

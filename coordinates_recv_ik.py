@@ -8,7 +8,7 @@ import sys
 import numpy as np
 
 # -----------------------------------------------
-import constants as const
+import config as const
 from lib import pwm
 from lib.servo_calibration import servo_calib_data as servo_calib
 from lib.servo_calibration.servo_calibration import servo_test

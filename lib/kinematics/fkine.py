@@ -1,7 +1,7 @@
 # Created by viv at 08.12.18
 
 import numpy as np
-import constants as const
+import config as const
 
 
 # ------------------------------------------------------------------------------

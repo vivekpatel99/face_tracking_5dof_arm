@@ -6,7 +6,7 @@ import time
 sys.path.append("../")
 from lib import pwm
 from lib.servo_calibration import servo_calib_data as servo_calib
-import constants as const
+import config as const
 
 
 # ------------------------------------------------------------------------------
