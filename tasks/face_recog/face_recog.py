@@ -130,6 +130,7 @@ def face_recog_pygm(screen, disply_obj, fbs):
         faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
 
         for (x, y, w, h) in faces:
+
             # create rectangle around face
             frame = cv2.rectangle(frame, (x, y), (x + w, y + w), (255, 0, 0), 2)  # RGB
             roi_gray = gray[y:y + h, x:x + w]
@@ -138,7 +139,8 @@ def face_recog_pygm(screen, disply_obj, fbs):
             id_, confidence = recognizer.predict(roi_gray)
             if confidence >= 20:
                 name = labels[id_]
-                cv2.putText(frame, name[::-1], (x, y), front, 1.0, color, stroke, cv2.LINE_AA)
+                # cv2.putText(frame, name[::-1], (x, y), front, 1.0, color, stroke, cv2.LINE_AA)
+                cv2.putText(frame, name, (x, y), front, 1.0, color, stroke, cv2.LINE_AA)
 
         if globals.VID_FRAME_INDEX == 0:
 

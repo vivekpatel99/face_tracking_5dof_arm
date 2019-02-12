@@ -263,7 +263,9 @@ def display_render(screen, frame, dsply_obj, task_info):
     dsply_obj.frame_info.add_text(text=task_info)
 
     frame = np.rot90(frame)
+
     frame = pygame.surfarray.make_surface(frame)
+    frame = pygame.transform.flip(frame, True, False)
     screen.blit(frame, VID_FRAME_POS)
 
     dsply_obj.title.Render(to=screen, pos=display_gui.TITLE_POSTION)
