@@ -1,72 +1,103 @@
-# Created by viv at 15.12.18
-"""
+# -*- coding: utf-8 -*-
+# @Author: vivekpatel99
+# @Date:   2018-10-06 15:43:12
+# @Last Modified by:   vivekpatel99
+# @Last Modified time: 2018-10-06 16:43:29
 
 """
-import math
-import time
+The main script calls functions from all the modules
+
+"""
+
+import os
 import sys
-import numpy as np
-import pickle
+import pygame
+from pygame.locals import *
+
+""" modules """
+
+from definition import define
+from tasks.face_recog import face_recog
+from tasks.motion_detection import motion_detect
+from tasks.cam_off import cam_off
+from tasks.object_recognition import object_recognition
+import globals
+
+sys.path.append("/lib/display")
+from lib.display import display_gui
+from lib.display import display
+from lib._logger import _logging
+
 # -----------------------------------------------
-from lib import pwm
-import constants as const
-from lib.servo_calibration import servo_calib_data as servo_calib
-from lib import miscellaneous as misc
-from lib.kinematics import ikine as ik
+PROJECT_TITLE = 'Closed Loop Object Tracking based on Image Recognition'
 
-from lib.udp import udp_receive
+# -----------------------------------------------
+""" constants declaration  """
 
-# ------------------------------------------------------------------------------
-# """ FUNCTION: MAIN """
-# ------------------------------------------------------------------------------
+SCREEN_SIZE = (1265, 1015)  # width, height
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+
+# Frames per second
+FPS = 60
+
+TASK_INDEX = 0
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+# """ main """
+# ----------------------------------------------------------------------------------------------------------------------
+
 def main():
     """
-
     """
-    end_eff_direction_mat = np.matrix([
-        [-1., 0., 0.],
-        [0., -1., 0.],
-        [0., 0., 1.]
-    ])
+    log = _logging.logger_init(log_filepath="obj_track_img_recog.log", project_name="main")
+    log.info("main script starts")
+
+    log.info("calling  display_gui.Menu()")
+    disply = display_gui.Menu()
+
+    log.info("calling  disply.display_init()")
+    screen = disply.display_init()
+
+    log.info("calling  disply.display_color()")
+    disply.display_color()
+
+    log.info("calling display.display_menu_init()")
+    disply_obj = display.display_menu_init(screen)
 
     while True:
-        x = float(input("x: "))
-        y = float(input("y: "))
-        z = float(input("z: "))
+        if not globals.CAM_START:  # camera is off, picture will be displayed
+            screen.fill(WHITE)  # clean up the display
+            cam_off.cam_off_loop(screen, disply_obj)
 
-        thetas = ik.ik_5dof(end_eff_direction_mat, x, y, z)
+        if globals.EXIT:
+            break
 
-        print("theta_1 {}".format(math.degrees(thetas.theta_1)))
-        print("theta_2 {}".format(math.degrees(thetas.theta_2)))
-        print("theta_3 {}".format(math.degrees(thetas.theta_3)))
-        print("theta_4 {}".format(math.degrees(thetas.theta_4)))
-        print("theta_5 {}".format(math.degrees(thetas.theta_5)))
+        while globals.CAM_START:
 
-        l = pickle.dumps([math.degrees(thetas.theta_1),
-                          math.degrees(thetas.theta_2),
-                          math.degrees(thetas.theta_3),
-                          math.degrees(thetas.theta_4),
-                          math.degrees(thetas.theta_5)])
-        udp_send.udp_send(l)
-        # pwm_jf1.pwm_generate(thetas.theta_1)
-        # time.sleep(0.5)
-        #
-        # pwm_jf4.pwm_generate(thetas.theta_2)
-        # time.sleep(0.5)
-        #
-        # pwm_jf7.pwm_generate(thetas.theta_3)
-        # time.sleep(0.5)
-        #
-        # pwm_jf8.pwm_generate(thetas.theta_4)
-        # time.sleep(0.5)
-        #
-        # pwm_jf9.pwm_generate(thetas.theta_5)
-        # time.sleep(0.5)
+            if globals.TASK_INDEX is 1:
+                screen.fill(WHITE)
+                face_recog.face_recog_pygm(screen, disply_obj, FPS)
+
+            if globals.TASK_INDEX is 2:
+                screen.fill(WHITE)
+                motion_detect.motion_detection_pygm(screen, disply_obj, FPS)
+
+            if globals.TASK_INDEX is 3:
+                screen.fill(WHITE)
+                object_recognition.object_recog_pygm(screen, disply_obj)
+
+            if not globals.CAM_START or globals.EXIT:
+                log.info("Camera is OFF")
+                break
+
+        if globals.EXIT:
+            break
+
+    pygame.quit()
+    log.info("exiting from the main...")
 
 
 if __name__ == '__main__':
-    tstart = time.time()
-
     main()
-
-    print("Total time {}".format(time.time() - tstart))

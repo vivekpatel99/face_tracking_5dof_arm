@@ -2,6 +2,7 @@ import numpy as np
 import cv2
 import sys
 from imutils.video import VideoStream
+from definition import define
 import imutils
 import time
 
@@ -72,7 +73,14 @@ class Vision:
         self.frame_height = int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
         return [self.frame_width, self.frame_height]
+    # ------------------------------------------------------------------------------
+    # """ FUNCTION: return size of the frame """
+    # ------------------------------------------------------------------------------
+    def resize_frame(self, frame, size=(define.HORIZ_PIXELS_SMALL, define.VERT_LINES_SMALL)):
 
+        resize_frame = cv2.resize(frame, size)
+
+        return resize_frame
     # ------------------------------------------------------------------------------
     # """ FUNCTION: Display the Video frame """
     # ------------------------------------------------------------------------------
