@@ -4,10 +4,10 @@ main - INFO - calling  disply.display_init()
 main.lib.display.display_gui - INFO - display initialisation done 
 main - INFO - calling  disply.display_color()
 main - INFO - calling display.display_menu_init()
+main.lib.display.display - INFO - Object Recognition Button clicked
 main.lib.display.display - INFO - Start Button clicked
-main.lib.display.display - INFO - Object Tracking Button clicked
-main.tasks.motion_detection.motion_detect - INFO - motion_detection_pygm starts... 
+main.lib.display.display - INFO - Forward Button clicked
+main.lib.display.display - INFO - Forward Button clicked
 main.lib.display.display - INFO - Exit Button clicked
-main.tasks.motion_detection.motion_detect - INFO - closing motion detection
 main - INFO - Camera is OFF
 main - INFO - exiting from the main...

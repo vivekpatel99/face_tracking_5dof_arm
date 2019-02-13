@@ -54,11 +54,12 @@ class UdpPacket:
         """
         if data is None:
             if x != 0 or y != 0 or frame is not None:
+                # transform  coordinates
                 cm_to_pixel = config.frame_physical_area / frame.shape[0]
                 # displacement vector of camera
                 cam_point = np.mat([[x],
                                     [y],
-                                    [90.0],  # distance between camera to person in cm
+                                    [90],  # distance between camera to person in cm
                                     [1.]],
                                    dtype=float
                                    )
@@ -70,9 +71,10 @@ class UdpPacket:
                 new_z = face_coordinates[2] * cm_to_pixel
 
                 data = [new_x, new_y, new_z]
-                print(data)
+
             else:
                 print("[ERROR] invalid input values")
+
         self.sock.sendto(pickle.dumps(data), (self.udp_ip, self.udp_port))
 
     # ------------------------------------------------------------------------------

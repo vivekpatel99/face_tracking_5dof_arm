@@ -13,8 +13,6 @@ import cv2
 import os
 import sys
 
-
-
 # -----------------------------------------------
 """ Modules """
 
@@ -22,7 +20,7 @@ import config
 from lib.vision.vision import Vision
 from lib.display import display
 from lib.display import display_gui
-import config
+from lib.udp import udp
 
 log = logging.getLogger("__main__." + __name__)
 
@@ -85,6 +83,7 @@ def object_recog_pygm(screen, disply_obj):
 
     # initialize the video stream
     vid = Vision()
+    udp_send = udp.UdpPacket(udp_ip=config.IP, udp_port=config.PORT)
 
     # loop over the frames from the video stream
     while vid.isCameraConnected():
@@ -122,12 +121,16 @@ def object_recog_pygm(screen, disply_obj):
                 # draw the prediction on the frame
                 label = "{}: {:.2f}%".format(CLASSES[idx],
                                              confidence * 100)
-                cv2.rectangle(frame, (startX, startY), (endX, endY),
-                              COLORS[idx], 2)
-                y = startY - 15 if startY - 15 > 15 else startY + 15
-                cv2.putText(frame, label, (startX, y),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
 
+                if CLASSES[idx] == config.recog_object_name:
+                    cv2.rectangle(frame, (startX, startY), (endX, endY),
+                                  COLORS[idx], 2)
+                    y = startY - 15 if startY - 15 > 15 else startY + 15
+
+                    cv2.putText(frame, label, (startX, y),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
+                    udp_send.udp_packet_send(x=startX, y=y, frame=frame)
+                    
         if config.VID_FRAME_INDEX == 0:
 
             frame = frame

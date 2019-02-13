@@ -77,8 +77,6 @@ frame_physical_area = float(180)
 
 dist_from_cam = float(90)  # object distance from camera
 
-# -----------------------------------------------
-""" end-effector orientation """
 # transformation from robotic arm frame coordinate to camera coordinate
 # assume that camera is on the exactly above the origin of arm
 R0_C = np.mat([[1, 0, 0],
@@ -95,6 +93,14 @@ d0_C = np.mat([[0.],
 # creating Homogeneous transformation matrix
 _H0_C = np.concatenate((R0_C, d0_C), 1)  # concatenate column
 H0_C = np.concatenate((_H0_C, [[0., 0., 0., 1.]]), 0)  # concatenate row
+
+# -----------------------------------------------
+""" end-effector orientation """
+end_eff_direction_mat = np.matrix([
+    [-1., 0., 0.],
+    [0., -1., 0.],
+    [0., 0., 1.]
+])
 
 # -----------------------------------------------
 """ UDP """
@@ -132,3 +138,12 @@ CAM_START = False  # camera  True = ON/ False = OFF
 
 # exit from the application
 EXIT = False
+
+# -----------------------------------------------
+""" TASKS configuration """
+# object recognition
+#     CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
+#                "bottle", "bus", "car", "cat", "chair", "cow", "diningtable",
+#                "dog", "horse", "motorbike", "person", "pottedplant", "sheep",
+#                "sofa", "train", "tvmonitor"]
+recog_object_name = "bottle"
