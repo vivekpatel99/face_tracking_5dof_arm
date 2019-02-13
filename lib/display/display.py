@@ -156,16 +156,8 @@ def display_menu_init(screen):
 
     title = display_gui.Menu.Text(text=PROJECT_TITLE, font=display_gui.Font.Medium)
 
-    # image_title = display_gui.Menu.Text(text=task_title, font=display_gui.Font.Medium)
-    #
-    # info = "INFO"
-    # info = display_gui.Menu.Text(text=img_title_str, font=display_gui.Font.Medium)
-
     frame_info = display_gui.Menu.FrameText(screen)
     frame_info.add_frame()
-
-    # info  = display_gui.Menu.FrameText(text=task_info, font=display_gui.Font.Small)
-    # pygame.draw.rect(info, )
 
     start_btn = display_gui.Menu.Button(text="START", rect=SMALL_BUTTON)
     start_btn.Command = start_btn_action
@@ -230,7 +222,6 @@ def display_render(screen, frame, dsply_obj, task_info):
                 # handle button click events
                 for btn in display_gui.Menu.Button.All:
                     if btn.Rolling:  # mouse is over button
-                        # if not btn.Command() != None:  # do button event
                         if btn.Command():  # do button event
                             btn.Command()
 
@@ -268,9 +259,7 @@ def display_render(screen, frame, dsply_obj, task_info):
     screen.blit(frame, VID_FRAME_POS)
 
     dsply_obj.title.Render(to=screen, pos=display_gui.TITLE_POSTION)
-    # dsply_obj.image_title.Render(to=screen, pos=(config.VID_FRAME_CENTER, 100))
     pygame.display.flip()
-    # pygame.display.update()
 
 # ------------------------------------------------------------------------------
 # """ test_loop """
@@ -296,7 +285,6 @@ def test_loop():
     screen = disply.display_init()
     disply.display_color()
 
-    # fonts = pygame.font.SysFont("Comic Sans MS", 40)
     # title = fonts.render('Closed Loop Object Tracking based on Image Recognition', False, (0, 0, 255))
     title = display_gui.Menu.Text(text=PROJECT_TITLE, font=display_gui.Font.Medium)
 
@@ -309,8 +297,6 @@ def test_loop():
     task_info = "Vivek, John Snow, khalisi"
     frame_info = display_gui.Menu.FrameText(screen)
     frame_info.add_frame()
-    # info  = display_gui.Menu.FrameText(text=task_info, font=display_gui.Font.Small)
-    # pygame.draw.rect(info, )
 
     start_btn = display_gui.Menu.Button(text="START", rect=SMALL_BUTTON)
     start_btn.Command = start_btn_action
@@ -377,31 +363,7 @@ def test_loop():
 
 
 def main():
-    fb3 = "/dev/fb0"
-    os.putenv("SDL_FBDEV", fb3)
-    # set up audio driver to avoid alisa lib erros
-    os.environ['SDL_AUDIODRIVER'] = "dsp"
 
-    # os.environ['SDL_VIDEODRIVER'] = fb3
-    # os.environ["SDL_FBDEV"] = fb3
-    config.platform_init()
-
-    # pygame.init()
-    # root = setup_tkinter()
-    # fps_clock = pygame.time.Clock()
-
-    # WIDTH =  config.VERTICAL_LINES
-    # HEIGHT = config.HORIZONTAL_PIXELS
-    # # screen = pygame.display.set_mode((1240, 1010))
-    # size = (pygame.display.Info().current_w, pygame.display.Info().current_h)
-    #
-    # print("Framebuffer size set {} x {}".format(size[0],size[1]))
-    #
-    # screen = pygame.display.set_mode((1265, 1015), pygame.FULLSCREEN)
-    # while True:
-    #     screen.fill(BLACK)
-
-    # game_loop(screen, fps_clock)
     test_loop()
 
 

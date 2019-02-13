@@ -3,6 +3,7 @@
 import math
 import os
 import logging
+import numpy as np
 
 log = logging.getLogger("main." + __name__)
 
@@ -68,9 +69,32 @@ VID_FRAME_CENTER = (50 + HORIZ_PIXELS_SMALL) / 2
 module_path = os.path.dirname(os.path.abspath(__file__))
 cascade_path = os.path.join(module_path, "cascades/haarcascade_frontalface_default.xml")
 
+# -----------------------------------------------
+""" Coordinates transform (Kinematics)"""
 # the physical area covered by video frame in centimeter
 # frame_physical_area = float(140)
 frame_physical_area = float(180)
+
+dist_from_cam = float(90)  # object distance from camera
+
+# -----------------------------------------------
+""" end-effector orientation """
+# transformation from robotic arm frame coordinate to camera coordinate
+# assume that camera is on the exactly above the origin of arm
+R0_C = np.mat([[1, 0, 0],
+               [0, 1, 0],
+               [0, 0, 1]
+               ],
+              dtype=float
+              )
+d0_C = np.mat([[0.],
+               [8.],  # assumed that the camera just at y axis  on arm's origin
+               [0.]],
+              dtype=float
+              )
+# creating Homogeneous transformation matrix
+_H0_C = np.concatenate((R0_C, d0_C), 1)  # concatenate column
+H0_C = np.concatenate((_H0_C, [[0., 0., 0., 1.]]), 0)  # concatenate row
 
 # -----------------------------------------------
 """ UDP """
@@ -106,4 +130,5 @@ VID_FRAME_INDEX = 0
 # start/stop cam
 CAM_START = False  # camera  True = ON/ False = OFF
 
+# exit from the application
 EXIT = False

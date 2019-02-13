@@ -79,11 +79,11 @@ def face_detect_coords_udpsend():
             # new_y = (frame.shape[0] - face_coordinates[1]) * cm_to_pixel
             new_z = face_coordinates[2] * cm_to_pixel
 
-            udp_send.udp_packet_send([new_x, new_y, new_z])
+            udp_send.udp_packet_send2([new_x, new_y, new_z])
 
             print('x=', x, 'y=', y, 'new_x=', face_coordinates[0], 'new_y=', face_coordinates[1], 'new_z=', new_z)
 
-        vid.display('Video Frame', cv2.flip(frame, 1))
+        vid.display('Video Frame', cv2.flip(gray_frame, 1))
 
         if cv2.waitKey(30) & 0xFF == ord("q"):
             break

@@ -16,22 +16,20 @@ The trainner file is trained from some hollywood actors (from game of thrones TV
 """
 
 import sys
-# import numpy as np
 import cv2
 import pickle
-# import pygame
 import os
 import logging
 
 # -----------------------------------------------
 """ Modules """
-
 import config
 from lib.vision.vision import Vision
 from lib.display import display
 from lib.display import display_gui
-import config
+from lib.udp import udp
 
+# -----------------------------------------------
 log = logging.getLogger("__main__." + __name__)
 
 # -----------------------------------------------
@@ -103,24 +101,23 @@ def face_recog_pygm(screen, disply_obj, fbs):
     image_title = display_gui.Menu.Text(text=TASK_TITLE, font=display_gui.Font.Medium)
 
     vid = Vision()
+    udp_send = udp.UdpPacket(udp_ip=config.IP, udp_port=config.PORT)
 
     front = cv2.FONT_HERSHEY_SIMPLEX
-
     color = (255, 0, 0)
-    # width of text
-    stroke = 2
+    stroke = 2  # width of text
 
     log.info("frame reading starts ")
 
     while vid.isCameraConnected():
 
-        ret, frame = vid.getVideo()
+        _, frame = vid.getVideo()
 
         # resize frame for required size
         resize_frame = vid.resize_frame(frame)
 
         # opencv understand BGR, in order to display we need to convert image  form   BGR to RGB
-        frame = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2RGB)  # for display
+        # frame = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2RGB)  # for display
 
         # covert image into gray
         gray = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2GRAY)  # for processing
@@ -130,9 +127,8 @@ def face_recog_pygm(screen, disply_obj, fbs):
         faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
 
         for (x, y, w, h) in faces:
-
             # create rectangle around face
-            frame = cv2.rectangle(frame, (x, y), (x + w, y + w), (255, 0, 0), 2)  # RGB
+            frame = cv2.rectangle(resize_frame, (x, y), (x + w, y + w), (255, 0, 0), 2)  # RGB
             roi_gray = gray[y:y + h, x:x + w]
             # roi_color = frame[y:y+h, x:x+w]
 
@@ -141,22 +137,19 @@ def face_recog_pygm(screen, disply_obj, fbs):
                 name = labels[id_]
                 # cv2.putText(frame, name[::-1], (x, y), front, 1.0, color, stroke, cv2.LINE_AA)
                 cv2.putText(frame, name, (x, y), front, 1.0, color, stroke, cv2.LINE_AA)
+                udp_send.udp_packet_send(x=x, y=y, frame=frame)
 
         if config.VID_FRAME_INDEX == 0:
-
-            frame = resize_frame
+            display_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
         elif config.VID_FRAME_INDEX == 1:
+            display_frame = gray
 
-            frame = gray
-
-        # elif config.VID_FRAME_INDEX == 2:
         else:
-
-            frame = frame
+            display_frame = frame
 
         # Display the frame
-        display.display_render(screen, frame, disply_obj, TASK_INFO)
+        display.display_render(screen, display_frame, disply_obj, TASK_INFO)
 
         image_title.Render(to=screen, pos=TASK_TITLE_POS)
 
@@ -169,15 +162,12 @@ def face_recog_pygm(screen, disply_obj, fbs):
             # print(f"face_recog config.CAM_START {config.CAM_START}")
             break
 
-        # framerate control
+        # frame rate control
         if cv2.waitKey(fbs) & 0xff == ord('q'):
             break
 
     log.info("Face Recognition closing ")
     vid.videoCleanUp()
-
-
-
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -196,8 +186,6 @@ def main():
 
     cap = cv2.VideoCapture(0)
     cv2.namedWindow("frame")
-    # read image through cv2
-    # img = cv2.imread(r'C:\Users\PatelViv\opencv\images\viv\viv_4.jpg')
 
     while cap.isOpened():
 
@@ -212,7 +200,7 @@ def main():
         for (x, y, w, h) in faces:
             frame = cv2.rectangle(frame, (x, y), (x + w, y + w), (0, 0, 225), 2)  # BGR
             roi_gray = gray[y:y + h, x:x + w]
-            roi_color = frame[y:y + h, x:x + w]
+            # roi_color = frame[y:y + h, x:x + w]
 
             id_, conf = recognizer.predict(roi_gray)
 
