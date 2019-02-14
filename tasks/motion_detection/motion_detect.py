@@ -114,8 +114,7 @@ def motion_detection_pygm(screen, disply_obj, fbs):
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
 
-    cap.stop()
-    cv2.destroyAllWindows()
+    vid.videoCleanUp()
     log.info("closing motion detection")
 
 
