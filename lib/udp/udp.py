@@ -3,9 +3,15 @@
 import socket
 import pickle
 import sys
+import numpy as np
+import logging
 
-UDP_IP = "192.168.1.103"
-UDP_PORT = 47777
+import config
+
+log = logging.getLogger("__main__." + __name__)
+
+# UDP_IP = "192.168.1.103"
+# UDP_PORT = 47777
 
 
 # ------------------------------------------------------------------------------
@@ -15,11 +21,11 @@ class UdpPacket:
     def __init__(self, udp_ip, udp_port):
 
         if not isinstance(udp_ip, str):
-            print("[ERROR] udp ip must be string ")
+            log.error("udp ip must be string ")
             sys.exit(1)
 
         if not isinstance(udp_port, int):
-            print("[ERROR] udp port must be string ")
+            log.error("udp port must be string ")
             sys.exit(1)
 
         for num in udp_ip.split('.'):  # check for correct ip address
@@ -29,22 +35,48 @@ class UdpPacket:
                 print(error)
                 sys.exit(1)
             if not num >= 0 or not num <= 255:
-                print("[ERROR] udp ip is incorrect ")
+                log.error("udp ip is incorrect ")
                 sys.exit(1)
 
         self.udp_ip = udp_ip
         self.udp_port = udp_port
-        self.sock =  socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     # ------------------------------------------------------------------------------
     # """ FUNCTION: To send UDP packets """
     # ------------------------------------------------------------------------------
-    def udp_packet_send(self, data):
+    def udp_packet_send(self, data=None, x=0, y=0, frame=None):
         """
         This function sent data via udp packets
-        :param data: send data
+        :param data: transformed coordinate values (x, y, z)  list
+        :param x:  untransformed value
+        :param y:  untransformed value
+        :param frame: captured frame
         :return:
         """
+        if data is None:
+            if x != 0 or y != 0 or frame is not None:
+                # transform  coordinates
+                cm_to_pixel = config.frame_physical_area / frame.shape[0]
+                # displacement vector of camera
+                cam_point = np.mat([[x],
+                                    [y],
+                                    [90],  # distance between camera to person in cm
+                                    [1.]],
+                                   dtype=float
+                                   )
+                face_coordinates = np.dot(config.H0_C, cam_point)
+
+                # origin of frame is at the left up side, setting in to right down side
+                new_x = face_coordinates[0] * cm_to_pixel
+                new_y = (frame.shape[0] - face_coordinates[1]) * cm_to_pixel
+                new_z = face_coordinates[2] * cm_to_pixel
+
+                data = [new_x, new_y, new_z]
+
+            else:
+                log.error("Invalid input values")
+
         self.sock.sendto(pickle.dumps(data), (self.udp_ip, self.udp_port))
 
     # ------------------------------------------------------------------------------
@@ -60,8 +92,9 @@ class UdpPacket:
 
     def __exit__(self):
         self.sock.close()
-if __name__ == '__main__':
-    udp_pack = UdpPacket(udp_ip=UDP_IP, udp_port=UDP_PORT)
-    for i in range(10):
-        udp_pack.udp_packet_send(pickle.dumps([0,0,0]))
 
+
+if __name__ == '__main__':
+    udp_pack = UdpPacket(udp_ip=config.UDP_IP, udp_port=config.UDP_PORT)
+    for i in range(10):
+        udp_pack.udp_packet_send(pickle.dumps([0, 0, 0]))

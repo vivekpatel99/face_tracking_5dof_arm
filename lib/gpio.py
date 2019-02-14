@@ -2,11 +2,13 @@
 import os
 import sys
 import time
+import logging
 
 sys.path.append(os.path.dirname(__file__))
 
 import miscellaneous as misc
 
+log = logging.getLogger("__main__." + __name__)
 
 # -----------------------------------------------
 """ constants """
@@ -32,9 +34,9 @@ class GPIO:
         # need to unexport otherwise it will through error "resources are busy"
         if os.path.exists(self.unexport_path):
             misc.write_into_file(self.unexport_path, WRITE, self.pin_num)
-            print("[INFO] unexport successful {}".format(self.pin_num))
+            log.info("Unexport successful {}".format(self.pin_num))
         else:
-            print("[ERROR] path does not exist {}".format(self.unexport_path))
+            log.error("Path does not exist {}".format(self.unexport_path))
 
     # ------------------------------------------------------------------------------
     # """ FUNCTION: to export gpio"""
@@ -43,9 +45,9 @@ class GPIO:
 
         if os.path.exists(self.export_path):
             misc.write_into_file(self.export_path, WRITE, self.pin_num)
-            print("[INFO] export successful {}".format(self.pin_num))
+            log.info("Export successful {}".format(self.pin_num))
         else:
-            print("[ERROR] path does not exist {}".format(self.export_path))
+            log.error("Path does not exist {}".format(self.export_path))
 
     # ------------------------------------------------------------------------------
     # """ FUNCTION: to set direction of gpio input or output"""
@@ -55,7 +57,7 @@ class GPIO:
         dir_path = os.path.join(self.gpio_path, DIRECTION)
 
         misc.write_into_file(dir_path, WRITE, direction)
-        print("[INFO] direction set {} {}".format(direction, self.pin_num))
+        log.info("[Direction set {} {}".format(direction, self.pin_num))
 
     # ------------------------------------------------------------------------------
     # """ FUNCTION: to set gpio 1 or 0"""

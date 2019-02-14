@@ -17,11 +17,12 @@ import logging
 # -----------------------------------------------
 """ Modules """
 
-from definition import define
+import config
 from lib.vision.vision import Vision
 from lib.display import display
 from lib.display import display_gui
-import globals
+from lib.udp import udp
+
 
 log = logging.getLogger("main." + __name__)
 
@@ -31,8 +32,7 @@ log = logging.getLogger("main." + __name__)
 TASK_INFO = " INFO move something "
 TASK_TITLE = " Motion Detection "
 
-TASK_TITLE_POS = (define.VID_FRAME_CENTER - (len(TASK_TITLE) * 4), 100)
-
+TASK_TITLE_POS = (config.VID_FRAME_CENTER - (len(TASK_TITLE) * 4), 100)
 
 # minimum size (in pixel) for a region of image to be considered actual "motion"
 MIN_AREA = 500
@@ -50,6 +50,8 @@ def motion_detection_pygm(screen, disply_obj, fbs):
     image_title = display_gui.Menu.Text(text=TASK_TITLE, font=display_gui.Font.Medium)
 
     cap = VideoStream(src=CAM_NUM).start()
+    udp_send = udp.UdpPacket(udp_ip=config.IP, udp_port=config.PORT)
+
     time.sleep(2.0)
 
     # initialize the firstFrame in video stream
@@ -66,7 +68,7 @@ def motion_detection_pygm(screen, disply_obj, fbs):
             break
 
         # resize frame for required size
-        resize_frame = cv2.resize(frame, define.VID_FRAME_SIZE)
+        resize_frame = cv2.resize(frame, config.VID_FRAME_SIZE)
 
         # opencv understand BGR, in order to display we need to convert image  form   BGR to RGB
         frame = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2RGB)  # for display
@@ -74,44 +76,43 @@ def motion_detection_pygm(screen, disply_obj, fbs):
         # color has no bearing on motion detection algorithm
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-        # to smooth the image and remove noise(if not then could throw algorithm off)
-        # smoothing average pixel intensities across an 21x21 region
-        gray = cv2.GaussianBlur(gray, (21, 21), 0)
-
         # if the first stream is not initialized, store it for reference
         # to smooth the image and remove noise(if not then could throw algorithm off)
         # smothing avarage pixel intensities across an 21x21 region
         gray = cv2.GaussianBlur(gray, (21, 21), 0)
 
-
         # apply background substraction
         fgmask = fgbg.apply(gray)
-        (im2, contours, hierarchy) = cv2.findContours(fgmask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        # im2, contours, hierarchy = cv2.findContours(fgmask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        im2, contours, hierarchy = cv2.findContours(fgmask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 
         # looping for contours
-        for c in contours:
-            if cv2.contourArea(c) < MIN_AREA:
-                continue
-
+        # for c in contours:
+        #     if cv2.contourArea(c) < MIN_AREA:
+        #         continue
+        if len(contours) != 0:
+            c = max(contours, key=cv2.contourArea)
             M = cv2.moments(c)
-            cX = int(M["m10"] / M["m00"])
-            cY = int(M["m01"] / M["m00"])
+            try:  # avoid division error
+                cX = int(M["m10"] / M["m00"])
+                cY = int(M["m01"] / M["m00"])
+            except:
+                pass
             # get bounding box from countour
             (x, y, w, h) = cv2.boundingRect(c)
-
+            udp_send.udp_packet_send(x=cX, y=cY, frame=frame)
             # draw bounding box
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
             cv2.circle(frame, (cX, cY), 7, (0, 0, 225), -1)
 
-
-        if globals.VID_FRAME_INDEX == 0:
+        if config.VID_FRAME_INDEX == 0:
             frame = fgmask
 
-        elif globals.VID_FRAME_INDEX == 1:
+        elif config.VID_FRAME_INDEX == 1:
 
             frame = frame
 
-        elif globals.VID_FRAME_INDEX == 2:
+        elif config.VID_FRAME_INDEX == 2:
             frame = frame
 
         # Display the frame
@@ -119,12 +120,12 @@ def motion_detection_pygm(screen, disply_obj, fbs):
         image_title.Render(to=screen, pos=TASK_TITLE_POS)
 
         # check if TASK_INDEX is not 1 then it means another buttons has pressed
-        if not globals.TASK_INDEX == 2:
-            log.info("TASK_INDEX is not 2 but {}".format(globals.TASK_INDEX))
+        if not config.TASK_INDEX == 2:
+            log.info("TASK_INDEX is not 2 but {}".format(config.TASK_INDEX))
             break
 
-        if not globals.CAM_START or globals.EXIT:
-            # print(f"face_recog globals.CAM_START {globals.CAM_START}")
+        if not config.CAM_START or config.EXIT:
+            # print(f"face_recog config.CAM_START {config.CAM_START}")
             break
         # cv2.imshow('Original', frame)
         # cv2.imshow('threshold', thresh)
@@ -136,8 +137,6 @@ def motion_detection_pygm(screen, disply_obj, fbs):
     cap.stop()
     cv2.destroyAllWindows()
     log.info("closing motion detection")
-
-
 
 
 def _motion_detection_pygm(screen, disply_obj, fbs):
@@ -163,7 +162,7 @@ def _motion_detection_pygm(screen, disply_obj, fbs):
             break
 
         # resize frame for required size
-        resize_frame = cv2.resize(frame, define.VID_FRAME_SIZE)
+        resize_frame = cv2.resize(frame, config.VID_FRAME_SIZE)
 
         # opencv understand BGR, in order to display we need to convert image  form   BGR to RGB
         frame = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2RGB)  # for display
@@ -196,7 +195,7 @@ def _motion_detection_pygm(screen, disply_obj, fbs):
         for c in contours:
             if cv2.contourArea(c) < MIN_AREA:
                 continue
-
+            print(c)
             M = cv2.moments(c)
             cX = int(M["m10"] / M["m00"])
             cY = int(M["m01"] / M["m00"])
@@ -208,14 +207,14 @@ def _motion_detection_pygm(screen, disply_obj, fbs):
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
             cv2.circle(frame, (cX, cY), 7, (0, 0, 225), -1)
 
-        if globals.VID_FRAME_INDEX == 0:
+        if config.VID_FRAME_INDEX == 0:
             frame = thresh
 
-        elif globals.VID_FRAME_INDEX == 1:
+        elif config.VID_FRAME_INDEX == 1:
 
             frame = frame
 
-        elif globals.VID_FRAME_INDEX == 2:
+        elif config.VID_FRAME_INDEX == 2:
             frame = frameDelta
 
         # Display the frame
@@ -223,12 +222,12 @@ def _motion_detection_pygm(screen, disply_obj, fbs):
         image_title.Render(to=screen, pos=TASK_TITLE_POS)
 
         # check if TASK_INDEX is not 1 then it means another buttons has pressed
-        if not globals.TASK_INDEX == 2:
-            log.info("TASK_INDEX is not 2 but {}".format(globals.TASK_INDEX))
+        if not config.TASK_INDEX == 2:
+            log.info("TASK_INDEX is not 2 but {}".format(config.TASK_INDEX))
             break
 
-        if not globals.CAM_START or globals.EXIT:
-            # print(f"face_recog globals.CAM_START {globals.CAM_START}")
+        if not config.CAM_START or config.EXIT:
+            # print(f"face_recog config.CAM_START {config.CAM_START}")
             break
         # cv2.imshow('Original', frame)
         # cv2.imshow('threshold', thresh)

@@ -2,12 +2,14 @@
 import collections
 import math
 import sys
-
+import logging
 import numpy as np
 
 # -----------------------------------------------
 from lib.kinematics import fkine
-import constants as const
+import config as const
+
+log = logging.getLogger("__main__." + __name__)
 
 
 # ------------------------------------------------------------------------------
@@ -79,7 +81,7 @@ def is_correct_rotation_mat(matrix):
 
     #  check whether matrix is 3x3 or not
     if not mat.shape == (3, 3):
-        print("[ERROR] matrix must be 3x3")
+        log.error("Matrix must be 3x3")
 
     # checking if the matrix is a rotation matrix or not
     #  step #1 Square of each element of row
@@ -93,7 +95,7 @@ def is_correct_rotation_mat(matrix):
             vector_len += mat[column, row] ** 2
 
         if not np.sqrt(vector_len) == 1:
-            print("[ERROR] matrix is not a valid rotation matrix")
+            log.error("Matrix is not a valid rotation matrix")
             sys.exit(1)
     return mat
 

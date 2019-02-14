@@ -14,8 +14,7 @@ import pygame
 from pygame.locals import *
 
 sys.path.append("../../")
-import globals
-from definition import define
+import config
 from lib.display import display_gui, colors
 
 log = logging.getLogger("main." + __name__)
@@ -51,7 +50,7 @@ VID_FRAME_POS = (50, 150)  # x, y
 
 def start_btn_action():
     """ start_button_action """
-    globals.CAM_START = True
+    config.CAM_START = True
     log.info("Start Button clicked")
 
 
@@ -63,7 +62,7 @@ def start_btn_action():
 def stop_btn_action():
     """ stop_button_action """
 
-    globals.CAM_START = False
+    config.CAM_START = False
     log.info("Stop Button clicked")
 
     btn_done = True
@@ -76,7 +75,7 @@ def stop_btn_action():
 
 def exit_btn_action():
     """ start_button_action """
-    globals.EXIT = True
+    config.EXIT = True
     log.info("Exit Button clicked")
 
 
@@ -88,11 +87,11 @@ def exit_btn_action():
 def forward_btn_action():
     """ forward_button_action """
 
-    if globals.VID_FRAME_INDEX >= 2:
-        globals.VID_FRAME_INDEX = 2
+    if config.VID_FRAME_INDEX >= 2:
+        config.VID_FRAME_INDEX = 2
 
     else:
-        globals.VID_FRAME_INDEX += 1
+        config.VID_FRAME_INDEX += 1
     log.info("Forward Button clicked")
 
 
@@ -104,11 +103,11 @@ def forward_btn_action():
 def backward_btn_action():
     """ backward_button_action """
 
-    if globals.VID_FRAME_INDEX <= 0:
-        globals.VID_FRAME_INDEX = 0
+    if config.VID_FRAME_INDEX <= 0:
+        config.VID_FRAME_INDEX = 0
 
     else:
-        globals.VID_FRAME_INDEX -= 1
+        config.VID_FRAME_INDEX -= 1
     log.info("Backward Button clicked")
 
 
@@ -118,7 +117,7 @@ def backward_btn_action():
 
 def face_recog_btn_action():
     """ face_recognition_button_action """
-    globals.TASK_INDEX = 1
+    config.TASK_INDEX = 1
     log.info("Face recognition Button clicked")
 
 
@@ -128,7 +127,7 @@ def face_recog_btn_action():
 
 def object_tracking_btn_action():
     """ object_tracking_button_action """
-    globals.TASK_INDEX = 2
+    config.TASK_INDEX = 2
     log.info("Object Tracking Button clicked")
 
 
@@ -138,7 +137,7 @@ def object_tracking_btn_action():
 
 def object_recog_btn_action():
     """ object_tracking_button_action """
-    globals.TASK_INDEX = 3
+    config.TASK_INDEX = 3
     log.info("Object Recognition Button clicked")
 
 
@@ -157,16 +156,8 @@ def display_menu_init(screen):
 
     title = display_gui.Menu.Text(text=PROJECT_TITLE, font=display_gui.Font.Medium)
 
-    # image_title = display_gui.Menu.Text(text=task_title, font=display_gui.Font.Medium)
-    #
-    # info = "INFO"
-    # info = display_gui.Menu.Text(text=img_title_str, font=display_gui.Font.Medium)
-
     frame_info = display_gui.Menu.FrameText(screen)
     frame_info.add_frame()
-
-    # info  = display_gui.Menu.FrameText(text=task_info, font=display_gui.Font.Small)
-    # pygame.draw.rect(info, )
 
     start_btn = display_gui.Menu.Button(text="START", rect=SMALL_BUTTON)
     start_btn.Command = start_btn_action
@@ -223,7 +214,7 @@ def display_render(screen, frame, dsply_obj, task_info):
     for event in pygame.event.get():
         # check if the pygame window quit button precess or not
         if event.type == pygame.QUIT:
-            globals.EXIT = True
+            config.EXIT = True
 
         # check mouse event on display
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -231,7 +222,6 @@ def display_render(screen, frame, dsply_obj, task_info):
                 # handle button click events
                 for btn in display_gui.Menu.Button.All:
                     if btn.Rolling:  # mouse is over button
-                        # if not btn.Command() != None:  # do button event
                         if btn.Command():  # do button event
                             btn.Command()
 
@@ -239,27 +229,27 @@ def display_render(screen, frame, dsply_obj, task_info):
                         break
 
     # 144 is upper y value of the picture frame, SMALL_BUTTON[3] = button height (50)
-    dsply_obj.start_btn.Render(screen, pos=(SMALL_BUTTON[3] + 10 + define.HORIZ_PIXELS_SMALL, 144))
+    dsply_obj.start_btn.Render(screen, pos=(SMALL_BUTTON[3] + 10 + config.HORIZ_PIXELS_SMALL, 144))
     #  length of small button  + 10 pixel (50  + 10) = 60
     dsply_obj.stop_btn.Render(screen,
-                              pos=(SMALL_BUTTON[3] + 10 + define.HORIZ_PIXELS_SMALL, 144 + SMALL_BUTTON[3] + 10))
+                              pos=(SMALL_BUTTON[3] + 10 + config.HORIZ_PIXELS_SMALL, 144 + SMALL_BUTTON[3] + 10))
 
     # SMALL_BUTTON[2] = button weight (100)
     dsply_obj.exit_btn.Render(screen, pos=(display_gui.SCREEN_WIDTH - SMALL_BUTTON[2] + 48, 0))
 
     # 574 is lower y value of frame
-    dsply_obj.forward_btn.Render(screen, pos=(SMALL_BUTTON[3] + 10 + define.HORIZ_PIXELS_SMALL, 574))
+    dsply_obj.forward_btn.Render(screen, pos=(SMALL_BUTTON[3] + 10 + config.HORIZ_PIXELS_SMALL, 574))
     dsply_obj.backward_btn.Render(screen,
-                                  pos=(SMALL_BUTTON[3] + 10 + define.HORIZ_PIXELS_SMALL, 574 - SMALL_BUTTON[3] - 10))
+                                  pos=(SMALL_BUTTON[3] + 10 + config.HORIZ_PIXELS_SMALL, 574 - SMALL_BUTTON[3] - 10))
 
     # 280 pixel away form start button
-    dsply_obj.face_recog_btn.Render(screen, pos=(280 + define.HORIZ_PIXELS_SMALL, 144))
+    dsply_obj.face_recog_btn.Render(screen, pos=(280 + config.HORIZ_PIXELS_SMALL, 144))
 
-    dsply_obj.obj_tracking_btn.Render(screen, pos=(280 + define.HORIZ_PIXELS_SMALL, 144 + SMALL_BUTTON[3] + 10))
+    dsply_obj.obj_tracking_btn.Render(screen, pos=(280 + config.HORIZ_PIXELS_SMALL, 144 + SMALL_BUTTON[3] + 10))
     dsply_obj.frame_info.add_text(text=task_info)
 
     dsply_obj.obj_recog_btn.Render(screen,
-                                   pos=(280 + define.HORIZ_PIXELS_SMALL, (144 + (2 * SMALL_BUTTON[3] + 10)) + 10))
+                                   pos=(280 + config.HORIZ_PIXELS_SMALL, (144 + (2 * SMALL_BUTTON[3] + 10)) + 10))
     dsply_obj.frame_info.add_text(text=task_info)
 
     frame = np.rot90(frame)
@@ -269,9 +259,7 @@ def display_render(screen, frame, dsply_obj, task_info):
     screen.blit(frame, VID_FRAME_POS)
 
     dsply_obj.title.Render(to=screen, pos=display_gui.TITLE_POSTION)
-    # dsply_obj.image_title.Render(to=screen, pos=(define.VID_FRAME_CENTER, 100))
     pygame.display.flip()
-    # pygame.display.update()
 
 # ------------------------------------------------------------------------------
 # """ test_loop """
@@ -286,8 +274,8 @@ def test_loop():
     if not os.path.isfile(img_path):
         log.error("image does not exist {}".format(img_path))
     img = cv2.imread(img_path, 1)
-    # size = (define.HORIZ_PIXELS_SMALL, define.VERT_LINES_SMALL)
-    resize_frame = cv2.resize(img, define.VID_FRAME_SIZE)
+    # size = (config.HORIZ_PIXELS_SMALL, config.VERT_LINES_SMALL)
+    resize_frame = cv2.resize(img, config.VID_FRAME_SIZE)
 
     frame = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2RGB)
     frame = np.rot90(frame)
@@ -297,7 +285,6 @@ def test_loop():
     screen = disply.display_init()
     disply.display_color()
 
-    # fonts = pygame.font.SysFont("Comic Sans MS", 40)
     # title = fonts.render('Closed Loop Object Tracking based on Image Recognition', False, (0, 0, 255))
     title = display_gui.Menu.Text(text=PROJECT_TITLE, font=display_gui.Font.Medium)
 
@@ -310,8 +297,6 @@ def test_loop():
     task_info = "Vivek, John Snow, khalisi"
     frame_info = display_gui.Menu.FrameText(screen)
     frame_info.add_frame()
-    # info  = display_gui.Menu.FrameText(text=task_info, font=display_gui.Font.Small)
-    # pygame.draw.rect(info, )
 
     start_btn = display_gui.Menu.Button(text="START", rect=SMALL_BUTTON)
     start_btn.Command = start_btn_action
@@ -332,8 +317,8 @@ def test_loop():
     obj_tracking_btn.Command = object_tracking_btn_action
 
     # btn_start.Left = display_gui.SCREEN_HEIGHT/2 - btn_start.Left*2
-    frame_center = (50 + define.HORIZ_PIXELS_SMALL) / 2
-    frame_end = 60 + define.HORIZ_PIXELS_SMALL
+    frame_center = (50 + config.HORIZ_PIXELS_SMALL) / 2
+    frame_end = 60 + config.HORIZ_PIXELS_SMALL
 
     done = False
 
@@ -354,16 +339,16 @@ def test_loop():
             if btn_done:
                 done = True
         # 144 is upper y value of the picture frame
-        start_btn.Render(screen, pos=(60 + define.HORIZ_PIXELS_SMALL, 144))
+        start_btn.Render(screen, pos=(60 + config.HORIZ_PIXELS_SMALL, 144))
         #  length of small button  + 10 pixel (50  + 10) = 60
-        stop_btn.Render(screen, pos=(60 + define.HORIZ_PIXELS_SMALL, 144 + 60))
+        stop_btn.Render(screen, pos=(60 + config.HORIZ_PIXELS_SMALL, 144 + 60))
         # 574 is lower y value of frame
-        forward_btn.Render(screen, pos=(60 + define.HORIZ_PIXELS_SMALL, 574))
-        backward_btn.Render(screen, pos=(60 + define.HORIZ_PIXELS_SMALL, 574 - 60))
+        forward_btn.Render(screen, pos=(60 + config.HORIZ_PIXELS_SMALL, 574))
+        backward_btn.Render(screen, pos=(60 + config.HORIZ_PIXELS_SMALL, 574 - 60))
 
-        face_recog_btn.Render(screen, pos=(280 + define.HORIZ_PIXELS_SMALL, 144))
+        face_recog_btn.Render(screen, pos=(280 + config.HORIZ_PIXELS_SMALL, 144))
 
-        obj_tracking_btn.Render(screen, pos=(280 + define.HORIZ_PIXELS_SMALL, 144 + 60))
+        obj_tracking_btn.Render(screen, pos=(280 + config.HORIZ_PIXELS_SMALL, 144 + 60))
         frame_info.add_text(text=task_info)
         screen.blit(frame, (50, 150))
 
@@ -378,31 +363,7 @@ def test_loop():
 
 
 def main():
-    fb3 = "/dev/fb0"
-    os.putenv("SDL_FBDEV", fb3)
-    # set up audio driver to avoid alisa lib erros
-    os.environ['SDL_AUDIODRIVER'] = "dsp"
 
-    # os.environ['SDL_VIDEODRIVER'] = fb3
-    # os.environ["SDL_FBDEV"] = fb3
-    define.platform_init()
-
-    # pygame.init()
-    # root = setup_tkinter()
-    # fps_clock = pygame.time.Clock()
-
-    # WIDTH =  define.VERTICAL_LINES
-    # HEIGHT = define.HORIZONTAL_PIXELS
-    # # screen = pygame.display.set_mode((1240, 1010))
-    # size = (pygame.display.Info().current_w, pygame.display.Info().current_h)
-    #
-    # print("Framebuffer size set {} x {}".format(size[0],size[1]))
-    #
-    # screen = pygame.display.set_mode((1265, 1015), pygame.FULLSCREEN)
-    # while True:
-    #     screen.fill(BLACK)
-
-    # game_loop(screen, fps_clock)
     test_loop()
 
 
