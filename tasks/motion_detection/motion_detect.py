@@ -49,24 +49,12 @@ def motion_detection_pygm(screen, disply_obj, fbs):
 
     image_title = display_gui.Menu.Text(text=TASK_TITLE, font=display_gui.Font.Medium)
 
-    cap = VideoStream(src=CAM_NUM).start()
+    vid = Vision()
     udp_send = udp.UdpPacket(udp_ip=config.IP, udp_port=config.PORT)
 
-    time.sleep(2.0)
-
-    # initialize the firstFrame in video stream
-    firstFrame = None
     fgbg = cv2.createBackgroundSubtractorMOG2()
-    while True:
-
-        # if ret is true than no error with cap.isOpened
-        frame = cap.read()
-
-        if frame is None:
-            log.error("No frame available !!")
-            # print("ERROR: No frame available !!")
-            break
-
+    while  vid.isCameraConnected():
+        _, frame = vid.getVideo()
         # resize frame for required size
         resize_frame = cv2.resize(frame, config.VID_FRAME_SIZE)
 
@@ -86,10 +74,6 @@ def motion_detection_pygm(screen, disply_obj, fbs):
         # im2, contours, hierarchy = cv2.findContours(fgmask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         im2, contours, hierarchy = cv2.findContours(fgmask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 
-        # looping for contours
-        # for c in contours:
-        #     if cv2.contourArea(c) < MIN_AREA:
-        #         continue
         if len(contours) != 0:
             c = max(contours, key=cv2.contourArea)
             M = cv2.moments(c)
@@ -125,11 +109,7 @@ def motion_detection_pygm(screen, disply_obj, fbs):
             break
 
         if not config.CAM_START or config.EXIT:
-            # print(f"face_recog config.CAM_START {config.CAM_START}")
             break
-        # cv2.imshow('Original', frame)
-        # cv2.imshow('threshold', thresh)
-        # cv2.imshow('FrameDelta', frameDelta)
 
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
