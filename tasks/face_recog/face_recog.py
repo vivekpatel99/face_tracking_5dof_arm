@@ -42,11 +42,11 @@ TASK_TITLE_POS = (config.VID_FRAME_CENTER - (len(TASK_TITLE) * 4), 100)
 
 
 # ------------------------------------------------------------------------------
-# """ file_path_check """
+# """ file_path_create """
 # ------------------------------------------------------------------------------
 
-def file_path_check(file_name_fm_same_dir):
-    """ file_path_check """
+def file_path_create(file_name_fm_same_dir):
+    """ file_path_create """
     script_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(script_dir, file_name_fm_same_dir)
 
@@ -74,22 +74,22 @@ def face_recog_pygm(screen, disply_obj, fbs):
 
     # objected created for cascade classifier
     face_cascade_name = "haarcascade_frontalface_default.xml"
-    face_cascade_path = file_path_check(face_cascade_name)
+    face_cascade_path = file_path_create(face_cascade_name)
     face_cascade = cv2.CascadeClassifier(face_cascade_path)
     # recognizer = cv2.face.createLBPHFaceRecognizer() # for opencv 2.4
     recognizer = cv2.face.LBPHFaceRecognizer_create()
 
     # creating object from trained file
     recognizer_file = "trainner.yml"
-    recognizer_path = file_path_check(recognizer_file)
-    file_path_check(recognizer_path)
+    recognizer_path = file_path_create(recognizer_file)
+    file_path_create(recognizer_path)
     # recognizer.load(recognizer_path) # for opencv 2.4
     recognizer.read(recognizer_path)
 
     # reading labels from label.pickle file
     labels = {"person_name": 1}
     labels_file = "labels.pickle"
-    labels_path = file_path_check(labels_file)
+    labels_path = file_path_create(labels_file)
     try:
         with open(labels_path, 'rb') as f:
             og_labels = pickle.load(f)

@@ -55,16 +55,16 @@ def main():
     log.info("main script starts")
 
     log.info("calling  display_gui.Menu()")
-    disply = display_gui.Menu()
+    disply = display_gui.Menu() # create object for manu
 
     log.info("calling  disply.display_init()")
-    screen = disply.display_init()
+    screen = disply.display_init() # display initialize
 
     log.info("calling  disply.display_color()")
-    disply.display_color()
+    disply.display_color()  # fill the display with white color
 
     log.info("calling display.display_menu_init()")
-    disply_obj = display.display_menu_init(screen)
+    disply_obj = display.display_menu_init(screen)  # display GUI Initialize
 
     while True:
         if not config.CAM_START:  # camera is off, picture will be displayed
