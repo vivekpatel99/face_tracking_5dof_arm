@@ -28,15 +28,10 @@ from lib.display import display_gui
 from lib.display import display
 from lib._logger import _logging
 
-# -----------------------------------------------
-PROJECT_TITLE = 'Closed Loop Object Tracking based on Image Recognition'
 
 # -----------------------------------------------
 """ constants declaration  """
-
-SCREEN_SIZE = (1265, 1015)  # width, height
 WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
 
 # Frames per second
 FPS = 60
@@ -61,7 +56,7 @@ def main():
     screen = disply.display_init() # display initialize
 
     log.info("calling  disply.display_color()")
-    disply.display_color()  # fill the display with white color
+    disply.display_color(WHITE)  # fill the display with white color
 
     log.info("calling display.display_menu_init()")
     disply_obj = display.display_menu_init(screen)  # display GUI Initialize
