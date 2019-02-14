@@ -4,9 +4,11 @@ import socket
 import pickle
 import sys
 import numpy as np
+import logging
 
 import config
 
+log = logging.getLogger("__main__." + __name__)
 
 # UDP_IP = "192.168.1.103"
 # UDP_PORT = 47777
@@ -19,11 +21,11 @@ class UdpPacket:
     def __init__(self, udp_ip, udp_port):
 
         if not isinstance(udp_ip, str):
-            print("[ERROR] udp ip must be string ")
+            log.error("udp ip must be string ")
             sys.exit(1)
 
         if not isinstance(udp_port, int):
-            print("[ERROR] udp port must be string ")
+            log.error("udp port must be string ")
             sys.exit(1)
 
         for num in udp_ip.split('.'):  # check for correct ip address
@@ -33,7 +35,7 @@ class UdpPacket:
                 print(error)
                 sys.exit(1)
             if not num >= 0 or not num <= 255:
-                print("[ERROR] udp ip is incorrect ")
+                log.error("udp ip is incorrect ")
                 sys.exit(1)
 
         self.udp_ip = udp_ip
@@ -73,7 +75,7 @@ class UdpPacket:
                 data = [new_x, new_y, new_z]
 
             else:
-                print("[ERROR] invalid input values")
+                log.error("Invalid input values")
 
         self.sock.sendto(pickle.dumps(data), (self.udp_ip, self.udp_port))
 

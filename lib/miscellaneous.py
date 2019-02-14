@@ -1,9 +1,9 @@
 # Created by viv at 16.12.18
-
 import os
 import numpy as np
+import logging
 
-
+log = logging.getLogger("__main__." + __name__)
 # ------------------------------------------------------------------------------
 # """ FUNCTION: to convert degree to radian """
 # ------------------------------------------------------------------------------
@@ -24,15 +24,13 @@ def rad_to_deg(rad):
 # ------------------------------------------------------------------------------
 def write_into_file(path, mode, value):
     if not os.path.exists(path):
-        print("[ERROR] path does not exist {}".format(path))
+        log.error("Path does not exist {}".format(path))
     try:
         with open(path, mode) as fil:
-
             fil.write(str(value))
             # return True
-
     except Exception as error:
-        print(error, path)
+        log.error(error, path)
         # raise
 
 

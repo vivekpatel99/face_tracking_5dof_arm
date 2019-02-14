@@ -130,7 +130,7 @@ def object_recog_pygm(screen, disply_obj):
                     cv2.putText(frame, label, (startX, y),
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
                     udp_send.udp_packet_send(x=startX, y=y, frame=frame)
-                    
+
         if config.VID_FRAME_INDEX == 0:
 
             frame = frame

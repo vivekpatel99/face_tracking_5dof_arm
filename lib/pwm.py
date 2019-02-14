@@ -21,10 +21,13 @@ import math
 import sys
 import os
 import time
+import logging
 
 fil_dir = os.path.dirname(__file__)
 sys.path.append(fil_dir)
 import gpio
+
+log = logging.getLogger("__main__." + __name__)
 
 # -----------------------------------------------
 """ constants """
@@ -75,7 +78,7 @@ class PWM:
                x = angle
         """
         if unit != 'deg' and unit != 'rad':
-            print("[ERROR] Please enter proper unit 'deg' or 'rad' ")
+            log.error("Please enter proper unit 'deg' or 'rad' ")
             sys.exit(-1)
 
         if unit == 'rad':
@@ -99,8 +102,8 @@ class PWM:
         """
         angle = float(angle)
         if unit != 'deg' and unit != 'rad':
-            print("[ERROR] Please enter proper unit 'deg' or 'rad' ")
-            sys.exit(-1)
+            log.error("Please enter proper unit 'deg' or 'rad' ")
+            sys.exit(1)
 
         if unit == 'rad':
             angle = math.degrees(angle)

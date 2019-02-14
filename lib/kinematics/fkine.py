@@ -1,9 +1,11 @@
 # Created by viv at 08.12.18
 
 import numpy as np
-import config as const
+import logging
 
+import config
 
+log = logging.getLogger("__main__." + __name__)
 # ------------------------------------------------------------------------------
 # """ CLASS: for Forward Kinematics"""
 # ------------------------------------------------------------------------------
@@ -14,9 +16,9 @@ class Fkine:
             DH parameters columns should be DH = [theta alpha  r  d]
         """
         if not isinstance(PT, list):
-            print("[ERROR] dh parameter should be matrix {}".format(PT))
+            log.error("DH parameter should be a matrix {}".format(PT))
         if not np.shape(PT)[1] == 4:
-            print("[ERROR] enter proper dh parameter {}".format(PT))
+            log.error("Enter proper dh parameter {}".format(PT))
 
         self.PT = np.array(PT)
 
@@ -96,7 +98,7 @@ def rotation_mat(theta):
 def fkine_3dof():
     """
     """
-    fk_m = Fkine(const.PT_3dof)
+    fk_m = Fkine(config.PT_3dof)
     Hn = fk_m.fk()
     # print(np.matrix(Hn))
     return Hn
@@ -107,18 +109,18 @@ def fkine_3dof():
 # ------------------------------------------------------------------------------
 def test_3dof_fk():
     R0_1 = [
-        [np.cos(const.THETA_1), 0., -np.sin(const.THETA_1)],
-        [np.sin(const.THETA_1), 0., np.cos(const.THETA_1)],
+        [np.cos(config.THETA_1), 0., -np.sin(config.THETA_1)],
+        [np.sin(config.THETA_1), 0., np.cos(config.THETA_1)],
         [0., 0., 1.]
     ]
     R1_2 = [
-        [np.cos(const.THETA_2), -np.sin(const.THETA_2), 0.],
-        [np.sin(const.THETA_2), np.cos(const.THETA_2), 0.],
+        [np.cos(config.THETA_2), -np.sin(config.THETA_2), 0.],
+        [np.sin(config.THETA_2), np.cos(config.THETA_2), 0.],
         [0., 0., 1.]
     ]
     R2_3 = [
-        [np.cos(const.THETA_3), -np.sin(const.THETA_3), 0.],
-        [np.sin(const.THETA_3), np.cos(const.THETA_3), 0.],
+        [np.cos(config.THETA_3), -np.sin(config.THETA_3), 0.],
+        [np.sin(config.THETA_3), np.cos(config.THETA_3), 0.],
         [0., 0., 1.]
     ]
 
@@ -133,8 +135,8 @@ def test_3dof_fk():
 # """ FUNCTION: to Test forward kinematics """
 # ------------------------------------------------------------------------------
 
-def test_fkine(theta_1=const.THETA_1, theta_2=const.THETA_2, theta_3=const.THETA_3, theta_4=const.THETA_4,
-               theta_5=const.THETA_5):
+def test_fkine(theta_1=config.THETA_1, theta_2=config.THETA_2, theta_3=config.THETA_3, theta_4=config.THETA_4,
+               theta_5=config.THETA_5):
     """ manual calculation of forward kinematics to test"""
 
     """ Rotation matrix """
@@ -169,27 +171,27 @@ def test_fkine(theta_1=const.THETA_1, theta_2=const.THETA_2, theta_3=const.THETA
     d0_1 = [
         [0.],
         [0.],
-        [const.L_1]
+        [config.L_1]
     ]
     d1_2 = [
-        [const.L_2 * np.cos(theta_2)],
-        [const.L_2 * np.sin(theta_2)],
+        [config.L_2 * np.cos(theta_2)],
+        [config.L_2 * np.sin(theta_2)],
         [0]
     ]
     d2_3 = [
-        [const.L_3 * np.cos(theta_3)],
-        [const.L_3 * np.sin(theta_3)],
+        [config.L_3 * np.cos(theta_3)],
+        [config.L_3 * np.sin(theta_3)],
         [0]
     ]
     d3_4 = [
-        [const.L_4 * np.cos(theta_4)],
-        [const.L_4 * np.sin(theta_4)],
+        [config.L_4 * np.cos(theta_4)],
+        [config.L_4 * np.sin(theta_4)],
         [0]
     ]
     d4_5 = [
         [0],
         [0.],
-        [const.L_5]
+        [config.L_5]
     ]
 
     R0_1 = np.dot(rotation_mat(theta_1), R0_1)
@@ -236,7 +238,7 @@ def test_fkine(theta_1=const.THETA_1, theta_2=const.THETA_2, theta_3=const.THETA
 # ------------------------------------------------------------------------------
 
 def main():
-    fk_m = Fkine(const.PT_5dof)
+    fk_m = Fkine(config.PT_5dof)
     Hn = fk_m.fk()
 
     print(Hn)
@@ -247,6 +249,6 @@ if __name__ == "__main__":
     # test_fkine()
     # print()
 
-    fk_m = Fkine(const.PT_5dof)
+    fk_m = Fkine(config.PT_5dof)
     Hn = fk_m.fk()
     print(np.matrix(Hn))
