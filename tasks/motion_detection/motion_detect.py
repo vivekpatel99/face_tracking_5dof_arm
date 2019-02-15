@@ -100,7 +100,7 @@ def motion_detection_pygm(screen, disply_obj, fbs):
             frame = frame
 
         # Display the frame
-        display.display_render(screen, frame, disply_obj, TASK_INFO)
+        display.display_render(screen, frame, disply_obj)
         image_title.Render(to=screen, pos=TASK_TITLE_POS)
 
         # check if TASK_INDEX is not 1 then it means another buttons has pressed

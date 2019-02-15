@@ -144,7 +144,7 @@ def object_recog_pygm(screen, disply_obj):
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)  # for display
             # TASK_INFO = "Colored Frame  " + TASK_INFO
         # Display the frame
-        display.display_render(screen, frame, disply_obj, TASK_INFO)
+        display.display_render(screen, frame, disply_obj)
 
         image_title.Render(to=screen, pos=TASK_TITLE_POS)
 

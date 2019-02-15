@@ -99,6 +99,7 @@ def face_recog_pygm(screen, disply_obj, fbs):
         raise
 
     image_title = display_gui.Menu.Text(text=TASK_TITLE, font=display_gui.Font.Medium)
+    image_title.Render(to=screen, pos=TASK_TITLE_POS)
 
     vid = Vision()
     udp_send = udp.UdpPacket(udp_ip=config.IP, udp_port=config.PORT)
@@ -108,6 +109,8 @@ def face_recog_pygm(screen, disply_obj, fbs):
     stroke = 2  # width of text
 
     log.info("frame reading starts ")
+    # task_info = display_gui.Menu.Text(text=TASK_INFO, font=display_gui.Font.Medium)
+    # task_info.Render(to=screen, pos=display_gui.TITLE_POSTION)
 
     while vid.isCameraConnected():
 
@@ -116,13 +119,9 @@ def face_recog_pygm(screen, disply_obj, fbs):
         # resize frame for required size
         resize_frame = vid.resize_frame(frame)
 
-        # opencv understand BGR, in order to display we need to convert image  form   BGR to RGB
-        # frame = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2RGB)  # for display
-
         # covert image into gray
         gray = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2GRAY)  # for processing
 
-        # detect object of different size i nthe input image.
         # the detected objects are returned as a list of rectangles.
         faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
 
@@ -135,9 +134,11 @@ def face_recog_pygm(screen, disply_obj, fbs):
             id_, confidence = recognizer.predict(roi_gray)
             if confidence >= 20:
                 name = labels[id_]
-                # cv2.putText(frame, name[::-1], (x, y), front, 1.0, color, stroke, cv2.LINE_AA)
                 cv2.putText(frame, name, (x, y), front, 1.0, color, stroke, cv2.LINE_AA)
-                udp_send.udp_packet_send(x=x, y=y, frame=frame)
+                new_x = x + int(w / 2)  # centre of face's x
+                # OpenCV frame origin is left-up side , shifting it to left-down side
+                new_y = frame.shape[0] - (y + int(h / 2))  # centre of face's y
+                udp_send.udp_packet_send(x=new_x, y=new_y, frame=frame)
 
         if config.VID_FRAME_INDEX == 0:
             display_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -149,9 +150,7 @@ def face_recog_pygm(screen, disply_obj, fbs):
             display_frame = frame
 
         # Display the frame
-        display.display_render(screen, display_frame, disply_obj, TASK_INFO)
-
-        image_title.Render(to=screen, pos=TASK_TITLE_POS)
+        display.display_render(screen, display_frame, disply_obj)
 
         # check if TASK_INDEX is not 1 then it means another buttons has pressed
         if not config.TASK_INDEX == 1:

@@ -61,9 +61,12 @@ def main():
     log.info("calling display.display_menu_init()")
     disply_obj = display.display_menu_init(screen)  # display GUI Initialize
 
+    title = display_gui.Menu.Text(text=config.PROJECT_TITLE, font=display_gui.Font.Medium)
+    title.Render(to=screen, pos=display_gui.TITLE_POSTION)
     while True:
         if not config.CAM_START:  # camera is off, picture will be displayed
             screen.fill(WHITE)  # clean up the display
+            title.Render(to=screen, pos=display_gui.TITLE_POSTION)
             cam_off.cam_off_loop(screen, disply_obj)
 
         if config.EXIT:
@@ -73,14 +76,17 @@ def main():
 
             if config.TASK_INDEX is 1:
                 screen.fill(WHITE)
+                title.Render(to=screen, pos=display_gui.TITLE_POSTION)
                 face_recog.face_recog_pygm(screen, disply_obj, FPS)
 
             if config.TASK_INDEX is 2:
                 screen.fill(WHITE)
+                title.Render(to=screen, pos=display_gui.TITLE_POSTION)
                 motion_detect.motion_detection_pygm(screen, disply_obj, FPS)
 
             if config.TASK_INDEX is 3:
                 screen.fill(WHITE)
+                title.Render(to=screen, pos=display_gui.TITLE_POSTION)
                 object_recognition.object_recog_pygm(screen, disply_obj)
 
             if not config.CAM_START or config.EXIT:

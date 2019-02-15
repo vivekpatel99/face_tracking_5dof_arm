@@ -3,12 +3,9 @@ import os
 import cv2
 import sys
 import logging
-# import numpy as np
-# import pygame
-# from pygame.locals import *
 
 sys.path.append("../")
-import config
+
 from lib.display import display_gui  # , colors
 from lib.display import display
 import config
@@ -39,6 +36,6 @@ def cam_off_loop(screen, disply_obj, FPS=0):
 
     image_title = display_gui.Menu.Text(text=TASK_TITLE, font=display_gui.Font.Medium)
 
-    display.display_render(screen, frame, disply_obj, TASK_INFO)
+    display.display_render(screen, frame, disply_obj)
 
     image_title.Render(to=screen, pos=TASK_TITLE_POS)

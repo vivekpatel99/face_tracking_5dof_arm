@@ -73,25 +73,26 @@ cascade_path = os.path.join(module_path, "cascades/haarcascade_frontalface_defau
 """ Coordinates transform (Kinematics)"""
 # the physical area covered by video frame in centimeter
 # frame_physical_area = float(140)
-frame_physical_area = float(180)
+frame_physical_area = float(100)
 
-dist_from_cam = float(90)  # object distance from camera
+dist_from_cam = float(0)  # object distance from camera
 
 # transformation from robotic arm frame coordinate to camera coordinate
 # assume that camera is on the exactly above the origin of arm
-R0_C = np.mat([[1, 0, 0],
-               [0, 1, 0],
-               [0, 0, 1]
+R_90_x = np.mat([[1, 0, 0],
+               [0, np.cos(np.pi / 2), -np.sin(np.pi / 2)],
+               [0, np.sin(np.pi / 2), np.cos(np.pi / 2)]
                ],
               dtype=float
               )
+
 d0_C = np.mat([[0.],
                [8.],  # assumed that the camera just at y axis  on arm's origin
                [0.]],
               dtype=float
               )
 # creating Homogeneous transformation matrix
-_H0_C = np.concatenate((R0_C, d0_C), 1)  # concatenate column
+_H0_C = np.concatenate((R_90_x, d0_C), 1)  # concatenate column
 H0_C = np.concatenate((_H0_C, [[0., 0., 0., 1.]]), 0)  # concatenate row
 
 # -----------------------------------------------
@@ -110,7 +111,7 @@ PORT = 47777
 # -----------------------------------------------
 """ Pygame GUI configuration"""
 
-PROJECT_TITLE = """Closed Loop Object Tracking based on Image Recognition"""
+PROJECT_TITLE = "Closed Loop Object Tracking based on Image Recognition"
 
 # button index of gui, to find which button press
 # TASK_INDEX = 0 --> waiting to start

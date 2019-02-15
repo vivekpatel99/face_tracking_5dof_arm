@@ -154,7 +154,7 @@ def display_menu_init(screen):
     :return: namedtupled of all the objects of gui
     """
 
-    title = display_gui.Menu.Text(text=PROJECT_TITLE, font=display_gui.Font.Medium)
+    # title = display_gui.Menu.Text(text=PROJECT_TITLE, font=display_gui.Font.Medium)
 
     frame_info = display_gui.Menu.FrameText(screen)
     frame_info.add_frame()
@@ -184,11 +184,11 @@ def display_menu_init(screen):
     obj_recog_btn.Command = object_recog_btn_action
 
     display_object = collections.namedtuple("display_object",
-                                            ["title", "frame_info", "start_btn", "stop_btn", "exit_btn", "forward_btn",
+                                            [ "frame_info", "start_btn", "stop_btn", "exit_btn", "forward_btn",
                                              "backward_btn", "face_recog_btn",
                                              "obj_tracking_btn", "obj_recog_btn"])
 
-    disply_obj = display_object(title, frame_info, start_btn, stop_btn, exit_btn, forward_btn, backward_btn,
+    disply_obj = display_object(frame_info, start_btn, stop_btn, exit_btn, forward_btn, backward_btn,
                                 face_recog_btn, obj_tracking_btn, obj_recog_btn)
 
     return disply_obj
@@ -199,7 +199,7 @@ def display_menu_init(screen):
 # ------------------------------------------------------------------------------
 
 
-def display_render(screen, frame, dsply_obj, task_info):
+def display_render(screen, frame, dsply_obj):
     """
     display_render render all the pygame object on display
 
@@ -246,11 +246,11 @@ def display_render(screen, frame, dsply_obj, task_info):
     dsply_obj.face_recog_btn.Render(screen, pos=(280 + config.HORIZ_PIXELS_SMALL, 144))
 
     dsply_obj.obj_tracking_btn.Render(screen, pos=(280 + config.HORIZ_PIXELS_SMALL, 144 + SMALL_BUTTON[3] + 10))
-    dsply_obj.frame_info.add_text(text=task_info)
+    # dsply_obj.frame_info.add_text(text=task_info)
 
     dsply_obj.obj_recog_btn.Render(screen,
                                    pos=(280 + config.HORIZ_PIXELS_SMALL, (144 + (2 * SMALL_BUTTON[3] + 10)) + 10))
-    dsply_obj.frame_info.add_text(text=task_info)
+    # dsply_obj.frame_info.add_text(text=task_info)
 
     frame = np.rot90(frame)
 
@@ -258,7 +258,7 @@ def display_render(screen, frame, dsply_obj, task_info):
     frame = pygame.transform.flip(frame, True, False)
     screen.blit(frame, VID_FRAME_POS)
 
-    dsply_obj.title.Render(to=screen, pos=display_gui.TITLE_POSTION)
+    # dsply_obj.title.Render(to=screen, pos=display_gui.TITLE_POSTION)
     pygame.display.flip()
 
 # ------------------------------------------------------------------------------

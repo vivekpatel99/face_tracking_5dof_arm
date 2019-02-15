@@ -10,6 +10,7 @@ import config
 
 log = logging.getLogger("__main__." + __name__)
 
+
 # UDP_IP = "192.168.1.103"
 # UDP_PORT = 47777
 
@@ -45,7 +46,7 @@ class UdpPacket:
     # ------------------------------------------------------------------------------
     # """ FUNCTION: To send UDP packets """
     # ------------------------------------------------------------------------------
-    def udp_packet_send(self, data=None, x=0, y=0, frame=None):
+    def udp_packet_send(self, coordinates=None, x=0, y=0, frame=None):
         """
         This function sent data via udp packets
         :param data: transformed coordinate values (x, y, z)  list
@@ -54,30 +55,26 @@ class UdpPacket:
         :param frame: captured frame
         :return:
         """
-        if data is None:
+        if coordinates is None:
             if x != 0 or y != 0 or frame is not None:
                 # transform  coordinates
                 cm_to_pixel = config.frame_physical_area / frame.shape[0]
                 # displacement vector of camera
-                cam_point = np.mat([[x],
-                                    [y],
-                                    [90],  # distance between camera to person in cm
+                cam_point = np.mat([[x * cm_to_pixel],
+                                    [y * cm_to_pixel],
+                                    [config.dist_from_cam],  # distance between camera to person in cm
                                     [1.]],
                                    dtype=float
                                    )
-                face_coordinates = np.dot(config.H0_C, cam_point)
+                coordinates = np.dot(config.H0_C, cam_point)
 
-                # origin of frame is at the left up side, setting in to right down side
-                new_x = face_coordinates[0] * cm_to_pixel
-                new_y = (frame.shape[0] - face_coordinates[1]) * cm_to_pixel
-                new_z = face_coordinates[2] * cm_to_pixel
 
-                data = [new_x, new_y, new_z]
+
 
             else:
                 log.error("Invalid input values")
 
-        self.sock.sendto(pickle.dumps(data), (self.udp_ip, self.udp_port))
+        self.sock.sendto(pickle.dumps(coordinates), (self.udp_ip, self.udp_port))
 
     # ------------------------------------------------------------------------------
     # """ FUNCTION: To receive UDP packets """

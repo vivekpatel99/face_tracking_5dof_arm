@@ -122,7 +122,7 @@ def main():
 
     while vid.isCameraConnected():
         ret, frame = vid.getVideo()
-        frame = cv2.flip(frame, 1)
+        # frame = cv2.flip(frame, 1)
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         # the detected objects are returned as a list of rectangles.
