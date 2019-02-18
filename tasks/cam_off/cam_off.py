@@ -20,7 +20,10 @@ log = logging.getLogger("__main__." + __name__)
 # ------------------------------------------------------------------------------
 # """ cam_off_loop """
 # ------------------------------------------------------------------------------
-def cam_off_loop(screen, disply_obj, FPS=0):
+def cam_off_loop(screen, disply_obj):
+    """
+    Function will display only a image when then camera is off.
+    """
     log.info("cam_off_loop start")
     img_path = "1.jpg"
 

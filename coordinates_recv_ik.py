@@ -17,9 +17,9 @@ from lib.udp import udp
 # ------------------------------------------------------------------------------
 # """ FUNCTION: MAIN """
 # ------------------------------------------------------------------------------
-def main():
+def coordinnate_receive_ik():
     """
-
+    This function will receive udp coordinates, perform inverse kinematics and control robot
     """
     # test all the servos before starting the other progress
     servo_test()
@@ -62,6 +62,6 @@ def main():
 if __name__ == '__main__':
     tstart = time.time()
 
-    main()
+    coordinnate_receive_ik()
 
     print("Total time {}".format(time.time() - tstart))

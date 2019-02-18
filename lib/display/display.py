@@ -128,14 +128,14 @@ def face_recog_btn_action():
 def object_tracking_btn_action():
     """ object_tracking_button_action """
     config.TASK_INDEX = 2
-    log.info("Object Tracking Button clicked")
+    log.info("Motion detection Button clicked")
 
 
 # ------------------------------------------------------------------------------
 # """ object_tracking_btn_action """
 # ------------------------------------------------------------------------------
 
-def object_recog_btn_action():
+def motion_detection_btn_action():
     """ object_tracking_button_action """
     config.TASK_INDEX = 3
     log.info("Object Recognition Button clicked")
@@ -181,7 +181,7 @@ def display_menu_init(screen):
     obj_tracking_btn.Command = object_tracking_btn_action
 
     obj_recog_btn = display_gui.Menu.Button(text="Object Recognition", rect=BIG_BUTTON)
-    obj_recog_btn.Command = object_recog_btn_action
+    obj_recog_btn.Command = motion_detection_btn_action
 
     display_object = collections.namedtuple("display_object",
                                             [ "frame_info", "start_btn", "stop_btn", "exit_btn", "forward_btn",

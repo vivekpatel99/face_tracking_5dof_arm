@@ -9,7 +9,7 @@ def logger_init(log_filepath, project_name = "obj_track_Img_recog"):
 
     # create logger with arg project name
     logger = logging.getLogger(project_name)
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.INFO)
 
     # create file handler which logs for error messages only
     fh = logging.FileHandler(log_filepath, "w+")
@@ -17,13 +17,13 @@ def logger_init(log_filepath, project_name = "obj_track_Img_recog"):
 
     # create console handler with a higher log level
     ch = logging.StreamHandler()
-    ch.setLevel(logging.DEBUG)
+    ch.setLevel(logging.INFO)
 
     # create formatter and add it to the  handlers
     # formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
     formatter = logging.Formatter("%(name)s - %(levelname)s - %(message)s")
     fh.setFormatter(formatter)
-    ch.setFormatter(formatter)
+    # ch.setFormatter(formatter)
 
     # add the handlers to logger
     logger.addHandler(fh)

@@ -4,14 +4,11 @@ https://www.pyimagesearch.com/2015/05/25/basic-motion-detection-and-tracking-wit
 # find center of countor
 https://www.pyimagesearch.com/2016/02/01/opencv-center-of-contour/
 """
-
-import numpy as np
 import cv2
-# import sys
 from imutils.video import VideoStream
 import imutils
 import time
-
+from imutils.video import FPS
 import logging
 
 # -----------------------------------------------
@@ -43,8 +40,14 @@ CAM_NUM = 0
 # """ motion_detection_pygm """
 # ------------------------------------------------------------------------------
 
-def motion_detection_pygm(screen, disply_obj, fbs):
-    """ """
+def motion_detection_pygm(screen, disply_obj):
+    """
+    This function will detection motion using cv2.createBackgroundSubtractorMOG2() function and display processed
+    frame using pygame.
+    :param screen: pygame  screeen
+    :param disply_obj: GUI object
+    :return: None
+    """
     log.info("motion_detection_pygm starts... ")
 
     image_title = display_gui.Menu.Text(text=TASK_TITLE, font=display_gui.Font.Medium)
@@ -53,6 +56,7 @@ def motion_detection_pygm(screen, disply_obj, fbs):
     udp_send = udp.UdpPacket(udp_ip=config.IP, udp_port=config.PORT)
 
     fgbg = cv2.createBackgroundSubtractorMOG2()
+    fps = FPS().start()
     while  vid.isCameraConnected():
         _, frame = vid.getVideo()
         # resize frame for required size
@@ -111,8 +115,13 @@ def motion_detection_pygm(screen, disply_obj, fbs):
         if not config.CAM_START or config.EXIT:
             break
 
-        if cv2.waitKey(1) & 0xFF == ord("q"):
-            break
+        # update the FPS counter
+        fps.update()
+
+    # stop the timer and display FPS information
+    fps.stop()
+    log.info("elapsed time: {:.2f}".format(fps.elapsed()))
+    log.info("approx. FPS: {:.2f}".format(fps.fps()))
 
     vid.videoCleanUp()
     log.info("closing motion detection")

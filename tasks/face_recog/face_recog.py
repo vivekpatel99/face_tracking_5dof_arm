@@ -20,6 +20,7 @@ import cv2
 import pickle
 import os
 import logging
+from imutils.video import FPS
 
 # -----------------------------------------------
 """ Modules """
@@ -30,7 +31,7 @@ from lib.display import display_gui
 from lib.udp import udp
 
 # -----------------------------------------------
-log = logging.getLogger("__main__." + __name__)
+log = logging.getLogger("main." + __name__)
 
 # -----------------------------------------------
 """ globals """
@@ -62,15 +63,16 @@ def file_path_create(file_name_fm_same_dir):
 # """ face_recog_pygm """
 # ------------------------------------------------------------------------------
 
-def face_recog_pygm(screen, disply_obj, fbs):
+def face_recog_pygm(screen, disply_obj):
     """
     Face Recognition pygame function read info from haarcascade_frontalface_defualt.xml, trainner.yml
     (for predicting trained faces), labels.pickle (to get label of faces ) and predict name of the face.
-
+    :param screen: pygame  screeen
+    :param disply_obj: GUI object
+    :return: None
     """
 
     log.info("face_recog_pygm start")
-    # print("[INFO] face_recog_pygm start")
 
     # objected created for cascade classifier
     face_cascade_name = "haarcascade_frontalface_default.xml"
@@ -102,6 +104,7 @@ def face_recog_pygm(screen, disply_obj, fbs):
     image_title.Render(to=screen, pos=TASK_TITLE_POS)
 
     vid = Vision()
+
     udp_send = udp.UdpPacket(udp_ip=config.IP, udp_port=config.PORT)
 
     front = cv2.FONT_HERSHEY_SIMPLEX
@@ -109,9 +112,8 @@ def face_recog_pygm(screen, disply_obj, fbs):
     stroke = 2  # width of text
 
     log.info("frame reading starts ")
-    # task_info = display_gui.Menu.Text(text=TASK_INFO, font=display_gui.Font.Medium)
-    # task_info.Render(to=screen, pos=display_gui.TITLE_POSTION)
-
+    # start the FPS counter
+    fps = FPS().start()
     while vid.isCameraConnected():
 
         _, frame = vid.getVideo()
@@ -158,14 +160,16 @@ def face_recog_pygm(screen, disply_obj, fbs):
             break
 
         if not config.CAM_START or config.EXIT:
-            # print(f"face_recog config.CAM_START {config.CAM_START}")
             break
 
-        # frame rate control
-        if cv2.waitKey(fbs) & 0xff == ord('q'):
-            break
+        # update the FPS counter
+        fps.update()
 
     log.info("Face Recognition closing ")
+    # stop the timer and display FPS information
+    fps.stop()
+    log.info("elapsed time: {:.2f}".format(fps.elapsed()))
+    log.info("approx. FPS: {:.2f}".format(fps.fps()))
     vid.videoCleanUp()
 
 

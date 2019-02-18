@@ -75,8 +75,6 @@ cascade_path = os.path.join(module_path, "cascades/haarcascade_frontalface_defau
 # frame_physical_area = float(140)
 frame_physical_area = float(100)
 
-dist_from_cam = float(0)  # object distance from camera
-
 # transformation from robotic arm frame coordinate to camera coordinate
 # assume that camera is on the exactly above the origin of arm
 R_90_x = np.mat([[1, 0, 0],

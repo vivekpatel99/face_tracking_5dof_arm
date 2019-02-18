@@ -22,7 +22,8 @@ from lib.display import display
 from lib.display import display_gui
 from lib.udp import udp
 
-log = logging.getLogger("__main__." + __name__)
+# -----------------------------------------------
+log = logging.getLogger("main." + __name__)
 
 # -----------------------------------------------
 """ globals """
@@ -32,6 +33,7 @@ TASK_INFO = " Objects Names : bottle, bus, car, cat, chair" \
 
 TASK_TITLE = "Object Recognition and Tracking"
 
+# -----------------------------------------------
 TASK_TITLE_POS = (config.VID_FRAME_CENTER - (len(TASK_TITLE) * 6), 100)
 
 
@@ -53,10 +55,16 @@ def file_path_check(file_name_fm_same_dir):
 
 
 # ------------------------------------------------------------------------------
-# """ object_recog """
+# """ object_recog_pygm """
 # ------------------------------------------------------------------------------
 def object_recog_pygm(screen, disply_obj):
-    """ """
+    """
+    This fucntion will used Pretrained MobileNets model to predict the label of the object and display image with
+    help of pygame GUI
+    :param screen: pygame  screeen
+    :param disply_obj: GUI object
+    :return: None
+    """
     log.info("object_recog_pygm start... ")
 
     # configuration file use to train caffe model
@@ -85,6 +93,7 @@ def object_recog_pygm(screen, disply_obj):
     vid = Vision()
     udp_send = udp.UdpPacket(udp_ip=config.IP, udp_port=config.PORT)
 
+    fps = FPS().start()
     # loop over the frames from the video stream
     while vid.isCameraConnected():
 
@@ -132,17 +141,15 @@ def object_recog_pygm(screen, disply_obj):
                     udp_send.udp_packet_send(x=startX, y=y, frame=frame)
 
         if config.VID_FRAME_INDEX == 0:
-
             frame = frame
 
         elif config.VID_FRAME_INDEX == 1:
-
             frame = frame
 
         else:
             # opencv understand BGR, in order to display we need to convert image  form   BGR to RGB
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)  # for display
-            # TASK_INFO = "Colored Frame  " + TASK_INFO
+
         # Display the frame
         display.display_render(screen, frame, disply_obj)
 
@@ -154,16 +161,13 @@ def object_recog_pygm(screen, disply_obj):
             break
 
         if not config.CAM_START or config.EXIT:
-            # print(f"face_recog config.CAM_START {config.CAM_START}")
             break
-
-        # show the output frame
-        key = cv2.waitKey(1) & 0xFF
-
-        # if the `q` key was pressed, break from the loop
-        if key == ord("q"):
-            break
-
+        # update the FPS counter
+        fps.update()
+    # stop the timer and display FPS information
+    fps.stop()
+    log.info("elapsed time: {:.2f}".format(fps.elapsed()))
+    log.info("approx. FPS: {:.2f}".format(fps.fps()))
     vid.videoCleanUp()
     log.info("object_recog_pygm closing ")
 
