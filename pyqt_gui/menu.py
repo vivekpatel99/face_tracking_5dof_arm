@@ -102,4 +102,4 @@ class Ui_objectName(object):
         self.object_tracking_btn.setText(_translate("objectName", "Object Tracking", None))
         self.info_label.setText(_translate("objectName", "Info", None))
 
-from icons import icons_rc
+from pyqt_gui.icons import icons_rc

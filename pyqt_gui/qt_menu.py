@@ -4,11 +4,17 @@ from PyQt4 import QtGui
 from PyQt4.QtGui import QPixmap, QImage
 from PyQt4.QtCore import QTimer
 import cv2
+import logging
 
-import menu
-# from lib.vision.vision import Vision
+from lib.vision.vision import Vision
+from pyqt_gui import menu
 
+# -----------------------------------------------
+log = logging.getLogger("__main__." + __name__)
 
+# ------------------------------------------------------------------------------
+# """ Menu to display all items on screen """
+# ------------------------------------------------------------------------------
 class Menu(menu.Ui_objectName, QtGui.QMainWindow):
 
     def __init__(self):
@@ -36,7 +42,7 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
         self.display_image(self.frame, 1)
 
     def stop_webcam(self):
-        self.timer.stop() 
+        self.timer.stop()
 
         # release the resources
         self.capture.release()
