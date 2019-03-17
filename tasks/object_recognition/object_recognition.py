@@ -27,8 +27,8 @@ log = logging.getLogger("__main__." + __name__)
 # -----------------------------------------------
 """ globals """
 
-TASK_INFO = " Objects Names : bottle, bus, car, cat, chair" \
-            " diningtable, dog, person, pottedplant, sofa, tvmonitor"
+TASK_INFO = "Objects Names : bottle, bus, car, cat, chair" \
+            "diningtable, dog, person, pottedplant, sofa, tvmonitor"
 
 TASK_TITLE = "Object Recognition and Tracking"
 
@@ -51,7 +51,64 @@ def file_path_check(file_name_fm_same_dir):
         log.info("checked path {} ".format(file_path))
         return file_path
 
+class ObjectRecognition:
+    def __init__(self, prototxt_file="MobileNetSSD_deploy.prototxt.txt", caffe_model="MobileNetSSD_deploy.caffemodel"):
+        prototxt_file = prototxt_file
+        caffe_model = caffe_model
+        self.prototxt_file_path = file_path_check(prototxt_file)
+        self.caffe_model_path = file_path_check(caffe_model)
+        # initialize the list of class labels MobileNet SSD was trained to
+        # detect, then generate a set of bounding box colors for each class
+        self.classes = ["background", "aeroplane", "bicycle", "bird", "boat",
+                   "bottle", "bus", "car", "cat", "chair", "cow", "diningtable",
+                   "dog", "horse", "motorbike", "person", "pottedplant", "sheep",
+                   "sofa", "train", "tvmonitor"]
 
+        self.color = np.random.uniform(0, 255, size=(len(self.classes), 3))
+
+        # load our serialized model from disk
+        self.net = cv2.dnn.readNetFromCaffe(self.prototxt_file_path, self.caffe_model_path)
+
+    def run_object_recognition(self, frame):
+        # grab the frame dimensions and convert it to a blob
+        (h, w) = frame.shape[:2]
+        blob = cv2.dnn.blobFromImage(cv2.resize(frame, (300, 300)),
+                                     0.007843, (300, 300), 127.5)
+
+        # pass the blob through the network and obtain the detections and
+        # predictions
+        self.net.setInput(blob)
+        detections = self.net.forward()
+
+        # loop over the detections
+        for i in np.arange(0, detections.shape[2]):
+            # extract the confidence (i.e., probability) associated with
+            # the prediction
+            confidence = detections[0, 0, i, 2]
+
+            # filter out weak detections by ensuring the `confidence` is
+            # greater than the minimum confidence
+            if confidence > 0.2:
+                # extract the index of the class label from the
+                # `detections`, then compute the (x, y)-coordinates of
+                # the bounding box for the object
+                idx = int(detections[0, 0, i, 1])
+                box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
+                (start_x, startY, endX, endY) = box.astype("int")
+
+                # draw the prediction on the frame
+                label = "{}: {:.2f}%".format(self.classes[idx],
+                                             confidence * 100)
+
+                if self.classes[idx] == config.recog_object_name:
+                    cv2.rectangle(frame, (start_x, startY), (endX, endY),
+                                  self.color[idx], 2)
+                    y = startY - 15 if startY - 15 > 15 else startY + 15
+
+                    cv2.putText(frame, label, (start_x, y),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.color[idx], 2)
+                    return (start_x, y), frame
+                    # udp_send.udp_packet_send(x=start_x, y=y, frame=frame)
 # ------------------------------------------------------------------------------
 # """ object_recog """
 # ------------------------------------------------------------------------------

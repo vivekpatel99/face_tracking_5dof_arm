@@ -1,72 +1,120 @@
-# Created by viv at 26.02.19
-""" https://www.aparat.com/v/zZCnk/OpenCV_Python_GUI_Development_Tutorial_4%3A_Laod_and_Display_OpenCV """
-from PyQt4 import QtGui
-from PyQt4.QtGui import QPixmap, QImage
-from PyQt4.QtCore import QTimer
-import cv2
-import logging
+# -*- coding: utf-8 -*-
 
-from lib.vision.vision import Vision
-from pyqt_gui import menu
+# Form implementation generated from reading ui file 'manu.ui'
+#
+# Created by: PyQt4 UI code generator 4.11.4
+#
+# WARNING! All changes made in this file will be lost!
 
-# -----------------------------------------------
-log = logging.getLogger("__main__." + __name__)
+from PyQt4 import QtCore, QtGui
 
-# ------------------------------------------------------------------------------
-# """ Menu to display all items on screen """
-# ------------------------------------------------------------------------------
-class Menu(menu.Ui_objectName, QtGui.QMainWindow):
+try:
+    _fromUtf8 = QtCore.QString.fromUtf8
+except AttributeError:
+    def _fromUtf8(s):
+        return s
 
-    def __init__(self):
-        super(Menu, self).__init__()
-        self.setupUi(self)  # to be able to see interface
-        self.frame = None
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
-        self.Stop_btn.clicked.connect(lambda: self.stop_webcam)
-        self.Start_btn.clicked.connect(self.start_webcam)
-        self.Stop_btn.clicked.connect(self.stop_webcam)
+class Ui_objectName(object):
+    def setupUi(self, objectName):
+        objectName.setObjectName(_fromUtf8("objectName"))
+        objectName.resize(1084, 915)
+        objectName.setMinimumSize(QtCore.QSize(1084, 915))
+        objectName.setMaximumSize(QtCore.QSize(1084, 915))
+        self.centralwidget = QtGui.QWidget(objectName)
+        self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
+        self.video_label = QtGui.QLabel(self.centralwidget)
+        self.video_label.setGeometry(QtCore.QRect(20, 20, 640, 480))
+        self.video_label.setFrameShape(QtGui.QFrame.StyledPanel)
+        self.video_label.setFrameShadow(QtGui.QFrame.Plain)
+        self.video_label.setText(_fromUtf8(""))
+        self.video_label.setObjectName(_fromUtf8("video_label"))
+        self.Start_btn = QtGui.QPushButton(self.centralwidget)
+        self.Start_btn.setGeometry(QtCore.QRect(670, 20, 99, 27))
+        self.Start_btn.setText(_fromUtf8(""))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/play.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.Start_btn.setIcon(icon)
+        self.Start_btn.setObjectName(_fromUtf8("Start_btn"))
+        self.Stop_btn = QtGui.QPushButton(self.centralwidget)
+        self.Stop_btn.setGeometry(QtCore.QRect(670, 60, 99, 27))
+        self.Stop_btn.setText(_fromUtf8(""))
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/stop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.Stop_btn.setIcon(icon1)
+        self.Stop_btn.setObjectName(_fromUtf8("Stop_btn"))
+        self.backward_btn = QtGui.QPushButton(self.centralwidget)
+        self.backward_btn.setGeometry(QtCore.QRect(670, 470, 99, 27))
+        self.backward_btn.setText(_fromUtf8(""))
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/backward.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.backward_btn.setIcon(icon2)
+        self.backward_btn.setObjectName(_fromUtf8("backward_btn"))
+        self.forward_btn_2 = QtGui.QPushButton(self.centralwidget)
+        self.forward_btn_2.setGeometry(QtCore.QRect(670, 430, 99, 27))
+        self.forward_btn_2.setText(_fromUtf8(""))
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/forwad.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.forward_btn_2.setIcon(icon3)
+        self.forward_btn_2.setObjectName(_fromUtf8("forward_btn_2"))
+        self.face_recognition_btn = QtGui.QPushButton(self.centralwidget)
+        self.face_recognition_btn.setGeometry(QtCore.QRect(900, 70, 131, 41))
+        self.face_recognition_btn.setObjectName(_fromUtf8("face_recognition_btn"))
+        self.Closed_btn = QtGui.QPushButton(self.centralwidget)
+        self.Closed_btn.setGeometry(QtCore.QRect(1020, 0, 51, 41))
+        self.Closed_btn.setStyleSheet(_fromUtf8(""))
+        self.Closed_btn.setText(_fromUtf8(""))
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/close_blue.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.Closed_btn.setIcon(icon4)
+        self.Closed_btn.setObjectName(_fromUtf8("Closed_btn"))
+        self.motion_detection_btn = QtGui.QPushButton(self.centralwidget)
+        self.motion_detection_btn.setGeometry(QtCore.QRect(900, 140, 131, 41))
+        self.motion_detection_btn.setObjectName(_fromUtf8("motion_detection_btn"))
+        self.object_tracking_btn = QtGui.QPushButton(self.centralwidget)
+        self.object_tracking_btn.setGeometry(QtCore.QRect(900, 210, 131, 41))
+        self.object_tracking_btn.setObjectName(_fromUtf8("object_tracking_btn"))
+        self.info_label = QtGui.QLabel(self.centralwidget)
+        self.info_label.setGeometry(QtCore.QRect(20, 620, 1031, 231))
+        self.info_label.setObjectName(_fromUtf8("info_label"))
+        self.object_tracking_btn_2 = QtGui.QPushButton(self.centralwidget)
+        self.object_tracking_btn_2.setGeometry(QtCore.QRect(900, 280, 131, 41))
+        self.object_tracking_btn_2.setObjectName(_fromUtf8("object_tracking_btn_2"))
+        objectName.setCentralWidget(self.centralwidget)
+        self.menubar = QtGui.QMenuBar(objectName)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1084, 25))
+        self.menubar.setObjectName(_fromUtf8("menubar"))
+        objectName.setMenuBar(self.menubar)
+        self.statusbar = QtGui.QStatusBar(objectName)
+        self.statusbar.setObjectName(_fromUtf8("statusbar"))
+        objectName.setStatusBar(self.statusbar)
 
-    def start_webcam(self):
-        self.capture = cv2.VideoCapture(0)
-        self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-        self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-        # self.vid = Vision()
+        self.retranslateUi(objectName)
+        QtCore.QMetaObject.connectSlotsByName(objectName)
 
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.update_frame) # connected until timeout
-        self.timer.start(1)
+    def retranslateUi(self, objectName):
+        objectName.setWindowTitle(_translate("objectName", "Close Loop Object Tracking", None))
+        self.face_recognition_btn.setText(_translate("objectName", "Face Recognition", None))
+        self.motion_detection_btn.setText(_translate("objectName", "Motion Detection", None))
+        self.object_tracking_btn.setText(_translate("objectName", "Object Tracking", None))
+        self.info_label.setText(_translate("objectName", "Info", None))
+        self.object_tracking_btn_2.setText(_translate("objectName", "Feature Detection", None))
 
-    def update_frame(self):
-        ret, self.frame = self.capture.read()
-        self.image = cv2.flip(self.frame, 1)
-        self.display_image(self.frame, 1)
-
-    def stop_webcam(self):
-        self.timer.stop()
-
-        # release the resources
-        self.capture.release()
-        cv2.destroyAllWindows()
-
-    def display_image(self, img, window=1):
-        if img is not None:
-            qfomat = QImage.Format_Indexed8
-            if len(img.shape) == 3:  # [0]=rows, [1]=cols, [2]=channels
-                if img.shape[2] == 4:
-                    qformat = QImage.Format_RGBA8888
-                else:
-                    qformat = QImage.Format_RGB888
-            out_img = QImage(img, img.shape[1], img.shape[0], img.strides[0], qformat)
-            # BGR >> RGB
-            out_img = out_img.rgbSwapped()
-
-            if window == 1:
-                self.video_label.setPixmap(QPixmap.fromImage(out_img))
-                self.video_label.setScaledContents(True)
-
+import icons_rc
 
 if __name__ == "__main__":
-    app = QtGui.QApplication([])
-    my_menu = Menu()
-    my_menu.show()
-    app.exec_()
+    import sys
+    app = QtGui.QApplication(sys.argv)
+    objectName = QtGui.QMainWindow()
+    ui = Ui_objectName()
+    ui.setupUi(objectName)
+    objectName.show()
+    sys.exit(app.exec_())
+

@@ -96,7 +96,7 @@
       <normaloff>:/icons/backward.png</normaloff>:/icons/backward.png</iconset>
     </property>
    </widget>
-   <widget class="QPushButton" name="forward_btn_2">
+   <widget class="QPushButton" name="forward_btn">
     <property name="geometry">
      <rect>
       <x>670</x>
@@ -135,6 +135,9 @@
       <height>41</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
     <property name="text">
      <string/>
     </property>
@@ -172,14 +175,27 @@
    <widget class="QLabel" name="info_label">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>620</y>
-      <width>1001</width>
+      <x>20</x>
+      <y>550</y>
+      <width>1031</width>
       <height>231</height>
      </rect>
     </property>
     <property name="text">
      <string>Info</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Feature_Detection_btn">
+    <property name="geometry">
+     <rect>
+      <x>900</x>
+      <y>280</y>
+      <width>131</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Feature Detection</string>
     </property>
    </widget>
   </widget>

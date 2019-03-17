@@ -27,7 +27,7 @@ sys.path.append("/lib/display")
 from lib.display import display_gui
 from lib.display import display
 from lib._logger import _logging
-
+from lib.vision import vision
 
 # -----------------------------------------------
 """ constants declaration  """
@@ -95,4 +95,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    # main()
+    face_recog.main()
