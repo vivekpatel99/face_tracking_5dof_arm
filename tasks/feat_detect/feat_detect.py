@@ -52,7 +52,7 @@ class FeatureDetection:
             cv2.circle(QueryImgBGR, (half_width_x, half_height_y), 2, (0, 0, 255), 8)
             # cv2.circle(QueryImgBGR, (200, 200), 3, (0, 0, 255), 10)
 
-            return QueryImgBGR
+            return (half_width_x, half_height_y), QueryImgBGR
         # else:
         # print("Not Enough match found- %d/%d" % (len(goodMatch), self.min_match_count))
 

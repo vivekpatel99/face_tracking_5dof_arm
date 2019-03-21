@@ -1,3 +1,5 @@
-main - INFO - close button pressed
-main - INFO - cleaning up
-main - INFO - closing Application safely
+2019-03-21 10:18:56,228 - main - INFO - close button pressed
+2019-03-21 10:18:56,228 - main - INFO - Elapsed time: 346.79
+2019-03-21 10:18:56,229 - main - INFO - Approx. FPS: 6.09
+2019-03-21 10:18:56,229 - main - INFO - cleaning up
+2019-03-21 10:18:56,230 - main - INFO - closing Application safely

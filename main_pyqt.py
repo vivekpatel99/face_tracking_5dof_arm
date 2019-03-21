@@ -15,31 +15,21 @@ import sys
 import time
 
 import cv2
-import imutils
 from PyQt4 import QtGui
 from PyQt4.QtGui import QPixmap, QImage
-from PyQt4 import QtCore
 from PyQt4.QtCore import QTimer
 from imutils.video import VideoStream
 from imutils.video import FPS
 
 # modules
 import config
+from lib.udp import udp
 from pyqt_gui import menu
 from lib._logger import _logging
 from tasks.face_recog import face_recog
 from tasks.motion_detection import motion_detect
 from tasks.object_recognition import object_recognition
 from tasks.feat_detect import feat_detect
-
-# -----------------------------------------------
-""" constants declaration  """
-WHITE = (255, 255, 255)
-
-# Frames per second
-# FPS = 60
-
-TASK_INDEX = 0
 
 
 # TODO
@@ -53,17 +43,17 @@ TASK_INDEX = 0
 # """ Menu to display all items on screen """
 # ------------------------------------------------------------------------------
 class Menu(menu.Ui_objectName, QtGui.QMainWindow):
+    frwd_bkwd_bnt_cnt = 0
 
     def __init__(self):
-        frwd_bkwd_bnt_cnt = 0
         super(Menu, self).__init__()
-        # face_recog.FaceRecognition.__init__(self)
 
         self.setupUi(self)  # to be able to see interface
         self.frame = None
         self.timer = QTimer(self)
         self.vid = VideoStream(src=0)  # camera initialization
         self.fps = FPS()  # frame per second counter initialization
+        self.udp_send = udp.UdpPacket(udp_ip=config.IP, udp_port=config.PORT)
 
         # Button pressed actions # ------------------
         self.Stop_btn.clicked.connect(self.stop_webcam)
@@ -74,8 +64,8 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
         self.motion_detection_btn.clicked.connect(self.motion_detect_btn_pressed)
         self.object_tracking_btn.clicked.connect(self.object_recognition_btn_pressed)
         self.Feature_Detection_btn.clicked.connect(self.feature_detect_btn_pressed)
-        self.backward_btn.clicked.connect(self.backword_btn_pressed)
-        self.forward_btn.clicked.connect(self.forword_btn_pressed)
+        self.backward_btn.clicked.connect(self.backward_btn_pressed)
+        self.forward_btn.clicked.connect(self.forward_btn_pressed)
 
         # Taskes  initialization # ------------------
         # Face Recognition #
@@ -116,8 +106,7 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
         self.timer.timeout.connect(self.face_recognition)  # connected until timeout
         self.timer.start(1000.0 / 12.0)
         self.info_label.setText(face_recog.TASK_TITLE + '\n' + face_recog.TASK_INFO)
-        # start the FPS counter
-        self.fps.start()
+        self.fps.start()  # start the FPS counter
 
     # -------------------------------------------------------------------
     # """ motion_detect_btn_pressed """
@@ -129,8 +118,7 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
         self.timer.timeout.connect(self.motion_detection)  # connected until timeout
         self.timer.start(1000.0 / 28.0)
         self.info_label.setText(motion_detect.TASK_TITLE + '\n' + motion_detect.TASK_INFO)
-        # start the FPS counter
-        self.fps.start()
+        self.fps.start()  # start the FPS counter
 
     # -------------------------------------------------------------------
     # """ object_recognition_btn_pressed """
@@ -142,8 +130,7 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
         self.timer.timeout.connect(self.object_recognition)  # connected until timeout
         self.timer.start(1000.0 / 28.0)
         self.info_label.setText(object_recognition.TASK_TITLE + '\n' + object_recognition.TASK_INFO)
-        # start the FPS counter
-        self.fps.start()
+        self.fps.start()  # start the FPS counter
 
     # -------------------------------------------------------------------
     # """ feature_detect_btn_pressed """
@@ -155,8 +142,25 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
         self.timer.timeout.connect(self.feature_detection)  # connected until timeout
         self.timer.start(1000.0 / 28.0)
         self.info_label.setText(feat_detect.TASK_TITLE + '\n' + feat_detect.TASK_INFO)
-        # start the FPS counter
-        self.fps.start()
+        self.fps.start()  # start the FPS counter
+
+    # -------------------------------------------------------------------
+    # """ object_recognition_btn_pressed """
+    # -------------------------------------------------------------------
+    def backward_btn_pressed(self):
+        if Menu.frwd_bkwd_bnt_cnt >= 1:
+            Menu.frwd_bkwd_bnt_cnt -= 1
+
+        print(Menu.frwd_bkwd_bnt_cnt)
+
+    # -------------------------------------------------------------------
+    # """ object_recognition_btn_pressed """
+    # -------------------------------------------------------------------
+    def forward_btn_pressed(self):
+        if Menu.frwd_bkwd_bnt_cnt <= 1:
+            Menu.frwd_bkwd_bnt_cnt += 1
+
+        print(Menu.frwd_bkwd_bnt_cnt)
 
     # -------------------------------------------------------------------
     # """ capture_and_resize_frame """
@@ -173,7 +177,9 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
     def update_frame(self):
         """ """
         frame = self.preprocessed_frame()
-
+        if frame is None:
+            log.error('Camera is not connected')
+            sys.exit(1)
         # covert image into gray for processing
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         self.display_image(frame)
@@ -182,8 +188,15 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
     # -------------------------------------------------------------------
     # """ display_image """
     # -------------------------------------------------------------------
-    def display_image(self, image):
-        out_img = QImage(image, image.shape[1], image.shape[0], QtGui.QImage.Format_RGB888)
+    def display_image(self, frame):
+        if Menu.frwd_bkwd_bnt_cnt == 0:  # show only BGR frame
+            pass
+        elif Menu.frwd_bkwd_bnt_cnt == 1:
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        elif Menu.frwd_bkwd_bnt_cnt == 2:
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+        out_img = QImage(frame, frame.shape[1], frame.shape[0], QtGui.QImage.Format_RGB888)
         self.video_label.setPixmap(QPixmap.fromImage(out_img))
 
     # -------------------------------------------------------------------
@@ -191,13 +204,15 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
     # -------------------------------------------------------------------
     def face_recognition(self):
         frame = self.preprocessed_frame()
-
+        _frame = None
         try:
-            (x, y), frame = self.face_recog_obj.run_face_recognition(frame)
+            (x, y), _frame = self.face_recog_obj.run_face_recognition(frame)
+            self.udp_send.udp_packet_send(x=x, y=y, frame=_frame)
             self.fps.update()  # update the FPS counter
         except TypeError:
             pass
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        if _frame is not None:
+            frame = _frame
         self.display_image(frame)
 
     # -------------------------------------------------------------------
@@ -205,12 +220,15 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
     # -------------------------------------------------------------------
     def motion_detection(self):
         frame = self.preprocessed_frame()
+        _frame = None
         try:
             (center_x, center_y), _frame = self.motion_detect_ob.run_motion_subtrator(frame)
+            self.udp_send.udp_packet_send(x=center_x, y=center_y, frame=_frame)
             self.fps.update()  # update the FPS counter
         except TypeError:
             pass
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        if _frame is not None:
+            frame = _frame
         self.display_image(frame)
 
     # -------------------------------------------------------------------
@@ -218,12 +236,16 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
     # -------------------------------------------------------------------
     def object_recognition(self):
         frame = self.preprocessed_frame()
+        _frame = None
         try:
-            (x, y), frame = self.object_recog_obj.run_object_recognition(frame)
+            (x, y), _frame = self.object_recog_obj.run_object_recognition(frame)
+            self.udp_send.udp_packet_send(x=x, y=y, frame=_frame)
             self.fps.update()  # update the FPS counter
         except TypeError:
             pass
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        if _frame is not None:
+            frame = _frame
+
         self.display_image(frame)
 
     # -------------------------------------------------------------------
@@ -233,7 +255,8 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
         _frame = None
         frame = self.preprocessed_frame()
         try:
-            _frame = self.feat_detect_obj.run_feat_detect(frame)
+            (x, y), _frame = self.feat_detect_obj.run_feat_detect(frame)
+            self.udp_send.udp_packet_send(x=x, y=y, frame=_frame)
             self.fps.update()  # update the FPS counter
         except:
             pass
