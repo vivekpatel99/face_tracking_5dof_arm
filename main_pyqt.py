@@ -175,8 +175,8 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
     # -------------------------------------------------------------------
     def preprocessed_frame(self):
         """ """
-        self.frame = self.vid.read()
-        return self.frame
+        frame = self.vid.read()
+        return frame
 
     # -------------------------------------------------------------------
     # """ update_frame """
@@ -320,7 +320,7 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
     # """ close """
     # -------------------------------------------------------------------
     def close(self):
-        log.info("close button pressed")
+        log.info("Close button pressed")
         self.timer.stop()
 
         # stop the timer and display FPS information

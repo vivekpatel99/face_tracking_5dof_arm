@@ -95,5 +95,4 @@ def main():
 
 
 if __name__ == '__main__':
-    # main()
-    face_recog.main()
+    main()

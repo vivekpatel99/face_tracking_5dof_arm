@@ -1,5 +1,17 @@
-2019-03-23 12:31:48,577 - main - INFO - close button pressed
-2019-03-23 12:31:48,578 - main - INFO - Elapsed time: 20.49
-2019-03-23 12:31:48,578 - main - INFO - Approx. FPS: 20.80
-2019-03-23 12:31:48,579 - main - INFO - Cleaning up
-2019-03-23 12:31:48,579 - main - INFO - Closing Application safely
+2019-03-23 13:51:51,982 - main - INFO - main script starts
+2019-03-23 13:51:51,983 - main - INFO - calling  display_gui.Menu()
+2019-03-23 13:51:51,984 - main - INFO - calling  disply.display_init()
+2019-03-23 13:51:51,984 - main.lib.display.display_gui - INFO - display initialisation done 
+2019-03-23 13:51:52,156 - main - INFO - calling  disply.display_color()
+2019-03-23 13:51:52,160 - main - INFO - calling display.display_menu_init()
+2019-03-23 13:51:55,317 - main.lib.display.display - INFO - Start Button clicked
+2019-03-23 13:51:59,713 - main.lib.display.display - INFO - Object Tracking Button clicked
+2019-03-23 13:51:59,740 - main.tasks.motion_detection.motion_detect - INFO - motion_detection_pygm starts... 
+2019-03-23 13:52:06,407 - main.lib.display.display - INFO - Object Recognition Button clicked
+2019-03-23 13:52:06,421 - main.tasks.motion_detection.motion_detect - INFO - TASK_INDEX is not 2 but 3
+2019-03-23 13:52:06,438 - main.tasks.motion_detection.motion_detect - INFO - closing motion detection
+2019-03-23 13:52:12,996 - main.lib.display.display - INFO - Backward Button clicked
+2019-03-23 13:52:20,681 - main.lib.display.display - INFO - Forward Button clicked
+2019-03-23 13:52:27,456 - main.lib.display.display - INFO - Exit Button clicked
+2019-03-23 13:52:27,484 - main - INFO - Camera is OFF
+2019-03-23 13:52:28,159 - main - INFO - exiting from the main...
