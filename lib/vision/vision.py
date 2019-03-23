@@ -1,6 +1,9 @@
+import os
+
 import numpy as np
 import cv2
 import sys
+from imutils.video import FPS
 from imutils.video import VideoStream
 import config
 import imutils
@@ -15,7 +18,7 @@ CAM_NUM = 0
 # """ CLASS: MAIN """
 # ------------------------------------------------------------------------------
 class Vision:
-    """
+    """s
     Class for wrapping OpenCV functionality with some checks
     """
 
@@ -112,16 +115,47 @@ class Vision:
 def test():
     vid = Vision()
     vid.isCameraConnected()
-
+    fps = FPS().start()
     while True:
         ret, frame = vid.getVideo()
         vid.display('img', frame)
-
+        fps.update()
         if cv2.waitKey(30) & 0xFF == ord("q"):
             break
 
+    # stop the timer and display FPS information
+    fps.stop()
+    print("[INFO] elasped time: {:.2f}".format(fps.elapsed()))
+    print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
     vid.videoCleanUp()
 
 
+
+def test_2():
+    print("[INFO] sampling frames from webcam...")
+    stream = VideoStream(src=0).start()
+    fps = FPS().start()
+
+    # loop over some frames
+    while True:
+        # grab the frame from the stream and resize it to have a maximum
+        # width of 400 pixels
+        frame = stream.read()
+        # frame = imutils.resize(frame, width=640)
+
+        cv2.imshow("Frame", frame)
+        fps.update()
+
+        # update the FPS counter
+        if cv2.waitKey(30) & 0xFF == ord("q"):
+            break
+
+    # stop the timer and display FPS information
+    fps.stop()
+    print("[INFO] elasped time: {:.2f}".format(fps.elapsed()))
+    print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
+    # do a bit of cleanup
+    cv2.destroyAllWindows()
+    stream.stop()
 if __name__ == '__main__':
     test()

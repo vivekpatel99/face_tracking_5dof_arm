@@ -21,6 +21,10 @@ import pickle
 import os
 import logging
 
+import imutils
+from imutils.video import FPS
+from imutils.video import VideoStream
+
 # -----------------------------------------------
 """ Modules """
 import config
@@ -35,8 +39,8 @@ log = logging.getLogger("__main__." + __name__)
 # -----------------------------------------------
 """ globals """
 
-TASK_INFO = " Face Names : Vivek, Emilia Clarke, Kit harington, Nikolaj Coster Waldau, Peter Dinklage"
-TASK_TITLE = "Face Recognition"
+TASK_INFO = "FACES NAME: Vivek, Emilia Clarke, Kit harington, Nikolaj Coster Waldau, Peter Dinklage"
+TASK_TITLE = "TASK: Face Recognition is running..."
 
 TASK_TITLE_POS = (config.VID_FRAME_CENTER - (len(TASK_TITLE) * 4), 100)
 
@@ -170,26 +174,139 @@ def face_recog_pygm(screen, disply_obj, fbs):
     vid.videoCleanUp()
 
 
+# ------------------------------------------------------------------------------
+# """ face_recog_pygm """
+# ------------------------------------------------------------------------------
+class FaceRecognition:
+    def __init__(self):
+        self.recognizer = None
+        self.face_cascade = None
+
+        self.face_cascade_name = "haarcascade_frontalface_default.xml"  # objected created for cascade classifier
+        self.recognizer_file = "trainner.yml"  # creating object from trained file
+        self.labels = {"person_name": 1}  # reading labels from label.pickle file
+        self.labels_file = "labels.pickle"
+
+        self.classifier_init()
+        self.recognizer_init()
+        self.labels_load()
+
+    # -------------------------------------------------------------------
+    # """ classifier_init """
+    # -------------------------------------------------------------------
+    def classifier_init(self):
+        face_cascade_path = file_path_create(self.face_cascade_name)
+        self.face_cascade = cv2.CascadeClassifier(face_cascade_path)
+
+    # -------------------------------------------------------------------
+    # """ recognizer_init """
+    # -------------------------------------------------------------------
+    def recognizer_init(self):
+        # recognizer = cv2.face.createLBPHFaceRecognizer() # for opencv 2.4
+        self.recognizer = cv2.face.LBPHFaceRecognizer_create()
+        recognizer_path = file_path_create(self.recognizer_file)
+
+        # recognizer.load(recognizer_path) # for opencv 2.4
+        self.recognizer.read(recognizer_path)
+
+    # -------------------------------------------------------------------
+    # """ labels_load """
+    # -------------------------------------------------------------------
+    def labels_load(self):
+        labels_path = file_path_create(self.labels_file)
+        try:
+            with open(labels_path, 'rb') as f:
+                og_labels = pickle.load(f)
+                self.labels = {v: k for k, v in og_labels.items()}
+        except Exception as error:
+            log.error(error)
+            raise
+
+    # -----------------------------------------
+    # """ FUNCTION: run_motion_subtrator  """
+    # -----------------------------------------
+    def run_face_recognition(self, frame, frame_display_indx):
+        """
+
+        :param frame:
+        :return:
+        """
+        # covert image into gray for processing
+        gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        front = cv2.FONT_HERSHEY_SIMPLEX
+        color = (255, 0, 0)
+        stroke = 1  # width of text
+
+        # detect object of different size i nthe input image.
+        # the detected objects are returned as a list of rectangles.
+        faces = self.face_cascade.detectMultiScale(gray_frame, scaleFactor=1.3, minNeighbors=5)
+
+        for (x, y, w, h) in faces:
+
+            # create rectangle around face
+            frame = cv2.rectangle(frame, (x, y), (x + w, y + w), (255, 0, 0), 2)  # RGB
+            roi_gray = gray_frame[y:y + h, x:x + w]
+
+            id_, confidence = self.recognizer.predict(roi_gray)
+
+            if confidence >= 50:
+                name = self.labels[id_]
+                if confidence > 100 :
+                    confidence=100
+                label = "{}: {:.2f}%".format(name, confidence)
+                # cv2.putText(frame, name[::-1], (x, y), front, 1.0, color, stroke, cv2.LINE_AA)
+                cv2.putText(frame, label, (x, y), front, 1.0, color, stroke, cv2.LINE_AA)
+            else:
+                cv2.putText(frame, 'Unknown', (x, y), front, 1.0, color, stroke, cv2.LINE_AA)
+
+            if frame_display_indx == 0:
+                out_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            elif frame_display_indx == 1:
+                out_frame = cv2.resize(roi_gray, (640, 480))
+            else:
+                out_frame = frame
+            return (x, y), out_frame
+
+
 # ----------------------------------------------------------------------------------------------------------------------
 # """ main """
 # ----------------------------------------------------------------------------------------------------------------------
 def main():
-    # objected created for cascade classifer
-    face_cascade = cv2.CascadeClassifier(r'haarcascade_frontalface_default.xml')
-    recognizer = cv2.face.createLBPHFaceRecognizer()
-    recognizer.load("trainner.yml")
+    log.info("face_recog_pygm start")
+    # print("[INFO] face_recog_pygm start")
 
+    # objected created for cascade classifier
+    face_cascade_name = "haarcascade_frontalface_default.xml"
+    face_cascade_path = file_path_create(face_cascade_name)
+    face_cascade = cv2.CascadeClassifier(face_cascade_path)
+    # recognizer = cv2.face.createLBPHFaceRecognizer() # for opencv 2.4
+    recognizer = cv2.face.LBPHFaceRecognizer_create()
+
+    # creating object from trained file
+    recognizer_file = "trainner.yml"
+    recognizer_path = file_path_create(recognizer_file)
+    file_path_create(recognizer_path)
+    # recognizer.load(recognizer_path) # for opencv 2.4
+    recognizer.read(recognizer_path)
+
+    # reading labels from label.pickle file
     labels = {"person_name": 1}
-    with open("labels.pickle", 'rb') as f:
-        og_labels = pickle.load(f)
-        labels = {v: k for k, v in og_labels.items()}
+    labels_file = "labels.pickle"
+    labels_path = file_path_create(labels_file)
+    try:
+        with open(labels_path, 'rb') as f:
+            og_labels = pickle.load(f)
+            labels = {v: k for k, v in og_labels.items()}
+    except Exception as error:
+        log.error(error)
+        raise
 
-    cap = cv2.VideoCapture(0)
-    cv2.namedWindow("frame")
+    cap = VideoStream(src=0)
+    cap.start()
+    fps = FPS().start()
+    while True:
 
-    while cap.isOpened():
-
-        ret, frame = cap.read()
+        frame = cap.read()
         # covert image into gray
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
@@ -211,14 +328,21 @@ def main():
                 stroke = 2
 
             cv2.putText(frame, name, (x, y), front, 1, color, stroke, cv2.LINE_AA)
-
         # Display the frame
         cv2.imshow('frame', frame)
-        if cv2.waitKey(20) & 0xff == ord('q'):
+        fps.update()
+        key = cv2.waitKey(1) & 0xFF
+        # if the `q` key was pressed, break from the loop
+        if key == ord("q"):
             break
 
-    cap.release()
+    # stop the timer and display FPS information
+    fps.stop()
+    print("[INFO] elasped time: {:.2f}".format(fps.elapsed()))
+    print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
+
     cv2.destroyAllWindows()
+    cap.stop()
 
 
 if __name__ == '__main__':

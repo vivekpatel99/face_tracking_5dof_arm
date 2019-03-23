@@ -20,8 +20,7 @@ def logger_init(log_filepath, project_name = "obj_track_Img_recog"):
     ch.setLevel(logging.DEBUG)
 
     # create formatter and add it to the  handlers
-    # formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-    formatter = logging.Formatter("%(name)s - %(levelname)s - %(message)s")
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     fh.setFormatter(formatter)
     ch.setFormatter(formatter)
 
