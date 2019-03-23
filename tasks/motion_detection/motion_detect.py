@@ -23,7 +23,6 @@ from lib.display import display
 from lib.display import display_gui
 from lib.udp import udp
 
-
 log = logging.getLogger("main." + __name__)
 
 # -----------------------------------------------
@@ -38,6 +37,7 @@ TASK_TITLE_POS = (config.VID_FRAME_CENTER - (len(TASK_TITLE) * 4), 100)
 MIN_AREA = 500
 CAM_NUM = 0
 
+
 # ------------------------------------------------------------------------------
 # """ MotionDetection """
 # ------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ class MotionDetection:
     # -------------------------------------------------------------------
     # """ run_motion_subtrator """
     # -------------------------------------------------------------------
-    def run_motion_subtrator(self, frame):
+    def run_motion_subtrator(self, frame, frame_display_indx):
         # color has no bearing on motion detection algorithm
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
@@ -79,7 +79,15 @@ class MotionDetection:
             except UnboundLocalError:
                 center_x, center_y = 0, 0
 
-            return (center_x, center_y), frame
+            if frame_display_indx == 0:
+                out_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            elif frame_display_indx == 1:
+                out_frame = fgmask
+            else:
+                out_frame = frame
+            return (center_x, center_y), out_frame
+
+
 # ------------------------------------------------------------------------------
 # """ motion_detection_pygm """
 # ------------------------------------------------------------------------------
@@ -94,7 +102,7 @@ def motion_detection_pygm(screen, disply_obj, fbs):
     udp_send = udp.UdpPacket(udp_ip=config.IP, udp_port=config.PORT)
 
     fgbg = cv2.createBackgroundSubtractorMOG2()
-    while  vid.isCameraConnected():
+    while vid.isCameraConnected():
         _, frame = vid.getVideo()
         # resize frame for required size
         resize_frame = cv2.resize(frame, config.VID_FRAME_SIZE)
@@ -107,10 +115,10 @@ def motion_detection_pygm(screen, disply_obj, fbs):
 
         # if the first stream is not initialized, store it for reference
         # to smooth the image and remove noise(if not then could throw algorithm off)
-        # smothing avarage pixel intensities across an 21x21 region
+        # smoothing average pixel intensities across an 21x21 region
         gray = cv2.GaussianBlur(gray, (21, 21), 0)
 
-        # apply background substraction
+        # apply background subtraction
         fgmask = fgbg.apply(gray)
         # im2, contours, hierarchy = cv2.findContours(fgmask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         im2, contours, hierarchy = cv2.findContours(fgmask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)

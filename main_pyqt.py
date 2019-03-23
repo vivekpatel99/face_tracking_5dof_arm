@@ -49,7 +49,6 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
         super(Menu, self).__init__()
 
         self.setupUi(self)  # to be able to see interface
-        # self.frame = None
         self.timer = QTimer(self)
         self.vid = VideoStream(src=0)  # camera initialization
         self.fps = FPS()  # frame per second counter initialization
@@ -112,7 +111,10 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
     # -------------------------------------------------------------------
 
     def face_recog_btn_pressed(self):
-        """  """
+        """
+
+        :return:
+        """
         self.task_init_setup(self.face_recognition)
         self.info_label.setText(face_recog.TASK_TITLE + '\n' + face_recog.TASK_INFO)
 
@@ -121,7 +123,10 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
     # -------------------------------------------------------------------
 
     def motion_detect_btn_pressed(self):
-        """  """
+        """
+
+        :return:
+        """
         self.task_init_setup(self.motion_detection)
         self.info_label.setText(motion_detect.TASK_TITLE + '\n' + motion_detect.TASK_INFO)
 
@@ -179,11 +184,13 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
     def update_frame(self):
         """ """
         frame = self.preprocessed_frame()
+
         if frame is None:
             log.error('Camera is not connected')
             sys.exit(1)
+
         # covert image into gray for processing
-        # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         self.display_image(frame)
         self.fps.update()  # update the FPS counter
 
@@ -191,16 +198,15 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
     # """ display_image """
     # -------------------------------------------------------------------
     def display_image(self, frame):
-        if Menu.frwd_bkwd_bnt_cnt == 0:  # show only BGR frame
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        qformat = QtGui.QImage.Format_Indexed8
+        if len(frame.shape) == 3:
+            if frame.shape[2] == 4:
+                qformat = QtGui.QImage.Format_RGBA8888
+            else:
+                qformat = QtGui.QImage.Format_RGB888
 
-        elif Menu.frwd_bkwd_bnt_cnt == 1:
-            pass
-
-        elif Menu.frwd_bkwd_bnt_cnt == 2:
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-        out_img = QImage(frame, frame.shape[1], frame.shape[0], QtGui.QImage.Format_RGB888)
+        out_img = QImage(frame, frame.shape[1], frame.shape[0], qformat)
+        # out_img = QImage(frame, frame.shape[1], frame.shape[0], QtGui.QImage.Format_RGB888)
         self.video_label.setPixmap(QPixmap.fromImage(out_img))
 
     # -------------------------------------------------------------------
@@ -215,7 +221,7 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
 
         _frame = None  # processed output frame
         try:
-            (x, y), _frame = self.face_recog_obj.run_face_recognition(frame)
+            (x, y), _frame = self.face_recog_obj.run_face_recognition(frame, Menu.frwd_bkwd_bnt_cnt)
             self.udp_send.udp_packet_send(x=x, y=y, frame=_frame)
             self.fps.update()  # update the FPS counter
         except TypeError:
@@ -238,7 +244,7 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
         center_x, center_y = None, None  # location  of motion
         try:
 
-            (center_x, center_y), _frame = self.motion_detect_ob.run_motion_subtrator(frame)
+            (center_x, center_y), _frame = self.motion_detect_ob.run_motion_subtrator(frame, Menu.frwd_bkwd_bnt_cnt)
             self.fps.update()  # update the FPS counter
             self.udp_send.udp_packet_send(x=center_x, y=center_y, frame=_frame)
 
@@ -262,7 +268,7 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
 
         _frame = None  # processed output frame
         try:
-            (x, y), _frame = self.object_recog_obj.run_object_recognition(frame)
+            (x, y), _frame = self.object_recog_obj.run_object_recognition(frame, Menu.frwd_bkwd_bnt_cnt)
             if x and y:
                 self.udp_send.udp_packet_send(x=x, y=y, frame=_frame)
                 self.fps.update()  # update the FPS counter
@@ -285,7 +291,7 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
 
         _frame = None  # processed output frame
         try:
-            (x, y), _frame = self.feat_detect_obj.run_feat_detect(frame)
+            (x, y), _frame = self.feat_detect_obj.run_feat_detect(frame, Menu.frwd_bkwd_bnt_cnt)
             self.udp_send.udp_packet_send(x=x, y=y, frame=_frame)
             self.fps.update()  # update the FPS counter
         except TypeError:

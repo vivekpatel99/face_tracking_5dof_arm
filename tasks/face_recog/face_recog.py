@@ -225,7 +225,7 @@ class FaceRecognition:
     # -----------------------------------------
     # """ FUNCTION: run_motion_subtrator  """
     # -----------------------------------------
-    def run_face_recognition(self, frame):
+    def run_face_recognition(self, frame, frame_display_indx):
         """
 
         :param frame:
@@ -235,7 +235,7 @@ class FaceRecognition:
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         front = cv2.FONT_HERSHEY_SIMPLEX
         color = (255, 0, 0)
-        stroke = 2  # width of text
+        stroke = 1  # width of text
 
         # detect object of different size i nthe input image.
         # the detected objects are returned as a list of rectangles.
@@ -248,12 +248,24 @@ class FaceRecognition:
             roi_gray = gray_frame[y:y + h, x:x + w]
 
             id_, confidence = self.recognizer.predict(roi_gray)
-            if confidence >= 20:
-                name = self.labels[id_]
-                # cv2.putText(frame, name[::-1], (x, y), front, 1.0, color, stroke, cv2.LINE_AA)
-                cv2.putText(frame, name, (x, y), front, 1.0, color, stroke, cv2.LINE_AA)
 
-                return (x, y), frame
+            if confidence >= 50:
+                name = self.labels[id_]
+                if confidence > 100 :
+                    confidence=100
+                label = "{}: {:.2f}%".format(name, confidence)
+                # cv2.putText(frame, name[::-1], (x, y), front, 1.0, color, stroke, cv2.LINE_AA)
+                cv2.putText(frame, label, (x, y), front, 1.0, color, stroke, cv2.LINE_AA)
+            else:
+                cv2.putText(frame, 'Unknown', (x, y), front, 1.0, color, stroke, cv2.LINE_AA)
+
+            if frame_display_indx == 0:
+                out_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            elif frame_display_indx == 1:
+                out_frame = cv2.resize(roi_gray, (640, 480))
+            else:
+                out_frame = frame
+            return (x, y), out_frame
 
 
 # ----------------------------------------------------------------------------------------------------------------------

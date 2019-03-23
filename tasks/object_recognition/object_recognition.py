@@ -75,7 +75,7 @@ class ObjectRecognition:
     # -------------------------------------------------------------------
     # """ run_object_recognition """
     # -------------------------------------------------------------------
-    def run_object_recognition(self, frame):
+    def run_object_recognition(self, frame, frame_display_indx):
         # grab the frame dimensions and convert it to a blob
         (h, w) = frame.shape[:2]
         blob = cv2.dnn.blobFromImage(cv2.resize(frame, (300, 300)),
@@ -103,17 +103,21 @@ class ObjectRecognition:
                 (start_x, startY, endX, endY) = box.astype("int")
 
                 # draw the prediction on the frame
-                label = "{}: {:.2f}%".format(self.classes[idx],
-                                             confidence * 100)
+                label = "{}: {:.2f}%".format(self.classes[idx], confidence * 100)
 
                 if self.classes[idx] == config.recog_object_name:
-                    cv2.rectangle(frame, (start_x, startY), (endX, endY),
-                                  self.color[idx], 2)
+                    cv2.rectangle(frame, (start_x, startY), (endX, endY), self.color[idx], 2)
                     y = startY - 15 if startY - 15 > 15 else startY + 15
 
-                    cv2.putText(frame, label, (start_x, y),
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.color[idx], 2)
-                    return (start_x, y), frame
+                    cv2.putText(frame, label, (start_x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.color[idx], 2)
+
+                    if frame_display_indx == 0:
+                        out_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                    elif frame_display_indx == 1:
+                        out_frame = frame
+                    else:
+                        out_frame = frame
+                    return (start_x, y), out_frame
 
 # ------------------------------------------------------------------------------
 # """ object_recog_pygm """
