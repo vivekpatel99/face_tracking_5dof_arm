@@ -47,18 +47,18 @@ def main():
     """
     """
     log = _logging.logger_init(log_filepath="obj_track_img_recog.log", project_name="main")
-    log.info("main script starts")
+    log.info("Main script starts")
 
-    log.info("calling  display_gui.Menu()")
-    disply = display_gui.Menu() # create object for manu
+    log.info("Calling  display_gui.Menu()")
+    disply = display_gui.Menu() # create object for mEnu
 
-    log.info("calling  disply.display_init()")
+    log.info("Calling  disply.display_init()")
     screen = disply.display_init() # display initialize
 
-    log.info("calling  disply.display_color()")
+    log.info("Calling  disply.display_color()")
     disply.display_color(WHITE)  # fill the display with white color
 
-    log.info("calling display.display_menu_init()")
+    log.info("Calling display.display_menu_init()")
     disply_obj = display.display_menu_init(screen)  # display GUI Initialize
 
     while True:
@@ -91,7 +91,7 @@ def main():
             break
 
     pygame.quit()
-    log.info("exiting from the main...")
+    log.info("Exiting from the main...")
 
 
 if __name__ == '__main__':
