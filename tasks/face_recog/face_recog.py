@@ -173,6 +173,7 @@ def face_recog_pygm(screen, disply_obj, fbs):
     log.info("Face Recognition closing ")
     vid.videoCleanUp()
 
+
 # ------------------------------------------------------------------------------
 # """ face_recog_pygm """
 # ------------------------------------------------------------------------------
@@ -181,18 +182,25 @@ class FaceRecognition:
         self.recognizer = None
         self.face_cascade = None
 
-        # objected created for cascade classifier
-        self.face_cascade_name = "haarcascade_frontalface_default.xml"
-        # creating object from trained file
-        self.recognizer_file = "trainner.yml"
-        # reading labels from label.pickle file
-        self.labels = {"person_name": 1}
+        self.face_cascade_name = "haarcascade_frontalface_default.xml"  # objected created for cascade classifier
+        self.recognizer_file = "trainner.yml"  # creating object from trained file
+        self.labels = {"person_name": 1}  # reading labels from label.pickle file
         self.labels_file = "labels.pickle"
 
+        self.classifier_init()
+        self.recognizer_init()
+        self.labels_load()
+
+    # -------------------------------------------------------------------
+    # """ classifier_init """
+    # -------------------------------------------------------------------
     def classifier_init(self):
         face_cascade_path = file_path_create(self.face_cascade_name)
         self.face_cascade = cv2.CascadeClassifier(face_cascade_path)
 
+    # -------------------------------------------------------------------
+    # """ recognizer_init """
+    # -------------------------------------------------------------------
     def recognizer_init(self):
         # recognizer = cv2.face.createLBPHFaceRecognizer() # for opencv 2.4
         self.recognizer = cv2.face.LBPHFaceRecognizer_create()
@@ -201,6 +209,9 @@ class FaceRecognition:
         # recognizer.load(recognizer_path) # for opencv 2.4
         self.recognizer.read(recognizer_path)
 
+    # -------------------------------------------------------------------
+    # """ labels_load """
+    # -------------------------------------------------------------------
     def labels_load(self):
         labels_path = file_path_create(self.labels_file)
         try:
@@ -211,17 +222,27 @@ class FaceRecognition:
             log.error(error)
             raise
 
+    # -----------------------------------------
+    # """ FUNCTION: run_motion_subtrator  """
+    # -----------------------------------------
     def run_face_recognition(self, frame):
+        """
+
+        :param frame:
+        :return:
+        """
         # covert image into gray for processing
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         front = cv2.FONT_HERSHEY_SIMPLEX
         color = (255, 0, 0)
         stroke = 2  # width of text
+
         # detect object of different size i nthe input image.
         # the detected objects are returned as a list of rectangles.
         faces = self.face_cascade.detectMultiScale(gray_frame, scaleFactor=1.3, minNeighbors=5)
 
         for (x, y, w, h) in faces:
+
             # create rectangle around face
             frame = cv2.rectangle(frame, (x, y), (x + w, y + w), (255, 0, 0), 2)  # RGB
             roi_gray = gray_frame[y:y + h, x:x + w]
@@ -239,8 +260,6 @@ class FaceRecognition:
 # """ main """
 # ----------------------------------------------------------------------------------------------------------------------
 def main():
-    # objected created for cascade classifer
-
     log.info("face_recog_pygm start")
     # print("[INFO] face_recog_pygm start")
 
@@ -316,4 +335,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

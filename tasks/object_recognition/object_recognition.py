@@ -27,8 +27,8 @@ log = logging.getLogger("__main__." + __name__)
 # -----------------------------------------------
 """ globals """
 
-TASK_INFO = "Objects Names : bottle, bus, car, cat, chair" \
-            "diningtable, dog, person, pottedplant, sofa, tvmonitor"
+TASK_INFO = "Objects Names : Bottle, Bus, Car, Cat, Chair" \
+            "Diningtable, Dog, Person, Pottedplant, Sofa, TV Monitor"
 
 TASK_TITLE = "Object Recognition and Tracking"
 
@@ -51,6 +51,9 @@ def file_path_check(file_name_fm_same_dir):
         log.info("checked path {} ".format(file_path))
         return file_path
 
+# ------------------------------------------------------------------------------
+# """ ObjectRecognition """
+# ------------------------------------------------------------------------------
 class ObjectRecognition:
     def __init__(self, prototxt_file="MobileNetSSD_deploy.prototxt.txt", caffe_model="MobileNetSSD_deploy.caffemodel"):
         prototxt_file = prototxt_file
@@ -69,6 +72,9 @@ class ObjectRecognition:
         # load our serialized model from disk
         self.net = cv2.dnn.readNetFromCaffe(self.prototxt_file_path, self.caffe_model_path)
 
+    # -------------------------------------------------------------------
+    # """ run_object_recognition """
+    # -------------------------------------------------------------------
     def run_object_recognition(self, frame):
         # grab the frame dimensions and convert it to a blob
         (h, w) = frame.shape[:2]
@@ -108,9 +114,9 @@ class ObjectRecognition:
                     cv2.putText(frame, label, (start_x, y),
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.color[idx], 2)
                     return (start_x, y), frame
-                    # udp_send.udp_packet_send(x=start_x, y=y, frame=frame)
+
 # ------------------------------------------------------------------------------
-# """ object_recog """
+# """ object_recog_pygm """
 # ------------------------------------------------------------------------------
 def object_recog_pygm(screen, disply_obj):
     """ """

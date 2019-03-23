@@ -38,19 +38,26 @@ TASK_TITLE_POS = (config.VID_FRAME_CENTER - (len(TASK_TITLE) * 4), 100)
 MIN_AREA = 500
 CAM_NUM = 0
 
+# ------------------------------------------------------------------------------
+# """ MotionDetection """
+# ------------------------------------------------------------------------------
 class MotionDetection:
     def __init__(self):
         self.back_gnd_sub = cv2.createBackgroundSubtractorMOG2()
 
+    # -------------------------------------------------------------------
+    # """ run_motion_subtrator """
+    # -------------------------------------------------------------------
     def run_motion_subtrator(self, frame):
         # color has no bearing on motion detection algorithm
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
         # if the first stream is not initialized, store it for reference
         # to smooth the image and remove noise(if not then could throw algorithm off)
         # smothing avarage pixel intensities across an 21x21 region
         gray = cv2.GaussianBlur(gray, (21, 21), 0)
 
-        # apply background substraction
+        # apply background subtraction
         fgmask = self.back_gnd_sub.apply(gray)
         im2, contours, hierarchy = cv2.findContours(fgmask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 
@@ -60,14 +67,18 @@ class MotionDetection:
             try:  # avoid division error
                 center_x = int(M["m10"] / M["m00"])
                 center_y = int(M["m01"] / M["m00"])
-            except:
+            except ZeroDivisionError:
                 pass
             # get bounding box from countour
             (x, y, w, h) = cv2.boundingRect(c)
-            # udp_send.udp_packet_send(x=cX, y=cY, frame=frame)
+
             # draw bounding box
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-            cv2.circle(frame, (center_x, center_y), 7, (0, 0, 225), -1)
+            try:
+                cv2.circle(frame, (center_x, center_y), 7, (0, 0, 225), -1)
+            except UnboundLocalError:
+                center_x, center_y = 0, 0
+
             return (center_x, center_y), frame
 # ------------------------------------------------------------------------------
 # """ motion_detection_pygm """

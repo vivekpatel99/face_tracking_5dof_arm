@@ -10,51 +10,56 @@ TASK_INFO = 'TASK INFO: Please move the zybo box'
 # """ face_recog_pygm """
 # ------------------------------------------------------------------------------
 class FeatureDetection:
+    """ Feature Detection class """
+
     def __init__(self, min_match_count=30, image_path=r'tasks/feat_detect/zybo_box.png'):
         self.min_match_count = min_match_count
-        self.detector = cv2.xfeatures2d.SIFT_create()
-        flann_index_kditree = 0
+
+        # Scale Invariant Feature Transform (SIFT)
+        self.detector = cv2.xfeatures2d.SIFT_create()  # SIFT extraction
+        flann_index_kditree = 0  # Initialize the flag (it is not in built in openCV)
         self.flann_param = dict(algorithm=flann_index_kditree, tree=5)
-        self.flann = cv2.FlannBasedMatcher(self.flann_param, {})
+        self.flann = cv2.FlannBasedMatcher(self.flann_param, {})  # openCV bug, therefore empty dict is given
 
         image = cv2.imread(image_path, 0)
-        self.trainImg = cv2.resize(image, (640, 460))
-        self.trainKP, self.trainDesc = self.detector.detectAndCompute(self.trainImg, None)
+        self.train_img = cv2.resize(image, (640, 460))
+        self.trainKP, self.trainDesc = self.detector.detectAndCompute(self.train_img, None)
 
-    def run_feat_detect(self, QueryImgBGR):
-        QueryImg = cv2.cvtColor(QueryImgBGR, cv2.COLOR_BGR2GRAY)
-        queryKP, queryDesc = self.detector.detectAndCompute(QueryImg, None)
-        matches = self.flann.knnMatch(queryDesc, self.trainDesc, k=2)
+    # -------------------------------------------------------------------
+    # """ run_feat_detect """
+    # -------------------------------------------------------------------
+    def run_feat_detect(self, query_img_bgr):
+        query_img = cv2.cvtColor(query_img_bgr, cv2.COLOR_BGR2GRAY)
+        query_kp, query_desc = self.detector.detectAndCompute(query_img, None)
+        matches = self.flann.knnMatch(query_desc, self.trainDesc, k=2)
 
-        goodMatch = []
+        good_match = []
         for m, n in matches:
             if m.distance < 0.75 * n.distance:
-                goodMatch.append(m)
+                good_match.append(m)
 
-        if len(goodMatch) > self.min_match_count:
+        if len(good_match) > self.min_match_count:
             tp = []
             qp = []
-            for m in goodMatch:
+            for m in good_match:
                 tp.append(self.trainKP[m.trainIdx].pt)
-                qp.append(queryKP[m.queryIdx].pt)
+                qp.append(query_kp[m.queryIdx].pt)
             tp, qp = np.float32((tp, qp))
             H, status = cv2.findHomography(tp, qp, cv2.RANSAC, 3.0)
-            h, w = self.trainImg.shape
+            h, w = self.train_img.shape
 
-            trainBorder = np.float32([[[0, 0], [0, h - 1], [w - 1, h - 1], [w - 1, 0]]])
-            query_border = cv2.perspectiveTransform(trainBorder, H)
+            train_border = np.float32([[[0, 0], [0, h - 1], [w - 1, h - 1], [w - 1, 0]]])
+            query_border = cv2.perspectiveTransform(train_border, H)
             query_border = np.int32(query_border)
-            cv2.polylines(QueryImgBGR, [query_border], True, (0, 255, 0), 2)
+            cv2.polylines(query_img_bgr, [query_border], True, (0, 255, 0), 2)
             query_border = query_border.flatten()
+
             half_height_y = int((query_border[1] + query_border[3]) / 2)
-            half_width_x = int(((query_border[2] + query_border[4]) / 2))
+            half_width_x = int((query_border[2] + query_border[4]) / 2)
 
-            cv2.circle(QueryImgBGR, (half_width_x, half_height_y), 2, (0, 0, 255), 8)
-            # cv2.circle(QueryImgBGR, (200, 200), 3, (0, 0, 255), 10)
+            cv2.circle(query_img_bgr, (half_width_x, half_height_y), 2, (0, 0, 255), 8)
 
-            return (half_width_x, half_height_y), QueryImgBGR
-        # else:
-        # print("Not Enough match found- %d/%d" % (len(goodMatch), self.min_match_count))
+            return (half_width_x, half_height_y), query_img_bgr
 
 
 def main():
@@ -73,16 +78,16 @@ def main():
 
     cam = cv2.VideoCapture(0)
     while True:
-        ret, QueryImgBGR = cam.read()
-        QueryImg = cv2.cvtColor(QueryImgBGR, cv2.COLOR_BGR2GRAY)
+        ret, query_img_bgr = cam.read()
+        QueryImg = cv2.cvtColor(query_img_bgr, cv2.COLOR_BGR2GRAY)
         queryKP, queryDesc = detector.detectAndCompute(QueryImg, None)
         matches = flann.knnMatch(queryDesc, trainDesc, k=2)
 
         goodMatch = []
         for m, n in matches:
-            if (m.distance < 0.75 * n.distance):
+            if m.distance < 0.75 * n.distance:
                 goodMatch.append(m)
-        if (len(goodMatch) > MIN_MATCH_COUNT):
+        if len(goodMatch) > MIN_MATCH_COUNT:
             tp = []
             qp = []
             for m in goodMatch:
@@ -93,10 +98,10 @@ def main():
             h, w = trainImg.shape
             trainBorder = np.float32([[[0, 0], [0, h - 1], [w - 1, h - 1], [w - 1, 0]]])
             queryBorder = cv2.perspectiveTransform(trainBorder, H)
-            cv2.polylines(QueryImgBGR, [np.int32(queryBorder)], True, (0, 255, 0), 5)
+            cv2.polylines(query_img_bgr, [np.int32(queryBorder)], True, (0, 255, 0), 5)
         else:
             print("Not Enough match found- %d/%d" % (len(goodMatch), MIN_MATCH_COUNT))
-        cv2.imshow('result', QueryImgBGR)
+        cv2.imshow('result', query_img_bgr)
         if cv2.waitKey(10) == ord('q'):
             break
     cam.release()
