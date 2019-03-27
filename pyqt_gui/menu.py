@@ -106,7 +106,7 @@ class Ui_objectName(object):
         self.face_recognition_btn.setText(_translate("objectName", "Face Recognition", None))
         self.motion_detection_btn.setText(_translate("objectName", "Motion Detection", None))
         self.object_tracking_btn.setText(_translate("objectName", "Object Tracking", None))
-        self.info_label.setText(_translate("objectName", "Info", None))
+        self.info_label.setText(_translate("objectName", "Task Information", None))
         self.Feature_Detection_btn.setText(_translate("objectName", "Feature Detection", None))
 
 

@@ -23,16 +23,24 @@ log = logging.getLogger("__main__." + __name__)
 # ------------------------------------------------------------------------------
 # """ cam_off_loop """
 # ------------------------------------------------------------------------------
-def cam_off_loop(screen, disply_obj, FPS=0):
+def cam_off_loop(screen, disply_obj):
+    """
+
+    :param screen:
+    :param disply_obj:
+    :return:
+    """
     log.info("cam_off_loop start")
-    img_path = "1.jpg"
+    # img_path = "tasks/cam_off/1.jpg"
+    img_path = "tasks/cam_off/camera.png"
+    # img_path = "1.jpg"
 
     if not os.path.isfile(img_path):
         log.error("[ERROR] image does not exist {}".format(img_path))
         # print("[ERROR] image does not exist {}".format(img_path))
 
-
     img = cv2.imread(img_path, 1)
+
     size = (config.HORIZ_PIXELS_SMALL, config.VERT_LINES_SMALL)
     resize_frame = cv2.resize(img, size)
     frame = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2RGB)

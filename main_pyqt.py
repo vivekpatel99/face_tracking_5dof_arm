@@ -6,14 +6,13 @@
 
 """
 
-pyuic4 -x manu.ui -0 qt_menu.py
+pyuic4 -x manu.ui -0 menu.py
 The main script calls functions from all the modules
 
 """
 
 import sys
 import time
-
 import cv2
 from PyQt4 import QtGui
 from PyQt4.QtGui import QPixmap, QImage
