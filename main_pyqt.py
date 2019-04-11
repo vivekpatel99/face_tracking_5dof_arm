@@ -32,13 +32,6 @@ from tasks.object_recognition import object_recognition
 from tasks.feat_detect import feat_detect
 
 
-# TODO
-#  1. create a class for face recognition
-#  2. inherite the class into Menu class
-#  3. run the face detection
-#  4. benchnark the frame rate
-
-
 # ------------------------------------------------------------------------------
 # """ Menu to display all items on screen """
 # ------------------------------------------------------------------------------
@@ -86,7 +79,7 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
     # -------------------------------------------------------------------
     # """ start_webcam """
     # -------------------------------------------------------------------
-    def task_init_setup(self, task_function, frame_rate=28):
+    def task_init_setup(self, task_function, frame_rate=29):
         """
 
         :param task_function:
@@ -344,3 +337,8 @@ if __name__ == '__main__':
     my_menu = Menu()
     my_menu.show()
     app.exec_()
+    # import pickle
+    # from lib.udp import udp
+    # udp_pack = udp.UdpPacket(udp_ip=config.IP, udp_port=config.PORT)
+    # for i in range(10):
+    #     udp_pack.udp_packet_send(pickle.dumps([0, 0, 0]))

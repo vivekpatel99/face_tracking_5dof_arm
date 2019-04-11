@@ -31,32 +31,33 @@ def main():
     pwm_jf9 = pwm.PWM(gpio_path=config.JF9_MIO14_920, servo_cal_info=servo_calib.servo_5)
 
     udp_receive = udp.UdpPacket(udp_ip=config.IP, udp_port=config.PORT)
+    with udp_receive:
+        while True:
 
-    while True:
-        coordinates = udp_receive.udp_packet_receive()
-        print(coordinates)
-        thetas = ik.ik_5dof(config.end_eff_direction_mat, coordinates[0], coordinates[1], coordinates[2])
+            coordinates = pickle.loads(udp_receive.recvfrom(1024))
+            print(coordinates)
+            thetas = ik.ik_5dof(config.end_eff_direction_mat, coordinates[0], coordinates[1], coordinates[2])
 
-        print("theta_1 {}".format(math.degrees(thetas.theta_1)))
-        print("theta_2 {}".format(math.degrees(thetas.theta_2)))
-        print("theta_3 {}".format(math.degrees(thetas.theta_3)))
-        print("theta_4 {}".format(math.degrees(thetas.theta_4)))
-        print("theta_5 {}".format(math.degrees(thetas.theta_5)))
+            print("theta_1 {}".format(math.degrees(thetas.theta_1)))
+            print("theta_2 {}".format(math.degrees(thetas.theta_2)))
+            print("theta_3 {}".format(math.degrees(thetas.theta_3)))
+            print("theta_4 {}".format(math.degrees(thetas.theta_4)))
+            print("theta_5 {}".format(math.degrees(thetas.theta_5)))
 
-        pwm_jf1.pwm_generate(abs(thetas.theta_1))
-        time.sleep(0.5)
+            pwm_jf1.pwm_generate(abs(thetas.theta_1))
+            time.sleep(0.5)
 
-        pwm_jf4.pwm_generate(abs(thetas.theta_2))
-        time.sleep(0.5)
+            pwm_jf4.pwm_generate(abs(thetas.theta_2))
+            time.sleep(0.5)
 
-        pwm_jf7.pwm_generate(thetas.theta_3)
-        time.sleep(0.5)
+            pwm_jf7.pwm_generate(thetas.theta_3)
+            time.sleep(0.5)
 
-        pwm_jf8.pwm_generate(thetas.theta_4)
-        time.sleep(0.5)
+            pwm_jf8.pwm_generate(thetas.theta_4)
+            time.sleep(0.5)
 
-        pwm_jf9.pwm_generate(thetas.theta_5)
-        time.sleep(0.5)
+            pwm_jf9.pwm_generate(thetas.theta_5)
+            time.sleep(0.5)
 
 
 if __name__ == '__main__':
