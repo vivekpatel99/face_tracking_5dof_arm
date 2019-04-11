@@ -1,6 +1,5 @@
-2019-04-07 08:15:57,347 - main - INFO - Main script starts
-2019-04-07 08:15:57,348 - main - INFO - Calling  display_gui.Menu()
-2019-04-07 08:15:57,354 - main - INFO - Calling  disply.display_init()
-2019-04-07 08:15:57,355 - main.lib.display.display_gui - INFO - display initialisation done 
-2019-04-07 08:15:57,376 - main - INFO - Calling  disply.display_color()
-2019-04-07 08:15:57,378 - main - INFO - Calling display.display_menu_init()
+2019-04-11 13:10:35,991 - main - INFO - Close button pressed
+2019-04-11 13:10:35,992 - main - INFO - Elapsed time: 3.19
+2019-04-11 13:10:35,992 - main - INFO - Approx. FPS: 0.00
+2019-04-11 13:10:35,993 - main - INFO - Cleaning up
+2019-04-11 13:10:35,993 - main - INFO - Closing Application safely

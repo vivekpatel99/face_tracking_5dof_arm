@@ -31,13 +31,6 @@ from tasks.object_recognition import object_recognition
 from tasks.feat_detect import feat_detect
 
 
-# TODO
-#  1. create a class for face recognition
-#  2. inherite the class into Menu class
-#  3. run the face detection
-#  4. benchnark the frame rate
-
-
 # ------------------------------------------------------------------------------
 # """ Menu to display all items on screen """
 # ------------------------------------------------------------------------------
@@ -51,7 +44,7 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
         self.timer = QTimer(self)
         self.vid = VideoStream(src=0)  # camera initialization
         self.fps = FPS()  # frame per second counter initialization
-        self.udp_send = udp.UdpPacket(udp_ip=config.IP, udp_port=config.PORT)
+        # self.udp_send = udp.UdpPacket(udp_ip=config.IP, udp_port=config.PORT)
 
         # Button pressed actions # ------------------
         self.Stop_btn.clicked.connect(self.stop_webcam)
@@ -221,12 +214,16 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
         _frame = None  # processed output frame
         try:
             (x, y), _frame = self.face_recog_obj.run_face_recognition(frame, Menu.frwd_bkwd_bnt_cnt)
-            self.udp_send.udp_packet_send(x=x, y=y, frame=_frame)
+            # self.udp_send.udp_packet_send(x=x, y=y, frame=_frame)
             self.fps.update()  # update the FPS counter
         except TypeError:
             pass
         if _frame is not None:
             frame = _frame
+        else:
+            if Menu.frwd_bkwd_bnt_cnt == 0:
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
         self.display_image(frame)
 
     # -------------------------------------------------------------------
@@ -245,14 +242,16 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
 
             (center_x, center_y), _frame = self.motion_detect_ob.run_motion_subtrator(frame, Menu.frwd_bkwd_bnt_cnt)
             self.fps.update()  # update the FPS counter
-            self.udp_send.udp_packet_send(x=center_x, y=center_y, frame=_frame)
+            # self.udp_send.udp_packet_send(x=center_x, y=center_y, frame=_frame)
 
         except TypeError:
             pass
 
         if _frame is not None:
             frame = _frame
-
+        else:
+            if Menu.frwd_bkwd_bnt_cnt == 0:
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         self.display_image(frame)
 
     # -------------------------------------------------------------------
@@ -269,13 +268,15 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
         try:
             (x, y), _frame = self.object_recog_obj.run_object_recognition(frame, Menu.frwd_bkwd_bnt_cnt)
             if x and y:
-                self.udp_send.udp_packet_send(x=x, y=y, frame=_frame)
+                # self.udp_send.udp_packet_send(x=x, y=y, frame=_frame)
                 self.fps.update()  # update the FPS counter
         except TypeError:
             pass
         if _frame is not None:
             frame = _frame
-
+        else:
+            if Menu.frwd_bkwd_bnt_cnt == 0:
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         self.display_image(frame)
 
     # -------------------------------------------------------------------
@@ -291,13 +292,15 @@ class Menu(menu.Ui_objectName, QtGui.QMainWindow):
         _frame = None  # processed output frame
         try:
             (x, y), _frame = self.feat_detect_obj.run_feat_detect(frame, Menu.frwd_bkwd_bnt_cnt)
-            self.udp_send.udp_packet_send(x=x, y=y, frame=_frame)
+            # self.udp_send.udp_packet_send(x=x, y=y, frame=_frame)
             self.fps.update()  # update the FPS counter
         except TypeError:
             pass
         if _frame is not None:
             frame = _frame
-        # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        else:
+            if Menu.frwd_bkwd_bnt_cnt == 0:
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         self.display_image(frame)
 
     # -------------------------------------------------------------------
@@ -343,3 +346,4 @@ if __name__ == '__main__':
     my_menu = Menu()
     my_menu.show()
     app.exec_()
+

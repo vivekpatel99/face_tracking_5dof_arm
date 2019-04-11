@@ -41,14 +41,7 @@ class UdpPacket:
         self.udp_ip = udp_ip
         self.udp_port = udp_port
         # self.sock = None
-    # ------------------------------------------------------------------------------
-    # """ FUNCTION: __enter__"""
-    # ------------------------------------------------------------------------------
 
-    def __enter__(self):
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.sock.bind((self.udp_ip, self.udp_port))
-        return self.sock
     # ------------------------------------------------------------------------------
     # """ FUNCTION: To send UDP packets """
     # ------------------------------------------------------------------------------
@@ -91,14 +84,24 @@ class UdpPacket:
     # ------------------------------------------------------------------------------
     # """ FUNCTION: To receive UDP packets """
     # ------------------------------------------------------------------------------
-    # def udp_packet_receive(self):
+    def udp_packet_receive(self):
 
-    #     self.sock.bind((self.udp_ip, self.udp_port))
+        self.sock.bind((self.udp_ip, self.udp_port))
 
-    #     while True:
-    #         data, _ = self.sock.recvfrom(1024)
+        while True:
+            data, _ = self.sock.recvfrom(1024)
 
-    #         return pickle.loads(data)
+            return pickle.loads(data)
+
+    # ------------------------------------------------------------------------------
+    # """ FUNCTION: __enter__"""
+    # ------------------------------------------------------------------------------
+
+    def __enter__(self):
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        # self.sock.bind((self.udp_ip, self.udp_port))
+        return self.sock
+
     # ------------------------------------------------------------------------------
     # """ FUNCTION: __exit__"""
     # ------------------------------------------------------------------------------
@@ -108,6 +111,6 @@ class UdpPacket:
 
 
 if __name__ == '__main__':
-    udp_pack = UdpPacket(udp_ip=config.UDP_IP, udp_port=config.UDP_PORT)
+    udp_pack = UdpPacket(udp_ip=config.IP, udp_port=config.PORT)
     for i in range(10):
         udp_pack.udp_packet_send(pickle.dumps([0, 0, 0]))
