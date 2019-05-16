@@ -58,7 +58,7 @@
      <string/>
     </property>
     <property name="icon">
-     <iconset resource="icons/icons.qrc">
+     <iconset resource="pyqt_gui/icons/icons.qrc">
       <normaloff>:/icons/play.png</normaloff>:/icons/play.png</iconset>
     </property>
    </widget>
@@ -75,7 +75,7 @@
      <string/>
     </property>
     <property name="icon">
-     <iconset resource="icons/icons.qrc">
+     <iconset resource="pyqt_gui/icons/icons.qrc">
       <normaloff>:/icons/stop.png</normaloff>:/icons/stop.png</iconset>
     </property>
    </widget>
@@ -92,7 +92,7 @@
      <string/>
     </property>
     <property name="icon">
-     <iconset resource="icons/icons.qrc">
+     <iconset resource="pyqt_gui/icons/icons.qrc">
       <normaloff>:/icons/backward.png</normaloff>:/icons/backward.png</iconset>
     </property>
    </widget>
@@ -109,7 +109,7 @@
      <string/>
     </property>
     <property name="icon">
-     <iconset resource="icons/icons.qrc">
+     <iconset resource="pyqt_gui/icons/icons.qrc">
       <normaloff>:/icons/forwad.png</normaloff>:/icons/forwad.png</iconset>
     </property>
    </widget>
@@ -142,7 +142,7 @@
      <string/>
     </property>
     <property name="icon">
-     <iconset resource="icons/icons.qrc">
+     <iconset resource="pyqt_gui/icons/icons.qrc">
       <normaloff>:/icons/close_blue.png</normaloff>:/icons/close_blue.png</iconset>
     </property>
    </widget>
@@ -212,7 +212,7 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources>
-  <include location="icons/icons.qrc"/>
+  <include location="pyqt_gui/icons/icons.qrc"/>
  </resources>
  <connections/>
 </ui>
