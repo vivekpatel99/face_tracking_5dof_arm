@@ -30,6 +30,7 @@ from lib import platfrom_init
 from lib._logger import _logging
 from lib.udp import udp
 from lib.gpio import pwm
+from lib.kinematics import ikine
 from tasks.face_recog import face_recog
 from tasks.feat_detect import feat_detect
 from tasks.motion_detection import motion_detect
@@ -56,7 +57,6 @@ class Menu(QtWidgets.QMainWindow):
 
     def __init__(self):
         super(Menu, self).__init__()
-
 
         loadUi(UI_FILE, self)
         self.showFullScreen()
@@ -86,9 +86,13 @@ class Menu(QtWidgets.QMainWindow):
         self.object_recog_obj = object_recognition.ObjectRecognition()
         self.feat_detect_obj = feat_detect.FeatureDetection()
 
-        # PWM initialization # ------------------
+        # PWM initialization for each gpio pin # ------------------
+        self.pwm_objs = [pwm.PulseWidthModulation(servo_port_addr=gpio_addr, servo_cal_info=servo_cal) for
+                        gpio_addr, servo_cal in config.UTILIZED_GPIO]
 
-        self.pwm_obj = [pwm.PulseWidthModulation(servo_port_addr=gpio_addr, servo_cal_info=servo_cal) for gpio_addr, servo_cal in config.UTILIZED_GPIO.items()]
+        # finding appropriate function for given degrees of freedom
+        self.cal_ik = ikine.IK_FUNC_DICT[[dof for dof in ikine.IK_FUNC_DICT if len(self.pwm_objs) == dof][0]]
+        log.info('{} selected'.format(self.cal_ik))
 
     # -------------------------------------------------------------------
     # """ start_webcam """
@@ -247,10 +251,12 @@ class Menu(QtWidgets.QMainWindow):
         _frame = None  # processed output frame
         try:
             (x, y), _frame = self.face_recog_obj.run_face_recognition(frame, Menu.frwd_bkwd_bnt_cnt)
-            # self.udp_send.udp_packet_send(x=x, y=y, frame=_frame)
-
+            thetas_list = self.cal_ik(x_axis=x, y_axis=y)
+            self.pwm_generate(thetas_list)
+            print(thetas_list)
         except TypeError:
             pass
+
         self.fps.update()  # update the FPS counter
         if _frame is not None:
             frame = _frame
@@ -271,12 +277,14 @@ class Menu(QtWidgets.QMainWindow):
         try:
 
             (center_x, center_y), _frame = self.motion_detect_ob.run_motion_subtrator(frame, Menu.frwd_bkwd_bnt_cnt)
-            self.fps.update()  # update the FPS counter
-            # self.udp_send.udp_packet_send(x=center_x, y=center_y, frame=_frame)
+            thetas_list = self.cal_ik(x_axis=center_x, y_axis=center_y)
+
+            self.pwm_generate(thetas_list)
 
         except TypeError:
             pass
 
+        self.fps.update()  # update the FPS counter
         if _frame is not None:
             frame = _frame
 
@@ -343,6 +351,13 @@ class Menu(QtWidgets.QMainWindow):
         log.info("Elapsed time: {:.2f}".format(self.fps.elapsed()))
         log.info("Approx. FPS: {:.2f}".format(self.fps.fps()))
 
+    # -------------------------------------------------------------------
+    # """ PWM Generate """
+    # -------------------------------------------------------------------
+    def pwm_generate(self, theta_list):
+        for pwm_pin_obj, theta in zip(self.pwm_objs, theta_list):
+            pwm_pin_obj.generate_pwm(theta)
+            # pwm_jb0.generate_pwm(abs(thetas.theta_1))
     # -------------------------------------------------------------------
     # """ close """
     # -------------------------------------------------------------------

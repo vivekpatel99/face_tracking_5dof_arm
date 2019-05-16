@@ -1,30 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/lib/kinematics/ikine.py" line="69" mnemonic="9" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="1a4b7501-d752-4a7b-8f22-68341ac908b1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/gpio.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/pwm.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pyqt_gui/icons/close.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pyqt_gui/icons/forward.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pyqt_gui/icons/icons.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pyqt_gui/icons/icons_qrc.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pyqt_gui/icons/icons_rc_old.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/platfrom_init.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/platfrom_init.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/gpio/pwm.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/gpio/pwm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/kinematics/fkine.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/kinematics/fkine.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/kinematics/ikine.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/kinematics/ikine.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_pyqt.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_pyqt.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj_track_img_recog.log" beforeDir="false" afterPath="$PROJECT_DIR$/obj_track_img_recog.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyqt.sh" beforeDir="false" afterPath="$PROJECT_DIR$/pyqt.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyqt_gui/icons/icons_rc.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyqt_gui/icons/icons_rc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyqt_gui/menu.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyqt_gui/menu.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyqt_gui/menu.ui" beforeDir="false" afterPath="$PROJECT_DIR$/pyqt_gui/menu.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tasks/face_recog/face_recog.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/face_recog/face_recog.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tasks/feat_detect/feat_detect.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/feat_detect/feat_detect.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tasks/motion_detection/motion_detect.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/motion_detection/motion_detect.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tasks/object_recognition/object_recognition.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/object_recognition/object_recognition.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.sh" beforeDir="false" afterPath="$PROJECT_DIR$/test.sh" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -35,63 +22,13 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main_pyqt.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="35" column="45" selection-start-line="35" selection-start-column="45" selection-end-line="35" selection-end-column="45" />
-              <folding>
-                <element signature="e#1751#3466#0" expanded="true" />
-                <element signature="e#8833#9327#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/platfrom_init.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="470">
-              <caret line="92" column="39" selection-start-line="92" selection-start-column="39" selection-end-line="92" selection-end-column="39" />
-              <folding>
-                <element signature="e#30#68#0" expanded="true" />
-                <element signature="e#110#1583#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/tasks/object_recognition/object_recognition.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="668">
-              <caret line="127" column="4" selection-start-line="127" selection-start-column="4" selection-end-line="127" selection-end-column="4" />
-              <folding>
-                <element signature="e#2970#4947#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="365">
-              <caret line="97" lean-forward="true" selection-start-line="97" selection-end-line="97" />
+            <state relative-caret-position="-655">
+              <caret line="100" column="7" selection-start-line="100" selection-end-line="100" selection-end-column="7" />
               <folding>
-                <element signature="e#30#41#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/coordinates_recv_ik.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="41" column="27" lean-forward="true" selection-start-line="41" selection-start-column="24" selection-end-line="41" selection-end-column="31" />
-              <folding>
-                <element signature="e#38#49#0" expanded="true" />
-                <element signature="e#2440#3969#0" expanded="true" />
+                <element signature="e#29#43#0" expanded="true" />
+                <element signature="e#4660#5505#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -100,8 +37,31 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/kinematics/ikine.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="810">
-              <caret line="137" lean-forward="true" selection-start-line="137" selection-end-line="137" />
+            <state relative-caret-position="95">
+              <caret line="201" column="61" selection-start-line="201" selection-start-column="34" selection-end-line="201" selection-end-column="61" />
+              <folding>
+                <element signature="e#29#43#0" expanded="true" />
+                <element signature="e#955#1800#0" expanded="true" />
+                <element signature="e#2067#2108#0" expanded="true" />
+                <element signature="e#2393#2467#0" expanded="true" />
+                <element signature="e#2741#3577#0" expanded="true" />
+                <element signature="e#3852#4928#0" expanded="true" />
+                <element signature="e#5234#6599#0" expanded="true" />
+                <element signature="e#6899#8885#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/coordinates_recv_ik.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="660">
+              <caret line="102" column="23" lean-forward="true" selection-start-line="102" selection-start-column="23" selection-end-line="102" selection-end-column="23" />
+              <folding>
+                <element signature="e#38#49#0" expanded="true" />
+                <element signature="e#603#2233#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -109,11 +69,29 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/gpio/pwm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="560">
-              <caret line="102" column="9" selection-start-line="102" selection-start-column="6" selection-end-line="102" selection-end-column="9" />
+            <state relative-caret-position="736">
+              <caret line="96" lean-forward="true" selection-start-line="96" selection-end-line="96" />
               <folding>
                 <element signature="e#348#359#0" expanded="true" />
                 <element signature="e#1036#1294#0" expanded="true" />
+                <element signature="e#1354#2150#0" expanded="true" />
+                <element signature="e#2210#2788#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/main_pyqt.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="710">
+              <caret line="286" column="51" lean-forward="true" selection-start-line="286" selection-start-column="51" selection-end-line="286" selection-end-column="51" />
+              <folding>
+                <element signature="e#252#261#0" expanded="true" />
+                <element signature="e#1784#3763#0" expanded="true" />
+                <element signature="e#4931#5101#0" expanded="true" />
+                <element signature="e#9315#9832#0" expanded="true" />
+                <element signature="e#12645#12802#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -138,12 +116,21 @@
       <find>icons_rc</find>
       <find>1280</find>
       <find>vid</find>
+      <find>joint_len_1</find>
+      <find>joint_len_3</find>
+      <find>is_correct_rotation_mat</find>
+      <find>config</find>
+      <find>end_eff_direction_mat</find>
     </findStrings>
     <replaceStrings>
       <replace>servo_pulse_min</replace>
       <replace>servo_pulse_max</replace>
       <replace>pyqt_gui/icons/</replace>
       <replace>1024</replace>
+      <replace>config.L_1</replace>
+      <replace>config.L_2</replace>
+      <replace>config.L_3</replace>
+      <replace>const</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -155,7 +142,6 @@
         <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/lib/gpio/gpio.py" />
         <option value="$PROJECT_DIR$/lib/servo_calibration/servo_calibration.py" />
-        <option value="$PROJECT_DIR$/lib/gpio/pwm.py" />
         <option value="$PROJECT_DIR$/lib/servo_calibration/servo_calib_data.py" />
         <option value="$PROJECT_DIR$/coordinates_recv_ik.py" />
         <option value="$PROJECT_DIR$/lib/udp/udp.py" />
@@ -167,18 +153,21 @@
         <option value="$PROJECT_DIR$/lib/platfrom_init.py" />
         <option value="$PROJECT_DIR$/test.py" />
         <option value="$PROJECT_DIR$/tasks/feat_detect/feat_detect.py" />
-        <option value="$PROJECT_DIR$/main_pyqt.py" />
-        <option value="$PROJECT_DIR$/config.py" />
         <option value="$PROJECT_DIR$/lib/display/display_gui.py" />
         <option value="$PROJECT_DIR$/tasks/face_recog/face_recog.py" />
         <option value="$PROJECT_DIR$/tasks/motion_detection/motion_detect.py" />
         <option value="$PROJECT_DIR$/tasks/object_recognition/object_recognition.py" />
+        <option value="$PROJECT_DIR$/lib/kinematics/fkine.py" />
+        <option value="$PROJECT_DIR$/lib/gpio/pwm.py" />
+        <option value="$PROJECT_DIR$/config.py" />
+        <option value="$PROJECT_DIR$/lib/kinematics/ikine.py" />
+        <option value="$PROJECT_DIR$/main_pyqt.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="59" />
-    <option name="y" value="34" />
+    <option name="x" value="54" />
+    <option name="y" value="31" />
     <option name="width" value="1025" />
     <option name="height" value="1056" />
   </component>
@@ -203,7 +192,7 @@
               <item name="face_tracking_5dof_arm" type="b2602c69:ProjectViewProjectNode" />
               <item name="face_tracking_5dof_arm" type="462c0819:PsiDirectoryNode" />
               <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="gpio" type="462c0819:PsiDirectoryNode" />
+              <item name="kinematics" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="face_tracking_5dof_arm" type="b2602c69:ProjectViewProjectNode" />
@@ -255,8 +244,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="59" y="34" width="1025" height="1056" extended-state="0" />
-    <editor active="true" />
+    <frame x="54" y="31" width="1025" height="1056" extended-state="0" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21556886" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -288,13 +276,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="675">
           <caret line="46" lean-forward="true" selection-start-line="46" selection-end-line="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/udp/udp.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="19" column="15" selection-start-line="19" selection-start-column="6" selection-end-line="19" selection-end-column="15" />
         </state>
       </provider>
     </entry>
@@ -404,39 +385,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/gpio/pwm.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="560">
-          <caret line="102" column="9" selection-start-line="102" selection-start-column="6" selection-end-line="102" selection-end-column="9" />
-          <folding>
-            <element signature="e#348#359#0" expanded="true" />
-            <element signature="e#1036#1294#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/platfrom_init.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="470">
-          <caret line="92" column="39" selection-start-line="92" selection-start-column="39" selection-end-line="92" selection-end-column="39" />
-          <folding>
-            <element signature="e#30#68#0" expanded="true" />
-            <element signature="e#110#1583#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/coordinates_recv_ik.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="41" column="27" lean-forward="true" selection-start-line="41" selection-start-column="24" selection-end-line="41" selection-end-column="31" />
-          <folding>
-            <element signature="e#38#49#0" expanded="true" />
-            <element signature="e#2440#3969#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/vision/vision.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -480,13 +428,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/kinematics/ikine.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="810">
-          <caret line="137" lean-forward="true" selection-start-line="137" selection-end-line="137" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tasks/feat_detect/feat_detect.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="570">
@@ -509,33 +450,117 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/tasks/object_recognition/object_recognition.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="923">
+          <caret line="117" column="37" lean-forward="true" selection-start-line="117" selection-start-column="37" selection-end-line="117" selection-end-column="37" />
+          <folding>
+            <element signature="e#5186#9405#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/platfrom_init.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="470">
+          <caret line="92" column="39" selection-start-line="92" selection-start-column="39" selection-end-line="92" selection-end-column="39" />
+          <folding>
+            <element signature="e#30#68#0" expanded="true" />
+            <element signature="e#110#1583#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/udp/udp.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="555">
+          <caret line="65" column="39" selection-start-line="65" selection-start-column="37" selection-end-line="65" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/kinematics/fkine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="680">
+          <caret line="245" lean-forward="true" selection-start-line="245" selection-end-line="245" />
+          <folding>
+            <element signature="e#30#48#0" expanded="true" />
+            <element signature="e#7352#7431#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///opt/ros/kinetic/lib/python2.7/dist-packages/sensor_msgs/msg/_Range.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="588">
+          <caret line="119" column="27" lean-forward="true" selection-start-line="119" selection-start-column="27" selection-end-line="119" selection-end-column="27" />
+          <folding>
+            <element signature="e#3418#4690#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/gpio/pwm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="736">
+          <caret line="96" lean-forward="true" selection-start-line="96" selection-end-line="96" />
+          <folding>
+            <element signature="e#348#359#0" expanded="true" />
+            <element signature="e#1036#1294#0" expanded="true" />
+            <element signature="e#1354#2150#0" expanded="true" />
+            <element signature="e#2210#2788#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/coordinates_recv_ik.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="660">
+          <caret line="102" column="23" lean-forward="true" selection-start-line="102" selection-start-column="23" selection-end-line="102" selection-end-column="23" />
+          <folding>
+            <element signature="e#38#49#0" expanded="true" />
+            <element signature="e#603#2233#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/kinematics/ikine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="201" column="61" selection-start-line="201" selection-start-column="34" selection-end-line="201" selection-end-column="61" />
+          <folding>
+            <element signature="e#29#43#0" expanded="true" />
+            <element signature="e#955#1800#0" expanded="true" />
+            <element signature="e#2067#2108#0" expanded="true" />
+            <element signature="e#2393#2467#0" expanded="true" />
+            <element signature="e#2741#3577#0" expanded="true" />
+            <element signature="e#3852#4928#0" expanded="true" />
+            <element signature="e#5234#6599#0" expanded="true" />
+            <element signature="e#6899#8885#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/config.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="365">
-          <caret line="97" lean-forward="true" selection-start-line="97" selection-end-line="97" />
+        <state relative-caret-position="-655">
+          <caret line="100" column="7" selection-start-line="100" selection-end-line="100" selection-end-column="7" />
           <folding>
-            <element signature="e#30#41#0" expanded="true" />
+            <element signature="e#29#43#0" expanded="true" />
+            <element signature="e#4660#5505#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main_pyqt.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="35" column="45" selection-start-line="35" selection-start-column="45" selection-end-line="35" selection-end-column="45" />
+        <state relative-caret-position="710">
+          <caret line="286" column="51" lean-forward="true" selection-start-line="286" selection-start-column="51" selection-end-line="286" selection-end-column="51" />
           <folding>
-            <element signature="e#1751#3466#0" expanded="true" />
-            <element signature="e#8833#9327#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/object_recognition/object_recognition.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="668">
-          <caret line="127" column="4" selection-start-line="127" selection-start-column="4" selection-end-line="127" selection-end-column="4" />
-          <folding>
-            <element signature="e#2970#4947#0" expanded="true" />
+            <element signature="e#252#261#0" expanded="true" />
+            <element signature="e#1784#3763#0" expanded="true" />
+            <element signature="e#4931#5101#0" expanded="true" />
+            <element signature="e#9315#9832#0" expanded="true" />
+            <element signature="e#12645#12802#0" expanded="true" />
           </folding>
         </state>
       </provider>

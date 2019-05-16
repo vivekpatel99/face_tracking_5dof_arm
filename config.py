@@ -1,11 +1,14 @@
 # Created by viv at 15.12.18
+import logging
+import os
+import sys
 
 import math
-import os
-import logging
 import numpy as np
 
 from lib.servo_calibration import servo_calib_data as servo_calib
+
+# from lib.kinematics import ikine
 
 log = logging.getLogger("main." + __name__)
 
@@ -49,12 +52,12 @@ JB5 = 8
 JB6 = 9
 # -----------------------------------------------
 """ add or remove GPIO name and servo calibration information """
-UTILIZED_GPIO = {JB0: servo_calib.servo_1,
-                 JB1: servo_calib.servo_2,
-                 JB2: servo_calib.servo_3,
-                 JB4: servo_calib.servo_4,
-                 JB5: servo_calib.servo_5
-                 }
+UTILIZED_GPIO = [[JB0, servo_calib.servo_1],
+                 [JB1, servo_calib.servo_2],
+                 [JB2, servo_calib.servo_3],
+                 [JB4, servo_calib.servo_4],
+                 [JB5, servo_calib.servo_5]
+                 ]
 # -----------------------------------------------
 """ paths of all GPIOs """
 # from zybo_zybo_rm-pdf (page 25)
@@ -86,7 +89,6 @@ L_3 = 98  # mm 9.8cm
 L_4 = 27  # mm 2.7cm
 L_5 = 65  # mm 6.5cm
 
-
 # Denavit Hartenberg  Parameter table
 DH_PT = [
     [math.radians(THETA_1), math.radians(90.0), 0, L_1],
@@ -96,16 +98,22 @@ DH_PT = [
     [math.radians(THETA_5), 0, 0, L_4 + L_5]
 ]
 
-# PT_3dof = [
-#     [math.radians(THETA_1), math.radians(90.0), 0, L_1],
-#     [math.radians(THETA_2), 0, L_2, 0],
-#     [math.radians(THETA_3), 0, L_3, 0],
-# ]
-#
+PT_3dof = [
+    [math.radians(THETA_1), math.radians(90.0), 0, L_1],
+    [math.radians(THETA_2), 0, L_2, 0],
+    [math.radians(THETA_3), 0, L_3, 0],
+]
+
 # PT_2dof = [
 #     [math.radians(THETA_1), math.radians(90.0), 0, L_1],
 #     [math.radians(THETA_2), 0, L_2, 0],
 # ]
+
+
+# checks
+if len(UTILIZED_GPIO) != len(DH_PT):
+    log.error('[ERROR] number of UTILIZED_GPIO must be equal to number of row of DH_PT')
+    sys.exit(1)
 
 # -----------------------------------------------
 """ Video frame setting """
@@ -146,11 +154,44 @@ H0_C = np.concatenate((_H0_C, [[0., 0., 0., 1.]]), 0)  # concatenate row
 
 # -----------------------------------------------
 """ end-effector orientation """
-end_eff_direction_mat = np.matrix([
-    [-1., 0., 0.],
-    [0., -1., 0.],
-    [0., 0., 1.]
-])
+end_eff_direction_mat = np.matrix([[-1, 0, 0],
+                                   [0, -1, 0],
+                                   [0, 0, 1]],
+                                  dtype=float
+                                  )
+
+
+# checks
+def is_correct_rotation_mat(matrix):
+    """
+    Check if the matrix is valid rotation matrix
+    :param matrix:
+    :return: valid rotation matrix
+    """
+    mat = np.matrix(matrix)
+
+    #  check whether matrix is 3x3 or not
+    if mat.shape != (3, 3):
+        log.error("Matrix must be 3x3")
+
+    # checking if the matrix is a rotation matrix or not
+    #  step #1 Square of each element of row
+    #  step #2 adding the the output of all the squares
+    #  step #3 calculating square root of total
+    #  step #4 it must be 1 then and then matrix said to be valid rotation matrix
+    for row in range(np.shape(mat)[1]):
+        vector_len = 0
+
+        for column in range(np.shape(mat)[0]):
+            vector_len += mat[column, row] ** 2
+
+        if not np.sqrt(vector_len) == 1:
+            log.error("Matrix is not a valid rotation matrix")
+            sys.exit(1)
+    return mat
+
+
+end_eff_direction_mat = is_correct_rotation_mat(end_eff_direction_mat)
 
 # -----------------------------------------------
 """ UDP """
@@ -172,7 +213,7 @@ TASK_INDEX = 1
 # video frame position on display
 VID_FRAME_POS = (50, 100)  # x, y
 
-# -----------------------------------------------
+# --------------------            ---------------------------
 # flag for video on/off
 VID_STOP = False
 
