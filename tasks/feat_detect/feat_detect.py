@@ -21,17 +21,18 @@ class FeatureDetection:
         self.flann_param = dict(algorithm=flann_index_kditree, tree=5)
         self.flann = cv2.FlannBasedMatcher(self.flann_param, {})  # openCV bug, therefore empty dict is given
 
-        image = cv2.imread(image_path, 0)
-        self.train_img = cv2.resize(image, (640, 460))
-        self.trainKP, self.trainDesc = self.detector.detectAndCompute(self.train_img, None)
+        self.train_img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+        # self.train_img = cv2.resize(image, (640, 460))
+        self.train_keypoints, self.train_descriptor = self.detector.detectAndCompute(self.train_img, None)
 
     # -------------------------------------------------------------------
     # """ run_feat_detect """
     # -------------------------------------------------------------------
     def run_feat_detect(self, query_img_bgr, frame_display_indx):
+        """ """
         query_img = cv2.cvtColor(query_img_bgr, cv2.COLOR_BGR2GRAY)
         query_kp, query_desc = self.detector.detectAndCompute(query_img, None)
-        matches = self.flann.knnMatch(query_desc, self.trainDesc, k=2)
+        matches = self.flann.knnMatch(query_desc, self.train_descriptor, k=2)
 
         good_match = []
         for m, n in matches:
@@ -42,9 +43,10 @@ class FeatureDetection:
             tp = []
             qp = []
             for m in good_match:
-                tp.append(self.trainKP[m.trainIdx].pt)
+                tp.append(self.train_keypoints[m.trainIdx].pt)
                 qp.append(query_kp[m.queryIdx].pt)
             tp, qp = np.float32((tp, qp))
+
             H, status = cv2.findHomography(tp, qp, cv2.RANSAC, 3.0)
             h, w = self.train_img.shape
 
@@ -78,15 +80,15 @@ def main():
 
     trainImg = cv2.imread(r'zybo_boxzybo_box.png', 0)
     trainImg = cv2.resize(trainImg, (640, 460))
-    # trainKP,trainDesc=detector.detectAndCompute(trainImg,None)
-    trainKP, trainDesc = detector.detectAndCompute(trainImg, None)
+    # train_kp,train_descriptor=detector.detectAndCompute(trainImg,None)
+    train_kp, train_descriptor = detector.detectAndCompute(trainImg, None)
 
     cam = cv2.VideoCapture(0)
     while True:
         ret, query_img_bgr = cam.read()
         QueryImg = cv2.cvtColor(query_img_bgr, cv2.COLOR_BGR2GRAY)
         queryKP, queryDesc = detector.detectAndCompute(QueryImg, None)
-        matches = flann.knnMatch(queryDesc, trainDesc, k=2)
+        matches = flann.knnMatch(queryDesc, train_descriptor, k=2)
 
         goodMatch = []
         for m, n in matches:
@@ -96,7 +98,7 @@ def main():
             tp = []
             qp = []
             for m in goodMatch:
-                tp.append(trainKP[m.trainIdx].pt)
+                tp.append(train_kp[m.trainIdx].pt)
                 qp.append(queryKP[m.queryIdx].pt)
             tp, qp = np.float32((tp, qp))
             H, status = cv2.findHomography(tp, qp, cv2.RANSAC, 3.0)

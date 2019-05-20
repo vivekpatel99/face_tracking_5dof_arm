@@ -1,14 +1,17 @@
 import sys
+import time
+
 from PyQt5.QtWidgets import QApplication, QWidget
-import os
+from PyQt5.QtGui import QIcon
+import signal
+
+signal.signal(signal.SIGINT, signal.SIG_DFL)
+from regBlock import RegBlock
+import cv2
+import numpy as np
 
 
-if __name__ == '__main__':
-    from regBlock import RegBlock
-    import matplotlib.pyplot as plt
-    # %matplotlib inline
-    import numpy as np
-
+def init():
     FB0 = 0x1E000000
     FB1 = 0x1E280000
     FB2 = 0x1E500000
@@ -81,28 +84,52 @@ if __name__ == '__main__':
     video.set_u32(6, 640)
     video.set_u32(7, 480)
 
-    servo.set_u32(3, 1000)
-    servo.set_u32(4, -1000)
-#    os.environ["fbdev"] = "/dev/fb0"
-    import sys
-    from PyQt5.QtWidgets import QApplication, QWidget
-    from PyQt5.QtGui import QIcon
-   
-    class Example(QWidget):
-    
-        def __init__(self):
-            super().__init__()
-        
-            self.initUI()
-        
-        
-        def initUI(self):
-        
-            self.setGeometry(300, 300, 600, 320)
-            self.setWindowTitle('Icon')
-            self.setWindowIcon(QIcon('web.png'))        
-    
-            self.show()
-    app = QApplication(sys.argv)
-    ex = Example()
-    sys.exit(app.exec_())
+    # servo.set_u32(3, 1000)
+    # servo.set_u32(4, -1000)
+
+
+if __name__ == '__main__':
+    #     class Example(QWidget):
+    #
+    #         def __init__(self):
+    #             super().__init__()
+    #
+    #             self.initUI()
+    #
+    #
+    #         def initUI(self):
+    #
+    #             self.setGeometry(0, 0, 600, 600)
+    #             self.setWindowTitle('Icon')
+    #             self.setWindowIcon(QIcon('web.png'))
+    #             self.showFullScreen()
+    #             self.show()
+    #     app = QApplication(sys.argv)
+    #     ex = Example()
+    #     #sys.exit(app.exec_())
+    #     app.exec_()
+
+    # from PIL import Image
+    #
+    # # from  PyQt5 import array2qimage
+    # fb = '/dev/fb1'
+    # fb2 = '/dev/fb2'
+    # time_s = time.time()
+    # with open(fb, 'rb') as img:
+    #     dat = img.read()
+    # dat = np.array(Image.frombytes('L', (640, 480), dat))
+    # # dat = np.array(Image.frombytes('L', (640, 480), dat))
+    # print(time.time()-time_s)
+    # # dat = Image.frombytes('L', (640, 480), dat)
+    # # (h, w) = dat.shape[:2]
+    # # center = (w/2, h/2)
+    # # m = cv2.getRotationMatrix2D(center, 90, 1.0)
+    # # rotated90 = cv2.warpAffine(dat, m, (h,w))
+    #
+    #
+    # # dat = cv2.cvtColor(dat, cv2.COLOR_GRAY2RGB)
+    # time_s = time.time()
+    # with open(fb2, 'wb') as fil:
+    #     fil.write(dat)
+    # print(time.time()-time_s)
+    vid = cv2.VideoCapture(0)

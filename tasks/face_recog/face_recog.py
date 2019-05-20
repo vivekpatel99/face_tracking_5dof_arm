@@ -232,20 +232,20 @@ class FaceRecognition:
         :return:
         """
         # covert image into gray for processing
-        gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        # gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         front = cv2.FONT_HERSHEY_SIMPLEX
         color = (255, 0, 0)
         stroke = 1  # width of text
 
         # detect object of different size i nthe input image.
         # the detected objects are returned as a list of rectangles.
-        faces = self.face_cascade.detectMultiScale(gray_frame, scaleFactor=1.3, minNeighbors=5)
+        faces = self.face_cascade.detectMultiScale(frame, scaleFactor=1.3, minNeighbors=5)
 
         for (x, y, w, h) in faces:
 
             # create rectangle around face
             frame = cv2.rectangle(frame, (x, y), (x + w, y + w), (255, 0, 0), 2)  # RGB
-            roi_gray = gray_frame[y:y + h, x:x + w]
+            roi_gray = frame[y:y + h, x:x + w]
 
             id_, confidence = self.recognizer.predict(roi_gray)
 
