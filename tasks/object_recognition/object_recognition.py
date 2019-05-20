@@ -18,8 +18,7 @@ import sys
 
 import config
 from lib.vision.vision import Vision
-from lib.display import display
-from lib.display import display_gui
+
 from lib.udp import udp
 
 log = logging.getLogger("__main__." + __name__)
@@ -111,12 +110,12 @@ class ObjectRecognition:
 
                     cv2.putText(frame, label, (start_x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.color[idx], 2)
 
-                    if frame_display_indx == 0:
-                        out_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                    elif frame_display_indx == 1:
-                        out_frame = frame
-                    else:
-                        out_frame = frame
+                    # if frame_display_indx == 0:
+                    #     out_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                    # elif frame_display_indx == 1:
+                    #     out_frame = frame
+                    # else:
+                    out_frame = frame
                     return (start_x, y), out_frame
 
 # ------------------------------------------------------------------------------
@@ -124,6 +123,9 @@ class ObjectRecognition:
 # ------------------------------------------------------------------------------
 def object_recog_pygm(screen, disply_obj):
     """ """
+    from lib.display import display
+    from lib.display import display_gui
+
     log.info("object_recog_pygm start... ")
 
     # configuration file use to train caffe model

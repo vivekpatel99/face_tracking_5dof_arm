@@ -17,8 +17,7 @@ import logging
 
 import config
 from lib.vision.vision import Vision
-from lib.display import display
-from lib.display import display_gui
+
 from lib.udp import udp
 
 log = logging.getLogger("main." + __name__)
@@ -48,12 +47,12 @@ class MotionDetection:
     # -------------------------------------------------------------------
     def run_motion_subtrator(self, frame, frame_display_indx):
         # color has no bearing on motion detection algorithm
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         # if the first stream is not initialized, store it for reference
         # to smooth the image and remove noise(if not then could throw algorithm off)
         # smothing avarage pixel intensities across an 21x21 region
-        gray = cv2.GaussianBlur(gray, (21, 21), 0)
+        gray = cv2.GaussianBlur(frame, (21, 21), 0)
 
         # apply background subtraction
         fgmask = self.back_gnd_sub.apply(gray)
@@ -77,12 +76,12 @@ class MotionDetection:
             except UnboundLocalError:
                 center_x, center_y = 0, 0
 
-            if frame_display_indx == 0:
-                out_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            elif frame_display_indx == 1:
-                out_frame = fgmask
-            else:
-                out_frame = frame
+            # if frame_display_indx == 0:
+            #     out_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            # elif frame_display_indx == 1:
+            #     out_frame = fgmask
+            # else:
+            out_frame = frame
             return (center_x, center_y), out_frame
 
 
@@ -92,6 +91,9 @@ class MotionDetection:
 
 def motion_detection_pygm(screen, disply_obj, fbs):
     """ """
+    from lib.display import display
+    from lib.display import display_gui
+
     log.info("motion_detection_pygm starts... ")
 
     image_title = display_gui.Menu.Text(text=TASK_TITLE, font=display_gui.Font.Medium)
@@ -167,6 +169,9 @@ def motion_detection_pygm(screen, disply_obj, fbs):
 
 def _motion_detection_pygm(screen, disply_obj, fbs):
     """ """
+    from lib.display import display
+    from lib.display import display_gui
+
     log.info("motion_detection_pygm starts... ")
 
     image_title = display_gui.Menu.Text(text=TASK_TITLE, font=display_gui.Font.Medium)

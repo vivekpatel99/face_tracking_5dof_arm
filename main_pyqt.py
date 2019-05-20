@@ -11,21 +11,33 @@ The main script calls functions from all the modules
 
 """
 
+import os
 import sys
+<<<<<<< HEAD
 import os
 import cv2
 from PyQt5.uic import loadUi
 from PyQt5 import QtGui
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QPixmap, QImage
+=======
+
+import signal
+import cv2
+import numpy as np
+from PIL import Image
+from PyQt5 import QtGui
+from PyQt5 import QtWidgets
+>>>>>>> 195a8254b82368f501ad94d40bbe626df9032472
 from PyQt5.QtCore import QTimer
-from imutils.video import VideoStream
+from PyQt5.uic import loadUi
 from imutils.video import FPS
 import numpy as np
 from PIL import Image
 
 # modules
 import config
+<<<<<<< HEAD
 from lib.udp import udp
 from lib import platform_init
 from lib._logger import _logging
@@ -35,6 +47,17 @@ from tasks.object_recognition import object_recognition
 from tasks.feat_detect import feat_detect
 
 
+=======
+from lib import platfrom_init
+from lib._logger import _logging
+from lib.udp import udp
+from lib.gpio import pwm
+from lib.kinematics import ikine
+from tasks.face_recog import face_recog
+from tasks.feat_detect import feat_detect
+from tasks.motion_detection import motion_detect
+from tasks.object_recognition import object_recognition
+>>>>>>> 195a8254b82368f501ad94d40bbe626df9032472
 
 # UI_WINDOW, _ = uic.loadUiType('pyqt_gui/menu.ui')
 
@@ -58,7 +81,10 @@ class Menu(QtWidgets.QMainWindow):
     def __init__(self):
         super(Menu, self).__init__()
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 195a8254b82368f501ad94d40bbe626df9032472
         loadUi(UI_FILE, self)
         self.showFullScreen()
 
@@ -86,6 +112,17 @@ class Menu(QtWidgets.QMainWindow):
         self.motion_detect_ob = motion_detect.MotionDetection()
         self.object_recog_obj = object_recognition.ObjectRecognition()
         self.feat_detect_obj = feat_detect.FeatureDetection()
+<<<<<<< HEAD
+=======
+
+        # PWM initialization for each gpio pin # ------------------
+        self.pwm_objs = [pwm.PulseWidthModulation(servo_port_addr=gpio_addr, servo_cal_info=servo_cal) for
+                        gpio_addr, servo_cal in config.UTILIZED_GPIO]
+
+        # finding appropriate function for given degrees of freedom
+        self.cal_ik = ikine.IK_FUNC_DICT[[dof for dof in ikine.IK_FUNC_DICT if len(self.pwm_objs) == dof][0]]
+        log.info('{} selected'.format(self.cal_ik))
+>>>>>>> 195a8254b82368f501ad94d40bbe626df9032472
 
     # -------------------------------------------------------------------
     # """ start_webcam """
@@ -193,6 +230,12 @@ class Menu(QtWidgets.QMainWindow):
         # frame = self.vid.read()
         with open('/dev/fb1', 'rb') as img:
             frame = img.read()
+<<<<<<< HEAD
+=======
+
+        # 'P' mode = 8-bit pixels mapped to any other mode using a color palette
+        # 'L' mode = 8-bit pixels black and white
+>>>>>>> 195a8254b82368f501ad94d40bbe626df9032472
         return np.array(Image.frombytes('L', (640, 480), frame))
 
     # -------------------------------------------------------------------
@@ -241,10 +284,20 @@ class Menu(QtWidgets.QMainWindow):
         _frame = None  # processed output frame
         try:
             (x, y), _frame = self.face_recog_obj.run_face_recognition(frame, Menu.frwd_bkwd_bnt_cnt)
+<<<<<<< HEAD
             # self.udp_send.udp_packet_send(x=x, y=y, frame=_frame)
             self.fps.update()  # update the FPS counter
         except TypeError:
             pass
+=======
+            thetas_list = self.cal_ik(x_axis=x, y_axis=y)
+            self.pwm_generate(thetas_list)
+            print(thetas_list)
+        except TypeError:
+            pass
+
+        self.fps.update()  # update the FPS counter
+>>>>>>> 195a8254b82368f501ad94d40bbe626df9032472
         if _frame is not None:
             frame = _frame
         self.display_image(frame)
@@ -264,12 +317,22 @@ class Menu(QtWidgets.QMainWindow):
         try:
 
             (center_x, center_y), _frame = self.motion_detect_ob.run_motion_subtrator(frame, Menu.frwd_bkwd_bnt_cnt)
+<<<<<<< HEAD
             self.fps.update()  # update the FPS counter
             self.udp_send.udp_packet_send(x=center_x, y=center_y, frame=_frame)
+=======
+            thetas_list = self.cal_ik(x_axis=center_x, y_axis=center_y)
+
+            self.pwm_generate(thetas_list)
+>>>>>>> 195a8254b82368f501ad94d40bbe626df9032472
 
         except TypeError:
             pass
 
+<<<<<<< HEAD
+=======
+        self.fps.update()  # update the FPS counter
+>>>>>>> 195a8254b82368f501ad94d40bbe626df9032472
         if _frame is not None:
             frame = _frame
 
@@ -289,7 +352,11 @@ class Menu(QtWidgets.QMainWindow):
         try:
             (x, y), _frame = self.object_recog_obj.run_object_recognition(frame, Menu.frwd_bkwd_bnt_cnt)
             if x and y:
+<<<<<<< HEAD
                 self.udp_send.udp_packet_send(x=x, y=y, frame=_frame)
+=======
+                # self.udp_send.udp_packet_send(x=x, y=y, frame=_frame)
+>>>>>>> 195a8254b82368f501ad94d40bbe626df9032472
                 self.fps.update()  # update the FPS counter
         except TypeError:
             pass
@@ -311,10 +378,18 @@ class Menu(QtWidgets.QMainWindow):
         _frame = None  # processed output frame
         try:
             (x, y), _frame = self.feat_detect_obj.run_feat_detect(frame, Menu.frwd_bkwd_bnt_cnt)
+<<<<<<< HEAD
             self.udp_send.udp_packet_send(x=x, y=y, frame=_frame)
             self.fps.update()  # update the FPS counter
         except TypeError:
             pass
+=======
+            # self.udp_send.udp_packet_send(x=x, y=y, frame=_frame)
+
+        except TypeError:
+            pass
+        self.fps.update()  # update the FPS counter
+>>>>>>> 195a8254b82368f501ad94d40bbe626df9032472
         if _frame is not None:
             frame = _frame
         # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -335,6 +410,13 @@ class Menu(QtWidgets.QMainWindow):
         log.info("Elapsed time: {:.2f}".format(self.fps.elapsed()))
         log.info("Approx. FPS: {:.2f}".format(self.fps.fps()))
 
+    # -------------------------------------------------------------------
+    # """ PWM Generate """
+    # -------------------------------------------------------------------
+    def pwm_generate(self, theta_list):
+        for pwm_pin_obj, theta in zip(self.pwm_objs, theta_list):
+            pwm_pin_obj.generate_pwm(theta)
+            # pwm_jb0.generate_pwm(abs(thetas.theta_1))
     # -------------------------------------------------------------------
     # """ close """
     # -------------------------------------------------------------------
@@ -359,6 +441,7 @@ class Menu(QtWidgets.QMainWindow):
 from pyqt_gui.icons import icons
 
 if __name__ == '__main__':
+<<<<<<< HEAD
     # platfrom_init.platform_clear()
     log = _logging.logger_init(log_filepath="obj_track_img_recog.log", project_name="main")
     # platform_init.platform_init()
@@ -367,3 +450,15 @@ if __name__ == '__main__':
     my_menu.show()
     sys.exit(app.exec_())
 #    app.exec_()
+=======
+
+    platfrom_init.platform_clear()
+    log = _logging.logger_init(log_filepath="obj_track_img_recog.log", project_name="main")
+    platfrom_init.platform_init()
+    app = QtWidgets.QApplication(sys.argv)
+    signal.signal(signal.SIGINT, lambda *a: app.quit())
+    my_menu = Menu()
+    my_menu.show()
+    sys.exit(app.exec_())
+    # app.exec_()
+>>>>>>> 195a8254b82368f501ad94d40bbe626df9032472

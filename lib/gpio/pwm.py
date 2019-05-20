@@ -74,11 +74,10 @@ class PulseWidthModulation:
             self.max_angle - self.min_angle)
 
         duty_cycle = (slop * (angle - self.servo_cal_info.min_range[0])) + self.servo_cal_info.min_range[1]
-        # print(duty_cycle)
         return int(duty_cycle)
 
-    def generate_pwm(self, angle=90, unit='rad'):
-        angle = float(angle)
+    def generate_pwm(self, angle=90.0, unit='rad'):
+        # angle = float(angle)
         if unit != 'deg' and unit != 'rad':
             log.error("Please enter proper unit 'deg' or 'rad' ")
             sys.exit(1)

@@ -71,7 +71,7 @@ def init():
     # config image buffer  --> image output to hdmi
     img_dma.set_u32(6, 0)
     img_dma.set_u32(4, 0)  # wr
-    img_dma.set_u32(5, FB1)  # rd
+    img_dma.set_u32(5, FB2)  # rd
     img_dma.set_u32(7, 2)
     img_dma.set_u32(9, FB1_size)
     img_dma.set_u32(0x0D, 0x00D00010)
@@ -109,6 +109,7 @@ if __name__ == '__main__':
     #     #sys.exit(app.exec_())
     #     app.exec_()
 
+<<<<<<< HEAD
     # from PIL import Image
     #
     # # from  PyQt5 import array2qimage
@@ -133,3 +134,23 @@ if __name__ == '__main__':
     #     fil.write(dat)
     # print(time.time()-time_s)
     vid = cv2.VideoCapture(0)
+=======
+    from PIL import Image
+
+    init()
+    # from  PyQt5 import array2qimage
+    fb = '/dev/fb1'
+    fb2 = '/dev/fb2'
+    time_s = time.time()
+    with open(fb, 'rb') as img:
+        dat = img.read()
+    dat = np.array(Image.frombytes('L', (640, 480), dat))
+    # dat = np.array(Image.frombytes('L', (640, 480), dat))
+    print(time.time() - time_s)
+    # cv2.putText(dat, 'hello', (10,50), cv2.FONT_HERSHEY_SIMPLEX, 4, (255,255,255),2, cv2.LINE_AA)
+    # dat = cv2.cvtColor(dat, cv2.COLOR_GRAY2RGB)
+    time_s = time.time()
+    with open(fb2, 'wb') as fil:
+        fil.write(dat)
+    print(time.time() - time_s)
+>>>>>>> 195a8254b82368f501ad94d40bbe626df9032472

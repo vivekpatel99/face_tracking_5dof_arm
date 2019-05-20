@@ -29,8 +29,7 @@ from imutils.video import VideoStream
 """ Modules """
 import config
 from lib.vision.vision import Vision
-from lib.display import display
-from lib.display import display_gui
+
 from lib.udp import udp
 
 # -----------------------------------------------
@@ -72,6 +71,8 @@ def face_recog_pygm(screen, disply_obj, fbs):
     (for predicting trained faces), labels.pickle (to get label of faces ) and predict name of the face.
 
     """
+    from lib.display import display
+    from lib.display import display_gui
 
     log.info("face_recog_pygm start")
     # print("[INFO] face_recog_pygm start")
@@ -259,12 +260,12 @@ class FaceRecognition:
             else:
                 cv2.putText(frame, 'Unknown', (x, y), front, 1.0, color, stroke, cv2.LINE_AA)
 
-            if frame_display_indx == 0:
-                out_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            elif frame_display_indx == 1:
-                out_frame = cv2.resize(roi_gray, (640, 480))
-            else:
-                out_frame = frame
+            # if frame_display_indx == 0:
+            #     out_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            # elif frame_display_indx == 1:
+            #     out_frame = cv2.resize(roi_gray, (640, 480))
+            # else:
+            out_frame = frame
             return (x, y), out_frame
 
 
